@@ -1,0 +1,22 @@
+block-labels = [ "S-wip", "S-nomerge" ]
+status = [ "build:%" ]
+pr-status = [
+    "check: Validate PR title"
+]
+
+timeout-sec = 7200 # two hours
+delete-merged-branches = true
+cut-body-after = "\n<!-- Boilerplate:start -->" # see PULL_REQUEST_TEMPLATE.md
+
+# one of the reviewers will be github-actions[bot] when PR titles are approved
+required-approvals = 1
+
+# NOTE: you can't self-review or self-approve things you're a codeowner of, and
+# bors does not like that...
+use-codeowners = false
+
+# NOTE: squash merge is nice, but unfortunately it does nuke any GPG signatures
+# you might have (somewhat annoying), but it also leaves the signed-off-by lines
+# as well, which is what I really hate; in theory bors should be able to do this
+# all on its own properly, but... sigh...
+use-squash-merge = true

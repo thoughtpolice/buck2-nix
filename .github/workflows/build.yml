@@ -1,0 +1,25 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ main, trying, staging ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: "build: Full build and integrated tests"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v18
+        with:
+          install_url: https://releases.nixos.org/nix/nix-2.11.0/install
+          extra_nix_config: |
+            experimental-features = nix-command flakes recursive-nix ca-derivations
+      - name: Build
+        run: nix build .#world
+      - name: Flake check
+        run: nix flake check
+      - name: Smoke run
+        run: nix run
