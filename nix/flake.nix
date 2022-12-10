@@ -63,12 +63,12 @@
               };
 
               cargoLock = {
-                lockFile = ./nix/buck2/Cargo.lock;
+                lockFile = ./buck2/Cargo.lock;
                 outputHashes = {};
               };
 
               doCheck = false;
-              postPatch = "cp ${./nix/buck2/Cargo.lock} Cargo.lock";
+              postPatch = "cp ${./buck2/Cargo.lock} Cargo.lock";
 
               postInstall = ''
                 mv $out/bin/starlark  $out/bin/buck2-starlark
