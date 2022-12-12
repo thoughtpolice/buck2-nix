@@ -39,40 +39,19 @@
 
         jobs = rec {
           packages = flake-utils.lib.flattenTree rec {
+            # These are all tools from upstream
+            inherit (pkgs.gitAndTools) gh;
             inherit (pkgs)
               tagref sapling
               ;
-            inherit (pkgs.gitAndTools) gh;
 
-            buck2 = rustPlatform.buildRustPackage rec {
-              pname = "buck2";
-              version = "unstable-2022.12.09";
-
-              src = pkgs.fetchFromGitHub {
-                owner = "facebookincubator";
-                repo = "buck2";
-                rev = "5e7af16ffaa73a5c8229f7e33538be6119d57019";
-                hash = "sha256-7Sg08djjb3RgooGa/JJUVNfE6qLCFxQDM8EQd/8xOwQ=";
-              };
-
-              cargoLock = {
-                lockFile = ./buck2/Cargo.lock;
-                outputHashes = {};
-              };
-
-              doCheck = false;
-              postPatch = "cp ${./buck2/Cargo.lock} Cargo.lock";
-
-              postInstall = ''
-                mv $out/bin/starlark  $out/bin/buck2-starlark
-                mv $out/bin/read_dump $out/bin/buck2-read_dump
-              '';
-
-              nativeBuildInputs = [ pkgs.protobuf pkgs.pkg-config ];
-              buildInputs = [ pkgs.openssl pkgs.sqlite ];
-            };
+            buck2 = pkgs.callPackage ./buck2 { inherit rustPlatform; };
           };
 
+
+          # The default Nix shell. This is populated by direnv and used for the
+          # interactive console that a developer uses when they use buck2, sl,
+          # et cetera.
           devShells.default = pkgs.mkShell {
             nativeBuildInputs = with packages; [ buck2 tagref sapling gh ];
           };
