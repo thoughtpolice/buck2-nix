@@ -8,8 +8,8 @@ You **MUST** have **[direnv]** installed. Everything else &mdash; including the
 correct tool versions &mdash; will be populated in your shell by `direnv`
 automatically when you move here.
 
-This is an experiment. Nothing is stable and everything is permitted. Do not
-taunt happy fun ball.
+There are some design notes in the `buck2/` directory. This is an experiment.
+Nothing is stable and everything is permitted. Do not taunt happy fun ball.
 
 ## commands
 
