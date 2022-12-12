@@ -5,7 +5,7 @@
 # License, Version 2.0 found in the LICENSE-APACHE file in the root directory
 # of this source tree.
 
-def _rust_binary_impl(ctx):
+def _rust_binary_impl(ctx: "context") -> ["provider"]:
     file = ctx.attrs.file
     out = ctx.actions.declare_output("main")
 
