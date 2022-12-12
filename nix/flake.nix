@@ -39,13 +39,6 @@
 
         jobs = rec {
           packages = flake-utils.lib.flattenTree rec {
-
-            testing = pkgs.runCommand "testing" { } ''
-              set -x
-              mkdir -p $out/bin $out/share
-              ln -s ${pkgs.hello}/bin/hello $out/bin/testing
-            '';
-
             inherit (pkgs)
               tagref sapling
               ;
@@ -78,16 +71,6 @@
               nativeBuildInputs = [ pkgs.protobuf pkgs.pkg-config ];
               buildInputs = [ pkgs.openssl pkgs.sqlite ];
             };
-
-            repro-test = pkgs.runCommand "unstable" { } ''
-              touch $out
-             #echo $RANDOM > $out
-            '';
-          };
-
-          apps = rec {
-            default = testing;
-            testing = { type = "app"; program = "${packages.testing}/bin/testing"; };
           };
 
           devShells.default = pkgs.mkShell {
