@@ -11,7 +11,7 @@ automatically when you move here.
 This is an experiment. Nothing is stable and everything is permitted. Do not
 taunt happy fun ball.
 
-- `sl clone https://github.com/thoughtpolice/buck2-nix`
+- `nix run github:nixos/nixpkgs/nixpkgs-unstable#sapling -- clone https://github.com/thoughtpolice/buck2-nix`
 - `buck2 build ...`
 - `rm -r $(sl root)/buck-out; killall \.sl-wrapped buck2`
 
