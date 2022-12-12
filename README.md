@@ -11,8 +11,18 @@ automatically when you move here.
 This is an experiment. Nothing is stable and everything is permitted. Do not
 taunt happy fun ball.
 
+## commands
+
+clone with `sl`, since you probably don't have it installed
+
 - `nix run github:nixos/nixpkgs/nixpkgs-unstable#sapling -- clone https://github.com/thoughtpolice/buck2-nix`
+
+build repo
+
 - `buck2 build ...`
+
+clean, then kill all daemons
+
 - `rm -r $(sl root)/buck-out; killall \.sl-wrapped buck2`
 
 <!-- refs -->
