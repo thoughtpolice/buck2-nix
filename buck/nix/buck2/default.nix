@@ -26,8 +26,10 @@ rustPlatform.buildRustPackage rec {
   postPatch = "cp ${./Cargo.lock} Cargo.lock";
 
   postInstall = ''
-    mv $out/bin/starlark  $out/bin/buck2-starlark
-    mv $out/bin/read_dump $out/bin/buck2-read_dump
+    mv $out/bin/buck2     $out/bin/buck
+    ln -sfv $out/bin/buck $out/bin/buck2
+    mv $out/bin/starlark  $out/bin/buck-starlark
+    mv $out/bin/read_dump $out/bin/buck-read_dump
   '';
 
   nativeBuildInputs = [ protobuf pkg-config ];

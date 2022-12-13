@@ -3,7 +3,7 @@ name=BUILD
 
 [repositories]
 root = .
-prelude = buck2/prelude
+prelude = buck/prelude
 buck = no
 fbcode = no
 fbsource = no

@@ -8,7 +8,7 @@ You **MUST** have **[direnv]** installed. Everything else &mdash; including the
 correct tool versions &mdash; will be populated in your shell by `direnv`
 automatically when you move here.
 
-There are some design notes in the `buck2/` directory. This is an experiment.
+There are some design notes in the `buck/` directory. This is an experiment.
 Nothing is stable and everything is permitted. Do not taunt happy fun ball.
 
 ## commands
@@ -19,11 +19,11 @@ clone with `sl`, since you probably don't have it installed
 
 build repo
 
-- `buck2 build ...`
+- `buck build ...`
 
 clean, then kill all daemons
 
-- `rm -r $(sl root)/buck-out; killall \.sl-wrapped buck2`
+- `rm -r $(sl root)/buck-out; killall \.sl-wrapped buck`
 
 <!-- refs -->
 

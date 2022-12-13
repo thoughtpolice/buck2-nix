@@ -80,7 +80,7 @@ This gives us a middle-ground between the two worlds; Nix and the Nixpkgs
 community is used to provide vendor-agnostic, distro-agnostic, high-quality
 toolchains. And Buck is used to drive those tools quickly for development.
 
-## `./buck2/nix`
+## `./buck/nix`
 
 Nix code. Notably, this includes a Nix Flake which locks us to a fixed `nixpkgs`
 snapshot, from which all of our toolchains come from. And it also includes the
@@ -89,9 +89,11 @@ snapshot, from which all of our toolchains come from. And it also includes the
 In short, this code is used to setup vendored toolchains, but no more than that.
 Software that exists "in this repository" is instead described using Starlark.
 
-If you were to add a toolchain of some kind (e.g. "I want to support Julia programs written in this repository"), you'd have to start by packaging that toolchain with Nix, and put the code here.
+If you were to add a toolchain of some kind (e.g. "I want to support Julia
+programs written in this repository"), you'd have to start by packaging that
+toolchain with Nix, and put the code here.
 
-## `./buck2/prelude`
+## `./buck/prelude`
 
 Buck rules, written in Starlark. These drive the tools that Nix provisions for
 us, and does so in a fast, incremental way.
