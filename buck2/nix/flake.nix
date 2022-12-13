@@ -48,12 +48,13 @@
             buck2 = pkgs.callPackage ./buck2 { inherit rustPlatform; };
           };
 
-
           # The default Nix shell. This is populated by direnv and used for the
           # interactive console that a developer uses when they use buck2, sl,
           # et cetera.
           devShells.default = pkgs.mkShell {
-            nativeBuildInputs = with packages; [ buck2 tagref sapling gh ];
+            nativeBuildInputs = with packages; [
+              buck2 tagref sapling gh
+            ];
           };
         };
       in {

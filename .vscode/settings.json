@@ -1,4 +1,7 @@
 {
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
+    "files.associations": {
+        "*.bzl": "starlark"
+    },
 }
