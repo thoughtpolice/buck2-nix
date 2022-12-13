@@ -5,9 +5,10 @@
 # License, Version 2.0 found in the LICENSE-APACHE file in the root directory
 # of this source tree.
 
-def _rust_binary_impl(ctx: "context") -> ["provider"]:
+def __rust_binary_impl(ctx: "context") -> ["provider"]:
     file = ctx.attrs.file
-    out = ctx.actions.declare_output("main")
+    out_name = ctx.attrs.out if ctx.attrs.out else ctx.label.name
+    out = ctx.actions.declare_output(out_name)
 
     cmd = cmd_args(["rustc", "--crate-type=bin", file, "-o", out.as_output()])
 
@@ -19,8 +20,9 @@ def _rust_binary_impl(ctx: "context") -> ["provider"]:
     ]
 
 rust_binary = rule(
-    impl = _rust_binary_impl,
+    impl = __rust_binary_impl,
     attrs = {
         "file": attrs.source(),
+        "out": attrs.option(attrs.string(), default = None),
     },
 )
