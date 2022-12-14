@@ -21,9 +21,9 @@ build repo
 
 - `buck build ...`
 
-clean, then kill all daemons
+clean, then kill daemons
 
-- `rm -r $(sl root)/buck-out; killall \.sl-wrapped buck`
+- `buck clean`
 
 <!-- refs -->
 

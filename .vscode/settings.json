@@ -2,6 +2,7 @@
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
     "files.associations": {
-        "*.bzl": "starlark"
+        // just use python for starlark, until we figure something out
+        "*.bzl": "python"
     },
 }

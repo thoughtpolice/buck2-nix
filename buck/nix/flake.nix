@@ -42,36 +42,34 @@
             # These are all tools from upstream
             inherit (pkgs.gitAndTools) gh;
             inherit (pkgs)
-              tagref sapling
+              tagref sapling jq
               ;
 
             buck2 = pkgs.callPackage ./buck2 { inherit rustPlatform; };
           };
+
+          toolchains = import ./toolchains { inherit pkgs; };
 
           # The default Nix shell. This is populated by direnv and used for the
           # interactive console that a developer uses when they use buck2, sl,
           # et cetera.
           devShells.default = pkgs.mkShell {
             nativeBuildInputs = with packages; [
-              buck2 tagref sapling gh
+              buck2 tagref sapling gh jq
             ];
           };
         };
       in {
-        inherit (jobs) apps devShells;
+        inherit (jobs) devShells;
         packages = flake-utils.lib.flattenTree rec {
           default = world;
-          world = with pkgs.lib; let
-            refs = mapAttrsToList nameValuePair jobs.packages;
-            cmds = concatStringsSep "\n" (map (x: ''
-              x=$(basename ${x.value})
-              echo $x >> $out/nix-refs
-              echo ${x.name} >> $out/$x
-            '') refs);
-          in pkgs.runCommand "world" { } ''
-            set -feu; mkdir $out
-            ${cmds}
-          '';
-        } // jobs.packages;
+          world = pkgs.writeText "world.json" (builtins.toJSON {
+            shellPackages = jobs.packages;
+            toolchainPackages = jobs.toolchains;
+          });
+
+          packages = jobs.packages // { recurseForDerivations = true; };
+          toolchains = jobs.toolchains // { recurseForDerivations = true; };
+        };
       });
 }

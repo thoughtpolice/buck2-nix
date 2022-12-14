@@ -1,9 +1,6 @@
-# Copyright (c) Meta Platforms, Inc. and affiliates.
-#
-# This source code is licensed under both the MIT license found in the
-# LICENSE-MIT file in the root directory of this source tree and the Apache
-# License, Version 2.0 found in the LICENSE-APACHE file in the root directory
-# of this source tree.
+# SPDX-FileCopyrightText: © 2022 Meta Platforms, Inc. and affiliates.
+# SPDX-FileCopyrightText: © 2022 Austin Seipp
+# SPDX-License-Identifier: MIT OR Apache-2.0
 
 def __rust_binary_impl(ctx: "context") -> ["provider"]:
     file = ctx.attrs.file
