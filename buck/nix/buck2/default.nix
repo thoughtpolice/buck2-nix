@@ -8,13 +8,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "buck2";
-  version = "unstable-2022.12.09";
+  version = "unstable-2022.12.13";
 
   src = fetchFromGitHub {
     owner = "facebookincubator";
     repo = "buck2";
-    rev = "5e7af16ffaa73a5c8229f7e33538be6119d57019";
-    hash = "sha256-7Sg08djjb3RgooGa/JJUVNfE6qLCFxQDM8EQd/8xOwQ=";
+    rev = "423e82411c602f721d262d7d34a550e96a9321fc";
+    hash = "sha256-p5lPWPnLXTnZ/Oz9hN3U8Ublq0sTsrkxwyfQfHj1cj0=";
   };
 
   cargoLock = {
