@@ -4,11 +4,14 @@
 
 load("@root//buck/nix/toolchains.bzl", __nix_toolchains__ = "nix_toolchains")
 
-NixRealizationInfo = provider(fields=[ "storepath", "gcroot" ])
+NixRealizationInfo = provider(fields = [ "storepath", "gcroot" ])
 
 def __nix_drv_impl(ctx: "context") -> ["provider"]:
     cell = ctx.label.cell
     name = ctx.label.name
+    if not name in __nix_toolchains__:
+        fail("no such nix toolchain: {}".format(name))
+
     toolchain = __nix_toolchains__[name]
     gcroot = ctx.actions.declare_output("nixgcroot-{}".format(name))
 
