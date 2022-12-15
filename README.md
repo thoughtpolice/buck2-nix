@@ -17,7 +17,11 @@ clone with `sl`, since you probably don't have it installed
 
 - `nix run github:nixos/nixpkgs/nixpkgs-unstable#sapling -- clone https://github.com/thoughtpolice/buck2-nix`
 
-build repo
+prepare toolchains:
+
+- `$(sl root)/buck/nix/update.sh toolchains`
+
+build whole repo
 
 - `buck build ...`
 
