@@ -8,6 +8,10 @@
 # NOTE: Please run the above command to regenerate this file.
 
 nix_toolchains = {
+  "bash": {
+    "drv": "/nix/store/96a6khgp0qym18kd759wwcnkhwvbpzg4-bash-5.1-p16.drv",
+    "out": "/nix/store/nfgpn9av331q7zi1dl6d5qpir60y513s-bash-5.1-p16"
+  },
   "lua": {
     "drv": "/nix/store/z7wklfmin8bf2dvspi8sg7ll2g1aqdzj-lua-5.3.6.drv",
     "out": "/nix/store/llva4q6kvzs0y0h0v7lwwi5qxhbsqkv9-lua-5.3.6"

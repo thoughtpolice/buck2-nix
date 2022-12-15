@@ -9,6 +9,7 @@
 
 load("@prelude//:nix.bzl", "nix_toolchain")
 
+nix_toolchain(visibility = ["PUBLIC"], name = "bash")
 nix_toolchain(visibility = ["PUBLIC"], name = "lua")
 nix_toolchain(visibility = ["PUBLIC"], name = "nodejs")
 nix_toolchain(visibility = ["PUBLIC"], name = "rust-nightly")

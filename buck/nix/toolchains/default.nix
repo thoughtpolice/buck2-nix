@@ -1,10 +1,11 @@
 { pkgs }:
 
 {
-    zip = pkgs.zip;
-    tar = pkgs.coreutils;
+    inherit (pkgs)
+        bash zip nodejs
+        ;
 
-    nodejs = pkgs.nodejs;
+    tar = pkgs.coreutils;
     lua = pkgs.lua5_3;
 
     rust-stable = pkgs.rust-bin.stable.latest.default;

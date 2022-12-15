@@ -1,0 +1,6 @@
+load("@prelude//:bash.bzl", "run_bash")
+
+run_bash(
+    name = "echo-test",
+    src = "echo-test.sh",
+)
