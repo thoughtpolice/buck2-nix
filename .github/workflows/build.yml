@@ -16,7 +16,12 @@ jobs:
           install_url: https://releases.nixos.org/nix/nix-2.12.0/install
           extra_nix_config: |
             experimental-features = nix-command flakes recursive-nix ca-derivations
-      - name: Clone repository
+      - name: install tools
+        run: |
+          sudo -i nix-env -i $(nix build nixpkgs#direnv --no-link --print-out-paths)
+      - name: clone buck2-nix.sl
         run: nix run github:nixos/nixpkgs/nixpkgs-unstable#sapling -- clone https://github.com/${{ github.repository }} $GITHUB_WORKSPACE/${{ github.event.repository.name }}.sl
-      - run: cd $GITHUB_WORKSPACE/${{ github.event.repository.name }}.sl
-      - run: sl smartlog
+      - name: setup build environment
+      - run: |
+          eval "$(direnv hook bash)"
+          cd $GITHUB_WORKSPACE/${{ github.event.repository.name }}.sl
