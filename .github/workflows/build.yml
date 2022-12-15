@@ -42,7 +42,7 @@ jobs:
           chmod +x cache-upload.sh && sudo mv cache-upload.sh /etc/nix/cache-upload.sh
       - name: sl clone buck2-nix.sl
         run: |
-          sl clone https://github.com/${{ github.repository }} ${{ github.workspace }}/${{ github.event.repository.name }}.sl
+          CHGDISABLE=1 sl clone https://github.com/${{ github.repository }} ${{ github.workspace }}/${{ github.event.repository.name }}.sl
           shopt -s dotglob
           mv ${{ github.workspace }}/${{ github.event.repository.name }}.sl/* .
       - name: direnv export
@@ -50,4 +50,6 @@ jobs:
       - name: update.sh toolchains
         run: ./buck/nix/update.sh toolchains
       - name: buck build ...
-        run: buck build ...
+        run: |
+          buck build ...
+          buck clean
