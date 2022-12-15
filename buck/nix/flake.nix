@@ -28,6 +28,9 @@
         pkgs = import nixpkgs {
           inherit system;
           overlays = [ (import rust-overlay) ];
+
+          # XXX FIXME: Mark all builds as content-addressed (CA) by default.
+          config.contentAddressedByDefault = false;
         };
 
         rust-bin = pkgs.rust-bin."${rustChannel}"."${rustVersion}".default;
