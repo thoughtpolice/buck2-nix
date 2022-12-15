@@ -2,11 +2,33 @@
 # SPDX-FileCopyrightText: © 2022 Austin Seipp
 # SPDX-License-Identifier: MIT OR Apache-2.0
 
+# @prelude//:nix.bzl -- tools for driving Nix files and toolchains for Buck.
+#
+# HOW TO USE THIS MODULE:
+#
+#    load("@prelude//:nix.bzl", "nix")
+
+## ---------------------------------------------------------------------------------------------------------------------
+
+load(":providers.bzl", "NixRealizationInfo")
+
+# [tag:bzl-nix-toolchain] This is a very special import that should NOT be used
+# anywhere else. It effectively imports a JSON representation of the Nix closure
+# for our tools we want vendored, which we then use to realize outputs and
+# provide tools for Buck rules. But nobody else should know about this.
+#
+# Note that the import for this file comes from the nix// cell, which is a
+# special one that is generated automatically by update.sh. This is the only
+# usage of the nix// cell, and its only import is here. See [ref:bzl-nix-cell]
+#
+# XXX FIXME: perform a grep/hack to check '@nix//' isn't used anywhere else?
 load("@nix//:toolchains.bzl", __nix_toolchains__ = "nix_toolchains")
 
-NixRealizationInfo = provider(fields = [ "rootdir" ])
+## ---------------------------------------------------------------------------------------------------------------------
 
 def __nix_drv_impl(ctx: "context") -> ["provider"]:
+    # [tag:bzl-nix-cell] This rule should never be instantiated anywhere other
+    # than the root TARGETS file of the nix// cell. Make sure of that.
     if ctx.label.cell != "nix":
         fail("nix_drv must be used in the nix cell (was {})".format(ctx.label.cell))
 
@@ -77,14 +99,10 @@ def __nix_drv_impl(ctx: "context") -> ["provider"]:
         NixRealizationInfo(rootdir = gcrootdir),
     ]
 
-nix_toolchain = rule(
-    impl = __nix_drv_impl,
-    attrs = {},
-)
 
-## ---------------------------------------------------------------------
+## ---------------------------------------------------------------------------------------------------------------------
 
-def nix_get_bin(ctx: "context", toolchain: "string", bin: "string"):
+def __nix_get_bin(ctx: "context", toolchain: "string", bin: "string"):
     k = "_nix_" + toolchain
     dep = getattr(ctx.attrs, k)
     return cmd_args(dep[NixRealizationInfo].rootdir, format = "{}/out/bin/" + bin)
@@ -99,8 +117,22 @@ def __nix_toolchain_deps(names: "list", attrs: "dict") -> "dict":
         rs[k] = __nix_toolchain_dep(name)
     return rs | attrs
 
-def nix_toolchain_rule(impl, deps: "list", attrs: "dict") -> "rule":
+def __nix_toolchain_rule(impl, deps: "list", attrs: "dict") -> "rule":
     return rule(
         impl = impl,
         attrs = __nix_toolchain_deps(deps, attrs),
     )
+
+## ---------------------------------------------------------------------------------------------------------------------
+
+# This rule yields a Provider that points and output /nix/store paths.
+nix_toolchain = rule(
+    impl = __nix_drv_impl,
+    attrs = {},
+)
+
+# A struct containing the exported API.
+nix = struct(
+    toolchain_rule = __nix_toolchain_rule,
+    get_bin = __nix_get_bin,
+)
