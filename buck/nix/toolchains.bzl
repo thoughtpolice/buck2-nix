@@ -8,6 +8,14 @@
 # NOTE: Please run the above command to regenerate this file.
 
 nix_toolchains = {
+  "lua": {
+    "drv": "/nix/store/z7wklfmin8bf2dvspi8sg7ll2g1aqdzj-lua-5.3.6.drv",
+    "out": "/nix/store/llva4q6kvzs0y0h0v7lwwi5qxhbsqkv9-lua-5.3.6"
+  },
+  "nodejs": {
+    "drv": "/nix/store/b0dmns47qx627wk4wyyqjaqzmm44krcl-nodejs-18.12.1.drv",
+    "out": "/nix/store/nk94ar35r8c86mg6wgqkpil4zgj3cy36-nodejs-18.12.1"
+  },
   "rust-nightly": {
     "drv": "/nix/store/0sls9d0nks6cwm7w3wyps8n0blz9iia8-rust-default-1.68.0-nightly-2022-12-13.drv",
     "out": "/nix/store/0ss2c02gdnx10x6myxi74rmzbs1p74p0-rust-default-1.68.0-nightly-2022-12-13"

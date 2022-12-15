@@ -30,7 +30,7 @@ if [ "$1" = "toolchains" ]; then
 nix_toolchains = $(cat /dev/stdin)
 EOF
   ) > "${root}/buck/nix/toolchains.bzl"
-  rm ./result && exit 0
+  rm ./result* && exit 0
 
 elif [ "$1" = "flake" ]; then
   root=$(sl root)

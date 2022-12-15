@@ -42,7 +42,7 @@ def __nix_drv_impl(ctx: "context") -> ["provider"]:
         for i in info:
             attrname = i["id"][72:]
             storePath = "/nix/store/{}".format(i["outPath"])
-            gcroot = "/nix/var/nix/gcroots/per-user/$USER/{}".format(i["outPath"][0:31])
+            gcroot = "/nix/var/nix/gcroots/per-user/$USER/buck2-{}".format(i["outPath"])
 
             # to do an atomic rename with safety:
             #   1) link: $outDir/foo -> /nix/store/...-foo
@@ -84,8 +84,23 @@ nix_toolchain = rule(
 
 ## ---------------------------------------------------------------------
 
-def nix_get_bin(ts: "dependency", bin: "string"):
-    return cmd_args(ts[NixRealizationInfo].rootdir, format = "{}/out/bin/" + bin)
+def nix_get_bin(ctx: "context", toolchain: "string", bin: "string"):
+    k = "_nix_" + toolchain
+    dep = getattr(ctx.attrs, k)
+    return cmd_args(dep[NixRealizationInfo].rootdir, format = "{}/out/bin/" + bin)
 
-def nix_toolchain_dep(name: "string"):
+def __nix_toolchain_dep(name: "string"):
     return attrs.default_only(attrs.dep(default = "nix//{}".format(name)))
+
+def __nix_toolchain_deps(names: "list", attrs: "dict") -> "dict":
+    rs = {}
+    for name in names:
+        k = "_nix_" + name
+        rs[k] = __nix_toolchain_dep(name)
+    return rs | attrs
+
+def nix_toolchain_rule(impl, deps: "list", attrs: "dict") -> "rule":
+    return rule(
+        impl = impl,
+        attrs = __nix_toolchain_deps(deps, attrs),
+    )
