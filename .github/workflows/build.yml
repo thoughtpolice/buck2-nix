@@ -17,10 +17,12 @@ jobs:
           nix_path: nixpkgs=channel:nixpkgs-unstable
           extra_nix_config: |
             experimental-features = nix-command flakes recursive-nix ca-derivations
-            post-build-hook = /etc/nix/cache-upload.sh
       - name: install tools
         run: |
           sudo -i nix-env -i $(nix build nixpkgs#ts nixpkgs#direnv nixpkgs#sapling --no-link --print-out-paths)
+      - name: setup nix.conf
+        run: |
+          echo 'post-build-hook = /etc/nix/cache-upload.sh' | sudo tee -a /etc/nix/nix.conf
       - name: setup nix post-build-hook
         run: |
           cat <<EOF > cache-upload.sh
