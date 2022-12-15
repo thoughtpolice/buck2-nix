@@ -11,40 +11,35 @@ jobs:
     name: "build: Full build and integrated tests"
     runs-on: ubuntu-latest
     steps:
-      - uses: cachix/install-nix-action@v18
+      - name: install nix
+        uses: cachix/install-nix-action@v18
         with:
           install_url: https://releases.nixos.org/nix/nix-2.12.0/install
-          nix_path: nixpkgs=channel:nixpkgs-unstable
+          nix_path: nixpkgs=https://github.com/NixOS/nixpkgs/archive/8ba90bbc63e58c8c436f16500c526e9afcb6b00a.tar.gz
           extra_nix_config: |
             experimental-features = nix-command flakes recursive-nix ca-derivations
-      - name: install tools
-        run: |
-          sudo -i nix-env -i $(nix build nixpkgs#ts nixpkgs#direnv nixpkgs#sapling --no-link --print-out-paths)
-      - name: setup nix.conf
-        run: |
-          echo 'post-build-hook = /etc/nix/cache-upload.sh' | sudo tee -a /etc/nix/nix.conf
-          sudo systemctl restart nix-daemon.service
-      - name: setup nix post-build-hook
-        run: |
-          cat <<EOF > cache-upload.sh
-          #!/usr/bin/env bash
-          set -eu; set -f; export IFS=' '
-          [[ -z "\$OUT_PATHS" ]] && exit
-          export S3_BUCKET="${{ secrets.S3_BUCKET }}"
-          export S3_ENDPOINT="${{ secrets.S3_ENDPOINT }}"
-          export AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
-          export AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          echo "Uploading paths" \$DRV_PATH " " \$OUT_PATHS
-          /nix/var/nix/profiles/default/bin/ts /nix/var/nix/profiles/default/bin/nix copy \
-            --to "s3://\$S3_BUCKET?write-nar-listing=1&index-debug-info=1&compression=zstd&scheme=https&endpoint=\$S3_ENDPOINT" \
-            \$DRV_PATH \$OUT_PATHS
-          EOF
-          chmod +x cache-upload.sh && sudo mv cache-upload.sh /etc/nix/cache-upload.sh
+
+      - name: install needed tools (nix-env)
+        run: sudo -i nix-env -i $(nix build nixpkgs#ts nixpkgs#direnv nixpkgs#sapling --no-link --print-out-paths)
+
       - name: sl clone buck2-nix.sl
         run: |
           CHGDISABLE=1 sl clone https://github.com/${{ github.repository }} ${{ github.workspace }}/${{ github.event.repository.name }}.sl
           shopt -s dotglob
           mv ${{ github.workspace }}/${{ github.event.repository.name }}.sl/* .
+
+      - name: setup post-build-hook (/etc/nix/nix.conf)
+        run: |
+          sed -e 's/__S3_BUCKET__/${{ secrets.S3_BUCKET }}/ ;
+                  s/__S3_ENDPOINT__/${{ secrets.S3_ENDPOINT }}/ ;
+                  s/__AWS_ACCESS_KEY_ID__/${{ secrets.AWS_ACCESS_KEY_ID }}/ ;
+                  s/__AWS_SECRET_ACCESS_KEY__/${{ secrets.AWS_SECRET_ACCESS_KEY }}/ ;
+                 ' buck/nix/cache-upload.sh > cache-upload.sh
+          chmod +x cache-upload.sh && sudo mv cache-upload.sh /etc/nix/cache-upload.sh
+          echo 'post-build-hook = /etc/nix/cache-upload.sh' | sudo tee -a /etc/nix/nix.conf
+          sudo systemctl restart nix-daemon.service
+
+      # real fun starts now
       - name: direnv export
         uses: ./.github/actions/direnv
       - name: update.sh toolchains
