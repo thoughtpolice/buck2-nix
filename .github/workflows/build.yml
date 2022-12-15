@@ -22,7 +22,7 @@ jobs:
           sudo -i nix-env -i $(nix build nixpkgs#direnv --no-link --print-out-paths)
       - name: clone buck2-nix.sl
         run: |
-          nix run github:nixos/nixpkgs/nixpkgs-unstable#sapling -- \
+          nix run nixpkgs#sapling -- \
             clone https://github.com/${{ github.repository }} ${{ github.workspace }}/${{ github.event.repository.name }}.sl
       - name: build buck2 (FIXME)
         working-directory: ${{ github.workspace }}/${{ github.event.repository.name }}.sl
