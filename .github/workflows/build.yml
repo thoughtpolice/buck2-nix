@@ -24,9 +24,8 @@ jobs:
         run: |
           nix run nixpkgs#sapling -- \
             clone https://github.com/${{ github.repository }} ${{ github.workspace }}/${{ github.event.repository.name }}.sl
-      - name: build buck2 (FIXME)
-        working-directory: ${{ github.workspace }}/${{ github.event.repository.name }}.sl
-        run: nix build ./buck/nix#packages/buck2
+          shopt -s dotglob
+          mv ${{ github.workspace }}/${{ github.event.repository.name }}.sl/* .
       - name: direnv export
         uses: ./.github/actions/direnv
       - run: buck build ...
