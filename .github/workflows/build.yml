@@ -13,6 +13,8 @@ jobs:
     steps:
       - uses: cachix/install-nix-action@v18
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.11.0/install
+          install_url: https://releases.nixos.org/nix/nix-2.12.0/install
           extra_nix_config: |
             experimental-features = nix-command flakes recursive-nix ca-derivations
+      - name: Clone repository
+        run: nix run github:nixos/nixpkgs/nixpkgs-unstable#sapling -- clone ${{ github.repository }}
