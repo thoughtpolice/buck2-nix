@@ -2828,12 +2828,8 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(186);
 const cp = __nccwpck_require__(81);
 
-// most @actions toolkit packages have async methods
 async function run() {
     try {
-        core.info(`Download direnv ...`)
-        cp.execSync('curl -sfL https://direnv.net/install.sh | bash > /dev/null 2>&1', { encoding: "utf-8" });
-
         cp.execSync('direnv allow', { encoding: "utf-8" });
         const envs = JSON.parse(cp.execSync('direnv export json', { encoding: "utf-8" }));
 
