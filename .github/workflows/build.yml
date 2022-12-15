@@ -19,11 +19,10 @@ jobs:
             experimental-features = nix-command flakes recursive-nix ca-derivations
       - name: install tools
         run: |
-          sudo -i nix-env -i $(nix build nixpkgs#direnv --no-link --print-out-paths)
+          sudo -i nix-env -i $(nix build nixpkgs#direnv nixpkgs#sapling --no-link --print-out-paths)
       - name: clone buck2-nix.sl
         run: |
-          nix run nixpkgs#sapling -- \
-            clone https://github.com/${{ github.repository }} ${{ github.workspace }}/${{ github.event.repository.name }}.sl
+          sl clone https://github.com/${{ github.repository }} ${{ github.workspace }}/${{ github.event.repository.name }}.sl
           shopt -s dotglob
           mv ${{ github.workspace }}/${{ github.event.repository.name }}.sl/* .
       - name: direnv export
