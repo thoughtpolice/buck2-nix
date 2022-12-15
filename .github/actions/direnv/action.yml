@@ -1,0 +1,5 @@
+name: 'direnv action'
+description: 'Privides environment variables via direnv'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

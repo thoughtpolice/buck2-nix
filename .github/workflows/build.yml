@@ -25,3 +25,5 @@ jobs:
         run: |
           eval "$(direnv hook bash)"
           cd $GITHUB_WORKSPACE/${{ github.event.repository.name }}.sl
+      - name: build buck2 (FIXME)
+        run: nix build ./buck/nix#packages/buck2
