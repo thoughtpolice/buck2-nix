@@ -20,11 +20,12 @@ jobs:
       - name: install tools
         run: |
           sudo -i nix-env -i $(nix build nixpkgs#direnv nixpkgs#sapling --no-link --print-out-paths)
-      - name: clone buck2-nix.sl
+      - name: sl clone buck2-nix.sl
         run: |
           sl clone https://github.com/${{ github.repository }} ${{ github.workspace }}/${{ github.event.repository.name }}.sl
           shopt -s dotglob
           mv ${{ github.workspace }}/${{ github.event.repository.name }}.sl/* .
       - name: direnv export
         uses: ./.github/actions/direnv
-      - run: buck build ...
+      - name: buck build ...
+        run: buck build ...
