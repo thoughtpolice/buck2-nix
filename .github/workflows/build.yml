@@ -29,5 +29,4 @@ jobs:
         run: nix build ./buck/nix#packages/buck2
       - name: direnv export
         uses: ./.github/actions/direnv
-      - name: run buck
-        run: buck build ...
+      - run: buck build ...
