@@ -18,10 +18,8 @@ def __zip_impl(ctx):
     out_name = ctx.attrs.out if ctx.attrs.out else "{}.zip".format(ctx.label.name)
     out = ctx.actions.declare_output(out_name)
 
-    cmd = [
-        nix.get_bin(ctx, ":zip", "zip"),
-        out.as_output(),
-    ]
+    cmd = nix.get_bin(ctx, ":zip", "zip")
+    cmd.append(out.as_output())
 
     for s in ctx.attrs.srcs:
         cmd.append(s)

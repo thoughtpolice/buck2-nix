@@ -101,10 +101,10 @@ def __nix_drv_impl(ctx: "context") -> ["provider"]:
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def __nix_get_bin(ctx: "context", toolchain: "string", bin: "string"):
+def __nix_get_bin(ctx: "context", toolchain: "string", bin: "string") -> "list":
     k = "_nix_" + toolchain
     dep = getattr(ctx.attrs, k)
-    return cmd_args(dep[NixRealizationInfo].rootdir, format = "{}/out/bin/" + bin)
+    return [ cmd_args(dep[NixRealizationInfo].rootdir, format = "{}/out/bin/" + bin) ]
 
 def __nix_toolchain_dep(name: "string"):
     return attrs.default_only(attrs.dep(default = "nix//{}".format(name)))
