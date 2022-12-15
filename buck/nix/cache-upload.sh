@@ -8,8 +8,8 @@ user=${USER:-root}
 [[ ! -f "$tsbin" ]] && tsbin="/nix/var/nix/profiles/per-user/$user/profile/bin/ts"
 [[ ! -f "$tsbin" ]] && echo "no task spooler installed! exiting" && exit 2
 
-S3_BUCKET="${S3_BUCKET:-__S3_BUCKET__}"
-S3_ENDPOINT="${S3_ENDPOINT:-__S3_ENDPOINT__}"
+export S3_BUCKET="${S3_BUCKET:-__S3_BUCKET__}"
+export S3_ENDPOINT="${S3_ENDPOINT:-__S3_ENDPOINT__}"
 export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID:-__AWS_ACCESS_KEY_ID__}"
 export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY:-__AWS_SECRET_ACCESS_KEY__}"
 
