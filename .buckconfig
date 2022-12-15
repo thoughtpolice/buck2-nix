@@ -1,7 +1,7 @@
-[buildfile]
-name=BUILD
-
 [repositories]
 root = .
 prelude = buck/prelude
 nix = buck/nix
+
+[buildfile]
+name=TARGETS
