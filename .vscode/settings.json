@@ -3,6 +3,7 @@
     "files.trimTrailingWhitespace": true,
     "files.associations": {
         // just use python for starlark, until we figure something out
-        "*.bzl": "python"
+        "*.bzl": "python",
+        "TARGETS": "python",
     },
 }
