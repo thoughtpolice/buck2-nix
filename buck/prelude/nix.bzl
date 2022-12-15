@@ -99,7 +99,6 @@ def __nix_drv_impl(ctx: "context") -> ["provider"]:
         NixRealizationInfo(rootdir = gcrootdir),
     ]
 
-
 ## ---------------------------------------------------------------------------------------------------------------------
 
 def __nix_get_bin(ctx: "context", toolchain: "string", bin: "string"):

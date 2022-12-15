@@ -1,3 +1,5 @@
 **/result*
 /buck-out
 /.direnv
+
+**/node_modules
