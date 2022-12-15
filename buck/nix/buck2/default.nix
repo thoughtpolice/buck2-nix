@@ -1,12 +1,24 @@
 { fetchFromGitHub
-, rustPlatform
+, rust-bin
+, makeRustPlatform
 , protobuf
 , pkg-config
 , openssl
 , sqlite
 }:
 
-rustPlatform.buildRustPackage rec {
+let
+  rustChannel = "nightly";
+  rustVersion = "2022-09-27"; # XXX NOTE: sync with rust-toolchain
+
+  my-rust-bin = rust-bin."${rustChannel}"."${rustVersion}".default;
+
+  rustPlatform = makeRustPlatform {
+    rustc = my-rust-bin;
+    cargo = my-rust-bin;
+  };
+
+in rustPlatform.buildRustPackage rec {
   pname = "buck2";
   version = "unstable-2022.12.14";
 

@@ -20,9 +20,6 @@
         system.aarch64-darwin
       ];
 
-      rustChannel = "nightly";
-      rustVersion = "2022-09-27";
-
     in flake-utils.lib.eachSystem systems (system:
       let
         pkgs = import nixpkgs {
@@ -33,13 +30,6 @@
           config.contentAddressedByDefault = false;
         };
 
-        rust-bin = pkgs.rust-bin."${rustChannel}"."${rustVersion}".default;
-
-        rustPlatform = pkgs.makeRustPlatform {
-          rustc = rust-bin;
-          cargo = rust-bin;
-        };
-
         jobs = rec {
           packages = flake-utils.lib.flattenTree rec {
             # These are all tools from upstream
@@ -48,7 +38,7 @@
               tagref sapling jq
               ;
 
-            buck2 = pkgs.callPackage ./buck2 { inherit rustPlatform; };
+            buck2 = pkgs.callPackage ./buck2 { };
           };
 
           toolchains = import ./toolchains { inherit pkgs; };
