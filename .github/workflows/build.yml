@@ -28,7 +28,6 @@ jobs:
         working-directory: ${{ github.workspace }}/${{ github.event.repository.name }}.sl
         run: nix build ./buck/nix#packages/buck2
       - name: direnv export
-        working-directory: ${{ github.workspace }}/${{ github.event.repository.name }}.sl
         uses: ./.github/actions/direnv
       - name: run buck
         run: buck build ...
