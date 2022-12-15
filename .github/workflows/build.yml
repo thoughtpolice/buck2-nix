@@ -23,6 +23,7 @@ jobs:
       - name: setup nix.conf
         run: |
           echo 'post-build-hook = /etc/nix/cache-upload.sh' | sudo tee -a /etc/nix/nix.conf
+          sudo systemctl restart nix-daemon.service
       - name: setup nix post-build-hook
         run: |
           cat <<EOF > cache-upload.sh
