@@ -8,6 +8,14 @@
 # NOTE: Please run the above command to regenerate this file.
 
 nix_toolchains = {
+  "rust-nightly": {
+    "drv": "/nix/store/0sls9d0nks6cwm7w3wyps8n0blz9iia8-rust-default-1.68.0-nightly-2022-12-13.drv",
+    "out": "/nix/store/0ss2c02gdnx10x6myxi74rmzbs1p74p0-rust-default-1.68.0-nightly-2022-12-13"
+  },
+  "rust-stable": {
+    "drv": "/nix/store/zycq6ykxk1dvz9fy8d4cnz44g4x690if-rust-default-1.65.0.drv",
+    "out": "/nix/store/5jfg0xr0nkii0jr7v19ri9zl9fnb8cx8-rust-default-1.65.0"
+  },
   "tar": {
     "drv": "/nix/store/48wclz4pr6arhjvlwg37v9vhzwq3kr0r-coreutils-9.1.drv",
     "out": "/nix/store/h48pjfgsjl75bm7f3nxcdcrqjkqwns7m-coreutils-9.1"

@@ -42,7 +42,6 @@ def __nix_drv_impl(ctx: "context") -> ["provider"]:
         for i in info:
             attrname = i["id"][72:]
             storePath = "/nix/store/{}".format(i["outPath"])
-            print("test: {} {}".format(attrname, storePath))
             gcroot = "/nix/var/nix/gcroots/per-user/$USER/{}".format(i["outPath"][0:31])
 
             # to do an atomic rename with safety:
@@ -82,3 +81,11 @@ nix_toolchain = rule(
     impl = __nix_drv_impl,
     attrs = {},
 )
+
+## ---------------------------------------------------------------------
+
+def nix_get_bin(ts: "dependency", bin: "string"):
+    return cmd_args(ts[NixRealizationInfo].rootdir, format = "{}/out/bin/" + bin)
+
+def nix_toolchain_dep(name: "string"):
+    return attrs.default_only(attrs.dep(default = "nix//{}".format(name)))

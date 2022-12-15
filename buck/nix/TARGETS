@@ -1,3 +1,5 @@
 load("@prelude//:nix.bzl", "nix_toolchain")
 
 nix_toolchain(name = "zip", visibility = [ "PUBLIC" ])
+nix_toolchain(name = "rust-stable", visibility = [ "PUBLIC" ])
+nix_toolchain(name = "rust-nightly", visibility = [ "PUBLIC" ])
