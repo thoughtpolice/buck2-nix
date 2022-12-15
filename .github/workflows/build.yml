@@ -30,10 +30,10 @@ jobs:
 
       - name: setup post-build-hook (/etc/nix/nix.conf)
         run: |
-          sed -e 's/__S3_BUCKET__/${{ secrets.S3_BUCKET }}/ ;
-                  s/__S3_ENDPOINT__/${{ secrets.S3_ENDPOINT }}/ ;
-                  s/__AWS_ACCESS_KEY_ID__/${{ secrets.AWS_ACCESS_KEY_ID }}/ ;
-                  s/__AWS_SECRET_ACCESS_KEY__/${{ secrets.AWS_SECRET_ACCESS_KEY }}/ ;
+          sed -e '0,/__S3_BUCKET__/s//${{ secrets.S3_BUCKET }}/ ;
+                  0,/__S3_ENDPOINT__/s//${{ secrets.S3_ENDPOINT }}/ ;
+                  0,/__AWS_ACCESS_KEY_ID__/s//${{ secrets.AWS_ACCESS_KEY_ID }}/ ;
+                  0,/__AWS_SECRET_ACCESS_KEY__/s//${{ secrets.AWS_SECRET_ACCESS_KEY }}/ ;
                  ' buck/nix/cache-upload.sh > cache-upload.sh
           chmod +x cache-upload.sh && sudo mv cache-upload.sh /etc/nix/cache-upload.sh
           echo 'post-build-hook = /etc/nix/cache-upload.sh' | sudo tee -a /etc/nix/nix.conf

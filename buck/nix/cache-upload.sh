@@ -13,10 +13,10 @@ export S3_ENDPOINT="${S3_ENDPOINT:-__S3_ENDPOINT__}"
 export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID:-__AWS_ACCESS_KEY_ID__}"
 export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY:-__AWS_SECRET_ACCESS_KEY__}"
 
-[[ $S3_BUCKET == "__S3_BUCKET__" ]] && echo "S3_BUCKET not set, exiting" && exit 3
-[[ $S3_ENDPOINT == "__S3_ENDPOINT__" ]] && echo "S3_ENDPOINT not set, exiting" && exit 4
-[[ $AWS_ACCESS_KEY_ID == "__AWS_ACCESS_KEY_ID__" ]] && echo "AWS_ACCESS_KEY_ID not set, exiting" && exit 5
-[[ $AWS_SECRET_ACCESS_KEY == "__AWS_SECRET_ACCESS_KEY__" ]] && echo "AWS_SECRET_ACCESS_KEY not set, exiting" && exit 6
+[ $S3_BUCKET == "__S3_BUCKET__" ] && echo "S3_BUCKET not set, exiting" && exit 3
+[ $S3_ENDPOINT == "__S3_ENDPOINT__" ] && echo "S3_ENDPOINT not set, exiting" && exit 4
+[ $AWS_ACCESS_KEY_ID == "__AWS_ACCESS_KEY_ID__" ] && echo "AWS_ACCESS_KEY_ID not set, exiting" && exit 5
+[ $AWS_SECRET_ACCESS_KEY == "__AWS_SECRET_ACCESS_KEY__" ] && echo "AWS_SECRET_ACCESS_KEY not set, exiting" && exit 6
 
 echo "Uploading paths" $DRV_PATH " " $OUT_PATHS
   $tsbin /nix/var/nix/profiles/default/bin/nix copy \
