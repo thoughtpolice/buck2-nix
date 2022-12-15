@@ -17,4 +17,4 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes recursive-nix ca-derivations
       - name: Clone repository
-        run: nix run github:nixos/nixpkgs/nixpkgs-unstable#sapling -- clone https://github.com/thoughtpolice/${{ github.repository }}
+        run: nix run github:nixos/nixpkgs/nixpkgs-unstable#sapling -- clone https://github.com/${{ github.repository }}
