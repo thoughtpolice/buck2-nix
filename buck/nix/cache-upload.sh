@@ -23,7 +23,6 @@ cache_upload() {
     $tsbin /nix/var/nix/profiles/default/bin/nix copy \
       --to "s3://$S3_BUCKET?write-nar-listing=1&index-debug-info=1&compression=zstd&scheme=https&endpoint=$S3_ENDPOINT" \
       $DRV_PATH $OUT_PATHS
-
 }
 
 if [[ ! -z "$MANUAL_REBUILD_AND_PUSH" ]]; then
