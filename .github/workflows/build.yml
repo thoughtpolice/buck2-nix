@@ -44,7 +44,7 @@ jobs:
       - name: direnv export
         uses: ./.github/actions/direnv
       - name: update.sh toolchains
-        run: ./buck/nix/update.sh toolchains
+        run: ./buck/nix/update.sh -t
       - name: buck build ...
         run: buck build ...
 # XXX FIXME (aseipp): why does this fail?
