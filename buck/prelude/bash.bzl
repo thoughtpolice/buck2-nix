@@ -16,10 +16,10 @@ load("@prelude//:nix.bzl", "nix")
 
 def __bash_impl(ctx):
     out = ctx.actions.declare_output("{}.sh".format(ctx.label.name))
-    ctx.actions.copy_file(out, ctx.attrs.src)
+    result = ctx.actions.copy_file(out, ctx.attrs.src)
 
     cmd = nix.get_bin(ctx, ":bash", "bash")
-    cmd.append(out.as_output())
+    cmd.append(result)
 
     return [ DefaultInfo(default_outputs = [out]), RunInfo(args = cmd) ]
 
