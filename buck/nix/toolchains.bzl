@@ -21,8 +21,8 @@ nix_toolchains = {
     "out": "/nix/store/nk94ar35r8c86mg6wgqkpil4zgj3cy36-nodejs-18.12.1"
   },
   "rust-nightly": {
-    "drv": "/nix/store/0sls9d0nks6cwm7w3wyps8n0blz9iia8-rust-default-1.68.0-nightly-2022-12-13.drv",
-    "out": "/nix/store/0ss2c02gdnx10x6myxi74rmzbs1p74p0-rust-default-1.68.0-nightly-2022-12-13"
+    "drv": "/nix/store/4vv66r56ih9hhym0a8gznasbckzc029y-rust-default-1.68.0-nightly-2022-12-15.drv",
+    "out": "/nix/store/db84n5ww9ininrlbyx33lbhza1qg2fcc-rust-default-1.68.0-nightly-2022-12-15"
   },
   "rust-stable": {
     "drv": "/nix/store/zycq6ykxk1dvz9fy8d4cnz44g4x690if-rust-default-1.65.0.drv",
