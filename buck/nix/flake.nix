@@ -11,10 +11,6 @@
     };
   };
 
-  nixConfig = {
-    extra-substituters = "https://buck2-nix-cache.aseipp.dev/";
-  };
-
   outputs = { self, nixpkgs, flake-utils, rust-overlay, ... }:
     let
       systems = with flake-utils.lib; [
@@ -30,7 +26,8 @@
           inherit system;
           overlays = [ (import rust-overlay) ];
 
-          config.contentAddressedByDefault = true;
+          # XXX FIXME (aseipp): enable this, one day...
+          config.contentAddressedByDefault = false;
         };
 
         jobs = rec {

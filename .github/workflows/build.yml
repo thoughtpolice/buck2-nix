@@ -18,7 +18,6 @@ jobs:
           nix_path: nixpkgs=https://github.com/NixOS/nixpkgs/archive/8ba90bbc63e58c8c436f16500c526e9afcb6b00a.tar.gz
           extra_nix_config: |
             experimental-features = nix-command flakes recursive-nix ca-derivations
-            extra-substituters = https://buck2-nix-cache.aseipp.dev/
       - name: install needed tools (nix-env)
         run: sudo -i nix-env -i $(nix build nixpkgs#ts nixpkgs#direnv nixpkgs#sapling --no-link --print-out-paths)
 
