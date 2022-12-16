@@ -52,17 +52,23 @@
             ];
           };
         };
-      in {
+
+        flatJobs = flake-utils.lib.flattenTree rec {
+          packages = jobs.packages // { recurseForDerivations = true; };
+          toolchains = jobs.toolchains // { recurseForDerivations = true; };
+        };
+      in rec {
         inherit (jobs) devShells;
-        packages = flake-utils.lib.flattenTree rec {
+        packages = rec {
           default = world;
+
+          # XXX FIXME (aseipp): unify this with 'attrs' someday...
           world = pkgs.writeText "world.json" (builtins.toJSON {
             shellPackages = jobs.packages;
             toolchainPackages = jobs.toolchains;
           });
 
-          packages = jobs.packages // { recurseForDerivations = true; };
-          toolchains = jobs.toolchains // { recurseForDerivations = true; };
-        };
+          attrs = pkgs.writeText "attrs.txt" (pkgs.lib.concatStringsSep "\n" ([ "world" ] ++ (builtins.attrNames flatJobs)));
+        } // flatJobs;
       });
 }
