@@ -11,10 +11,6 @@
     };
   };
 
-  nixConfig = {
-    extra-substituters = "https://pub-d173952bb72a4b80982594e8a52a215a.r2.dev/";
-  };
-
   outputs = { self, nixpkgs, flake-utils, rust-overlay, ... }:
     let
       systems = with flake-utils.lib; [
@@ -30,7 +26,8 @@
           inherit system;
           overlays = [ (import rust-overlay) ];
 
-          config.contentAddressedByDefault = true;
+          # XXX FIXME: Mark all builds as content-addressed (CA) by default.
+          config.contentAddressedByDefault = false;
         };
 
         jobs = rec {
