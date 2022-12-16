@@ -81,6 +81,9 @@ EOF
 # NOTE: Please run the above command to regenerate this file.
 
 load("@prelude//:nix.bzl", "nix_toolchain")
+load("@prelude//:bash.bzl", "run_bash")
+
+run_bash(name = "update", src = "update.sh")
 
 $(cat /dev/stdin)
 EOF

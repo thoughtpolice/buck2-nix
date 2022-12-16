@@ -8,6 +8,9 @@
 # NOTE: Please run the above command to regenerate this file.
 
 load("@prelude//:nix.bzl", "nix_toolchain")
+load("@prelude//:bash.bzl", "run_bash")
+
+run_bash(name = "update", src = "update.sh")
 
 nix_toolchain(visibility = ["PUBLIC"], name = "bash")
 nix_toolchain(visibility = ["PUBLIC"], name = "lua")
