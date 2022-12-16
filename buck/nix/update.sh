@@ -6,7 +6,41 @@ set -o pipefail
 #
 #     $ nix run nixpkgs#shellcheck -- ./buck/nix/update.sh
 
-if [ "$1" = "toolchains" ]; then
+FLAKE=0
+TOOLCHAINS=0
+CACHE=0
+
+usage() {
+  echo "Usage: $0 [--flake|--toolchains|--cache|--all]"
+  exit 2
+}
+
+PARSED_ARGUMENTS=$(getopt -an update.sh -o ftca --long flake,toolchains,cache,all -- "$@")
+VALID_ARGUMENTS=$?
+[ "$VALID_ARGUMENTS" != "0" ] && usage
+
+eval set -- "$PARSED_ARGUMENTS"
+while : ; do
+  case "$1" in
+    -f | --flake)      FLAKE=1      ; shift ;;
+    -t | --toolchains) TOOLCHAINS=1 ; shift ;;
+    -c | --cache)      CACHE=1      ; shift ;;
+    -a | --all)        FLAKE=1; TOOLCHAINS=1; CACHE=1; shift ;;
+
+    --) shift; break ;;
+    *) echo "Unexpected option: $1 - this should not happen." && usage ;;
+  esac
+done
+
+[ "$FLAKE" = "0" ] && [ "$TOOLCHAINS" = "0" ] && [ "$CACHE" = "0" ] && usage
+echo "Updating flake: $FLAKE, toolchains: $TOOLCHAINS, cache: $CACHE"
+
+if [ "$FLAKE" = "1" ]; then
+  root=$(sl root)
+  nix flake update "${root}/buck/nix"
+fi
+
+if [ "$TOOLCHAINS" = "1" ]; then
   root=$(sl root)
   nix build --print-out-paths "${root}/buck/nix#world"
 
@@ -48,12 +82,9 @@ load("@prelude//:nix.bzl", "nix_toolchain")
 $(cat /dev/stdin)
 EOF
       ) > "${root}/buck/nix/TARGETS"
-  rm ./result* && exit 0
+  rm ./result*
+fi
 
-elif [ "$1" = "flake" ]; then
-  root=$(sl root)
-  nix flake update "${root}/buck/nix"
-else
-  echo "Usage: $0 [flake|toolchains]"
-  exit 1
+if [ "$CACHE" = "1" ]; then
+  MANUAL_REBUILD_AND_PUSH=1 $(sl root)/buck/nix/cache-upload.sh
 fi

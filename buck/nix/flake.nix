@@ -35,7 +35,7 @@
             # These are all tools from upstream
             inherit (pkgs.gitAndTools) gh;
             inherit (pkgs)
-              tagref sapling jq
+              tagref sapling jq getopt
               ;
 
             buck2 = pkgs.callPackage ./buck2 { };
@@ -47,9 +47,7 @@
           # interactive console that a developer uses when they use buck2, sl,
           # et cetera.
           devShells.default = pkgs.mkShell {
-            nativeBuildInputs = with packages; [
-              buck2 tagref sapling gh jq
-            ];
+            nativeBuildInputs = builtins.attrValues packages;
           };
         };
 
