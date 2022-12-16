@@ -1,4 +1,7 @@
 #! /usr/bin/env bash
+# SPDX-FileCopyrightText: © 2022 Austin Seipp
+# SPDX-License-Identifier: MIT OR Apache-2.0
+
 set -e
 set -o pipefail
 
@@ -86,5 +89,5 @@ EOF
 fi
 
 if [ "$CACHE" = "1" ]; then
-  MANUAL_REBUILD_AND_PUSH=1 $(sl root)/buck/nix/cache-upload.sh
+  MANUAL_REBUILD_AND_PUSH=1 "$(sl root)/buck/nix/cache-upload.sh"
 fi
