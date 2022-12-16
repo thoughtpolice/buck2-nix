@@ -41,7 +41,7 @@
             buck2 = pkgs.callPackage ./buck2 { };
           };
 
-          toolchains = import ./toolchains { inherit pkgs; };
+          toolchains = import ./toolchains.nix { inherit pkgs; };
 
           # The default Nix shell. This is populated by direnv and used for the
           # interactive console that a developer uses when they use buck2, sl,
