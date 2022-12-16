@@ -12,7 +12,7 @@
   };
 
   nixConfig = {
-    extra-substituters = "https://buck2-nix-cache.aseipp.dev/";
+    substituters = "https://buck2-nix-cache.aseipp.dev/";
   };
 
   outputs = { self, nixpkgs, flake-utils, rust-overlay, ... }:
