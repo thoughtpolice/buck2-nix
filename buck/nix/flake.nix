@@ -30,8 +30,7 @@
           inherit system;
           overlays = [ (import rust-overlay) ];
 
-          # XXX FIXME: Mark all builds as content-addressed (CA) by default.
-          config.contentAddressedByDefault = false;
+          config.contentAddressedByDefault = true;
         };
 
         jobs = rec {
