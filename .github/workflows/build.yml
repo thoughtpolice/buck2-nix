@@ -47,8 +47,9 @@ jobs:
         run: ./buck/nix/update.sh toolchains
       - name: buck build ...
         run: buck build ...
-      - name: wait for cache uploads
-        run: ts -w
+# XXX FIXME (aseipp): why does this fail?
+#     - name: wait for cache uploads
+#       run: ts -w
       - name: finish
         run: |
           buck clean
