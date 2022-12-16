@@ -24,7 +24,7 @@ jobs:
 
       - name: sl clone buck2-nix.sl
         run: |
-          CHGDISABLE=1 sl clone https://github.com/${{ github.repository }} ${{ github.workspace }}/${{ github.event.repository.name }}.sl
+          sl clone https://github.com/${{ github.repository }} ${{ github.workspace }}/${{ github.event.repository.name }}.sl
           shopt -s dotglob
           mv ${{ github.workspace }}/${{ github.event.repository.name }}.sl/* .
 
@@ -45,8 +45,10 @@ jobs:
       - name: update.sh toolchains
         run: ./buck/nix/update.sh toolchains
       - name: buck build ...
-        run: |
-          buck build ...
-          buck clean
+        run: buck build ...
       - name: wait for cache uploads
         run: ts -w
+      - name: finish
+        run: |
+          buck clean
+          sl --kill-chg-daemon
