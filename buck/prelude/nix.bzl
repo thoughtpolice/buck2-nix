@@ -38,11 +38,12 @@ def __nix_drv_impl(ctx: "context") -> ["provider"]:
     toolchain = __nix_toolchains__[ctx.label.name]
     tcpath = ctx.actions.declare_output("toolchain.json")
 
+    storepath = "/nix/store/{}".format(toolchain["drv"])
     script, _ = ctx.actions.write(
         "realize.sh", [
             cmd_args(["set", "-xeu"], delimiter = " "),
-            cmd_args(["nix-store", "--realise", toolchain["drv"]], delimiter = " "),
-            cmd_args(["nix", "realisation", "info", "--json", toolchain["drv"], ">", tcpath.as_output()], delimiter = " "),
+            cmd_args(["nix-store", "--realise", storepath], delimiter = " "),
+            cmd_args(["nix", "realisation", "info", "--json", storepath, ">", tcpath.as_output()], delimiter = " "),
             cmd_args("")
         ],
         is_executable = True,

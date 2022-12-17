@@ -51,7 +51,7 @@ if [ "$TOOLCHAINS" = "1" ]; then
   jq -r '.toolchainPackages | to_entries[] | [ .key, .value ] | join(" ")' ./result \
     | while read -r name out; do
         p=$(nix path-info --derivation "${root}/buck/nix#toolchains/${name}");
-        echo "{ \"${name}\": { \"drv\": \"${p}\", \"out\": \"${out}\" } }"
+        echo "{ \"${name}\": { \"drv\": \"${p:11}\", \"out\": \"${out:11}\" } }"
       done \
     | jq -n 'reduce inputs as $in (null; . + $in)' \
     | (cat <<EOF

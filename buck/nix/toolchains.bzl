@@ -9,31 +9,31 @@
 
 nix_toolchains = {
   "bash": {
-    "drv": "/nix/store/96a6khgp0qym18kd759wwcnkhwvbpzg4-bash-5.1-p16.drv",
-    "out": "/nix/store/nfgpn9av331q7zi1dl6d5qpir60y513s-bash-5.1-p16"
+    "drv": "96a6khgp0qym18kd759wwcnkhwvbpzg4-bash-5.1-p16.drv",
+    "out": "nfgpn9av331q7zi1dl6d5qpir60y513s-bash-5.1-p16"
   },
   "lua": {
-    "drv": "/nix/store/z7wklfmin8bf2dvspi8sg7ll2g1aqdzj-lua-5.3.6.drv",
-    "out": "/nix/store/llva4q6kvzs0y0h0v7lwwi5qxhbsqkv9-lua-5.3.6"
+    "drv": "z7wklfmin8bf2dvspi8sg7ll2g1aqdzj-lua-5.3.6.drv",
+    "out": "llva4q6kvzs0y0h0v7lwwi5qxhbsqkv9-lua-5.3.6"
   },
   "nodejs": {
-    "drv": "/nix/store/b0dmns47qx627wk4wyyqjaqzmm44krcl-nodejs-18.12.1.drv",
-    "out": "/nix/store/nk94ar35r8c86mg6wgqkpil4zgj3cy36-nodejs-18.12.1"
+    "drv": "b0dmns47qx627wk4wyyqjaqzmm44krcl-nodejs-18.12.1.drv",
+    "out": "nk94ar35r8c86mg6wgqkpil4zgj3cy36-nodejs-18.12.1"
   },
   "rust-nightly": {
-    "drv": "/nix/store/4vv66r56ih9hhym0a8gznasbckzc029y-rust-default-1.68.0-nightly-2022-12-15.drv",
-    "out": "/nix/store/db84n5ww9ininrlbyx33lbhza1qg2fcc-rust-default-1.68.0-nightly-2022-12-15"
+    "drv": "4vv66r56ih9hhym0a8gznasbckzc029y-rust-default-1.68.0-nightly-2022-12-15.drv",
+    "out": "db84n5ww9ininrlbyx33lbhza1qg2fcc-rust-default-1.68.0-nightly-2022-12-15"
   },
   "rust-stable": {
-    "drv": "/nix/store/zycq6ykxk1dvz9fy8d4cnz44g4x690if-rust-default-1.65.0.drv",
-    "out": "/nix/store/5jfg0xr0nkii0jr7v19ri9zl9fnb8cx8-rust-default-1.65.0"
+    "drv": "zycq6ykxk1dvz9fy8d4cnz44g4x690if-rust-default-1.65.0.drv",
+    "out": "5jfg0xr0nkii0jr7v19ri9zl9fnb8cx8-rust-default-1.65.0"
   },
   "tar": {
-    "drv": "/nix/store/48wclz4pr6arhjvlwg37v9vhzwq3kr0r-coreutils-9.1.drv",
-    "out": "/nix/store/h48pjfgsjl75bm7f3nxcdcrqjkqwns7m-coreutils-9.1"
+    "drv": "48wclz4pr6arhjvlwg37v9vhzwq3kr0r-coreutils-9.1.drv",
+    "out": "h48pjfgsjl75bm7f3nxcdcrqjkqwns7m-coreutils-9.1"
   },
   "zip": {
-    "drv": "/nix/store/9724x1xvxlyhkh3z6hi2icya73g0pln9-zip-3.0.drv",
-    "out": "/nix/store/6j50b13mvc0j5vndpfc1jqri3i9vdnyn-zip-3.0"
+    "drv": "9724x1xvxlyhkh3z6hi2icya73g0pln9-zip-3.0.drv",
+    "out": "6j50b13mvc0j5vndpfc1jqri3i9vdnyn-zip-3.0"
   }
 }
