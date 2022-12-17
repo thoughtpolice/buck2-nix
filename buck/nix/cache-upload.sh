@@ -40,7 +40,7 @@ cache_upload() {
 # to a glibc bump, etc. This is normally called from upload.sh, but it will work
 # here if you hold its hand correctly with the right environment variables.
 if [[ -n "$MANUAL_REBUILD_AND_PUSH" ]]; then
-  # manual path. see: https://www.haskellforall.com/2022/10/how-to-correctly-cache-build-time.html
+  # [tag:full-nix-cache-push] see also: https://www.haskellforall.com/2022/10/how-to-correctly-cache-build-time.html
   mapfile -t TARGETS < <(nix build --no-link --print-out-paths ./buck/nix#attrs | xargs cat | xargs printf './buck/nix#%s\n')
   mapfile -t BUILDS < <(echo "${TARGETS[@]}" | xargs nix build --print-out-paths --no-link)
   mapfile -t DERIVATIONS < <(echo "${BUILDS[@]}" | xargs nix path-info --derivation)
