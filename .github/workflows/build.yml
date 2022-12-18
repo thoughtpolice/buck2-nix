@@ -57,7 +57,7 @@ jobs:
           )
 
           echo "${paths[@]}" | xargs nix build -o push-tools
-          sudo -i nix-env -i ./push-tools*
+          sudo -i nix-env -i ${paths[@]}
 
       - name: sl clone buck2-nix.sl
         run: |
