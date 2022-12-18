@@ -17,11 +17,47 @@ jobs:
           install_url: https://releases.nixos.org/nix/nix-2.12.0/install
           nix_path: nixpkgs=https://github.com/NixOS/nixpkgs/archive/8ba90bbc63e58c8c436f16500c526e9afcb6b00a.tar.gz
           extra_nix_config: |
-            substituters = https://cache.nixos.org https://buck2-nix-cache.aseipp.dev
+            substituters = file://${{ github.workspace }}/nix-store-cache-copy?priority=10&trusted=true https://cache.nixos.org https://buck2-nix-cache.aseipp.dev
             experimental-features = nix-command flakes recursive-nix ca-derivations
             trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= buck2-nix-preview.aseipp.dev-1:sLpXPuuXpJdk7io25Dr5LrE9CIY1TgGQTPC79gkFj+o=
+
+      # [tag:lean4-nix-ci-copy] (aseipp): The following is a copy of lean4's
+      # "nix-ci.yml" file, with some modifications. In the future, we may want
+      # to occasionally re-synchronize it if necessary
+      - name: setup nix cache (pt 1)
+        uses: actions/cache@v3
+        with:
+          path: nix-store-cache
+          key: nix-store-cache-${{ github.sha }}
+          # fall back to (latest) previous cache
+          restore-keys: |
+            nix-store-cache
+      - name: setup nix cache (pt 2)
+        shell: bash -euxo pipefail {0}
+        run: |
+          # Nix seems to mutate the cache, so make a copy
+          cp -r nix-store-cache nix-store-cache-copy || true
+
+      # [tag:github-ci-nix-tools] (aseipp): run the following command every once
+      # in a while:
+      #
+      #     nix build nixpkgs#direnv nixpkgs#sapling --no-link --print-out-paths
+      #
+      # then put the paths down below in the "nix-env -i" command. This will
+      # install prebuilt copies of these tools that are known to work, and come
+      # from cache.nixos.org; we also put them in the local GH actions cache so
+      # installation will be faster. This improves performance versus building
+      # and evaluating them, and CI is largely insensitive to these versions
+      # anyway.
       - name: install needed tools (nix-env)
-        run: sudo -i nix-env -i $(nix build nixpkgs#ts nixpkgs#direnv nixpkgs#sapling --no-link --print-out-paths)
+        run: |
+          paths=(
+            /nix/store/51mhhh1796njxk8h58l45j904pakvqvj-direnv-2.32.2
+            /nix/store/8gazwcbkhb09qcshxyf90s5ixa9h7635-sapling-0.1.20221118-210929-cfbb68aa
+          )
+
+          echo "${paths[@]}" | xargs nix build -o push-tools
+          sudo -i nix-env -i ./push-tools*
 
       - name: sl clone buck2-nix.sl
         run: |
@@ -29,28 +65,27 @@ jobs:
           shopt -s dotglob
           mv ${{ github.workspace }}/${{ github.event.repository.name }}.sl/* .
 
-#      - name: setup post-build-hook (/etc/nix/nix.conf)
-#        run: |
-#          sed -e '0,/__S3_BUCKET__/s//${{ secrets.S3_BUCKET }}/ ;
-#                  0,/__S3_ENDPOINT__/s//${{ secrets.S3_ENDPOINT }}/ ;
-#                  0,/__AWS_ACCESS_KEY_ID__/s//${{ secrets.AWS_ACCESS_KEY_ID }}/ ;
-#                  0,/__AWS_SECRET_ACCESS_KEY__/s//${{ secrets.AWS_SECRET_ACCESS_KEY }}/ ;
-#                  0,/__NIX_CACHE_PRIVATE_KEY__/s//${{ secrets.NIX_CACHE_PRIVATE_KEY }}/ ;
-#                 ' buck/nix/cache-upload.sh > cache-upload.sh
-#          chmod +x cache-upload.sh && sudo mv cache-upload.sh /etc/nix/cache-upload.sh
-#          echo 'post-build-hook = /etc/nix/cache-upload.sh' | sudo tee -a /etc/nix/nix.conf
-#          sudo systemctl restart nix-daemon.service
-
-      # real fun starts now
       - name: direnv export
         uses: ./.github/actions/direnv
+
       - name: update.sh toolchains
         run: ./buck/nix/update.sh -t
+
       - name: buck build ...
         run: buck build root//... nix//...
-# XXX FIXME (aseipp): why does this fail?
-#     - name: wait for cache uploads
-#       run: ts -w
+
+      - name: build package output paths for cache
+        run: |
+          nix build --no-link --print-out-paths ./buck/nix#attrs \
+            | xargs cat \
+            | xargs printf './buck/nix#%s\n' \
+            | xargs nix build -o push-pkgs
+
+      - name: rebuild nix store cache
+        run: |
+          rm -rf nix-store-cache || true
+          nix copy ./push-* --to file://$PWD/nix-store-cache?compression=none
+
       - name: finish
         run: |
           buck clean
