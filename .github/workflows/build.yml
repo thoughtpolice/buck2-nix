@@ -85,8 +85,3 @@ jobs:
         run: |
           rm -rf nix-store-cache || true
           nix copy ./push-* --to file://$PWD/nix-store-cache?compression=none
-
-      - name: finish
-        run: |
-          buck clean
-          sl --kill-chg-daemon
