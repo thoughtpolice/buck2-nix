@@ -24,7 +24,7 @@ jobs:
       # [tag:lean4-nix-ci-copy] (aseipp): The following is a copy of lean4's
       # "nix-ci.yml" file, with some modifications. In the future, we may want
       # to occasionally re-synchronize it if necessary
-      - name: setup nix cache (pt 1)
+      - name: setup nix cache
         uses: actions/cache@v3
         with:
           path: nix-store-cache
