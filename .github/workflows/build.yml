@@ -68,9 +68,6 @@ jobs:
       - name: direnv export
         uses: ./.github/actions/direnv
 
-      - name: update.sh toolchains
-        run: ./buck/nix/update.sh -t
-
       - name: buck build ...
         run: buck build root//... nix//...
 

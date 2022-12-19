@@ -11,6 +11,7 @@
 ## ---------------------------------------------------------------------------------------------------------------------
 
 load("@prelude//:nix.bzl", "nix")
+load("@prelude//:providers.bzl", "NixStoreOutputInfo")
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
@@ -19,9 +20,8 @@ def __rust_binary_impl(ctx: "context") -> ["provider"]:
     out_name = ctx.attrs.out if ctx.attrs.out else ctx.label.name
     out = ctx.actions.declare_output(out_name)
 
-    cmd = nix.get_bin(ctx, ":rust-stable", "rustc")
+    cmd = [ cmd_args(ctx.attrs._rust_stable[NixStoreOutputInfo].path, format="{}/bin/rustc") ]
     cmd.append(["--crate-type=bin", file, "-o", out.as_output()])
-
     ctx.actions.run(cmd, category = "rustc")
 
     return [
@@ -29,7 +29,11 @@ def __rust_binary_impl(ctx: "context") -> ["provider"]:
         RunInfo(args = cmd_args([out])),
     ]
 
-rust_binary = nix.toolchain_rule(__rust_binary_impl, [ ":rust-stable" ], {
-    "file": attrs.source(),
-    "out": attrs.option(attrs.string(), default = None),
-})
+rust_binary = rule(
+    impl = __rust_binary_impl,
+    attrs = {
+        "file": attrs.source(),
+        "out": attrs.option(attrs.string(), default = None),
+        "_rust_stable": attrs.default_only(attrs.dep(default = "@nix//toolchains:rust-stable")),
+    },
+)

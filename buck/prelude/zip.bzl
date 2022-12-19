@@ -11,6 +11,7 @@
 ## ---------------------------------------------------------------------------------------------------------------------
 
 load("@prelude//:nix.bzl", "nix")
+load("@prelude//:providers.bzl", "NixStoreOutputInfo")
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
@@ -18,7 +19,7 @@ def __zip_impl(ctx):
     out_name = ctx.attrs.out if ctx.attrs.out else "{}.zip".format(ctx.label.name)
     out = ctx.actions.declare_output(out_name)
 
-    cmd = nix.get_bin(ctx, ":zip", "zip")
+    cmd = [ cmd_args(ctx.attrs._zip[NixStoreOutputInfo].path, format="{}/bin/zip") ]
     cmd.append(out.as_output())
 
     for s in ctx.attrs.srcs:
@@ -27,7 +28,11 @@ def __zip_impl(ctx):
     ctx.actions.run(cmd, category = "zip")
     return [ DefaultInfo(default_outputs = [out]) ]
 
-zip_file = nix.toolchain_rule(__zip_impl, [ ":zip" ], {
-    "srcs": attrs.list(attrs.source(allow_directory = False), default = []),
-    "out": attrs.option(attrs.string(), default = None),
-})
+zip_file = rule(
+    impl = __zip_impl,
+    attrs = {
+        "srcs": attrs.list(attrs.source(allow_directory = False), default = []),
+        "out": attrs.option(attrs.string(), default = None),
+        "_zip": attrs.default_only(attrs.dep(default = "@nix//toolchains:zip")),
+    }
+)

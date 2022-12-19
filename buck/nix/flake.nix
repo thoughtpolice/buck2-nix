@@ -11,6 +11,11 @@
     };
   };
 
+  nixConfig = {
+    extra-substituters = "https://buck2-nix-cache.aseipp.dev/";
+    trusted-public-keys = "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= buck2-nix-preview.aseipp.dev-1:sLpXPuuXpJdk7io25Dr5LrE9CIY1TgGQTPC79gkFj+o=";
+  };
+
   outputs = { self, nixpkgs, flake-utils, rust-overlay, ... }:
     let
       systems = with flake-utils.lib; [
@@ -41,7 +46,7 @@
             buck2 = pkgs.callPackage ./buck2 { };
           };
 
-          toolchains = import ./toolchains.nix { inherit pkgs; };
+          toolchains = import ./toolchains { inherit pkgs; };
 
           # The default Nix shell. This is populated by direnv and used for the
           # interactive console that a developer uses when they use buck2, sl,

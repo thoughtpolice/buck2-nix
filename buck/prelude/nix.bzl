@@ -10,129 +10,71 @@
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-load(":providers.bzl", "NixRealizationInfo")
-
-# [tag:bzl-nix-toolchain] This is a very special import that should NOT be used
-# anywhere else. It effectively imports a JSON representation of the Nix closure
-# for our tools we want vendored, which we then use to realize outputs and
-# provide tools for Buck rules. But nobody else should know about this.
-#
-# Note that the import for this file comes from the nix// cell, which is a
-# special one that is generated automatically by update.sh. This is the only
-# usage of the nix// cell, and its only import is here. See [ref:bzl-nix-cell]
-#
-# XXX FIXME: perform a grep/hack to check '@nix//' isn't used anywhere else?
-load("@nix//:toolchains.bzl", __nix_toolchains__ = "nix_toolchains")
+load(
+  ":providers.bzl",
+  "NixRealizationInfo",
+  "NixStoreOutputInfo",
+)
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def __nix_drv_impl(ctx: "context") -> ["provider"]:
+def __mk_nix_build_cmd(ctx, hash, deps=[]):
     # [tag:bzl-nix-cell] This rule should never be instantiated anywhere other
     # than the root TARGETS file of the nix// cell. Make sure of that.
     if ctx.label.cell != "nix":
         fail("nix_drv must be used in the nix cell (was {})".format(ctx.label.cell))
 
-    if not ctx.label.name in __nix_toolchains__:
-        fail("no such nix toolchain: {}".format(ctx.label.name))
+    out = ctx.actions.declare_output("{}".format(hash))
+    storepath = "/nix/store/{}".format(hash)
+    args = cmd_args([
+        "nix", "build",
+        "--extra-substituters", "https://buck2-nix-cache.aseipp.dev/",
+        "--trusted-public-keys", "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= buck2-nix-preview.aseipp.dev-1:sLpXPuuXpJdk7io25Dr5LrE9CIY1TgGQTPC79gkFj+o=",
+        "--out-link", out.as_output(),
+        storepath,
+    ]).hidden(deps)
+    ctx.actions.run(args, category = "nix")
+    return [ out, storepath ]
 
-    toolchain = __nix_toolchains__[ctx.label.name]
-    tcpath = ctx.actions.declare_output("toolchain.json")
-
-    storepath = "/nix/store/{}".format(toolchain["drv"])
-    script, _ = ctx.actions.write(
-        "realize.sh", [
-            cmd_args(["set", "-xeu"], delimiter = " "),
-            cmd_args(["nix-store", "--realise", storepath], delimiter = " "),
-            cmd_args(["nix", "realisation", "info", "--json", storepath, ">", tcpath.as_output()], delimiter = " "),
-            cmd_args("")
-        ],
-        is_executable = True,
-        allow_args = True,
-    )
-    ctx.actions.run(
-        cmd_args(["/usr/bin/env", "bash", script])
-            .hidden([tcpath.as_output()]),
-        category = "nix",
-    )
-
-    gcrootdir = ctx.actions.declare_output("nix-toolchain/gcroots", dir = True)
-    def parse_nix_realisation_info(ctx: "context", artifacts, outputs):
-        info = artifacts[tcpath].read_json()
-        outdir = outputs[gcrootdir]
-
-        script_text = [ cmd_args(["mkdir", "-p", outdir], delimiter = " ") ]
-
-        for i in info:
-            attrname = i["id"][72:]
-            storePath = "/nix/store/{}".format(i["outPath"])
-            gcroot = "/nix/var/nix/gcroots/per-user/$USER/buck2-{}".format(i["outPath"])
-
-            # to do an atomic rename with safety:
-            #   1) link: $outDir/foo -> /nix/store/...-foo
-            #   2) link: /nix/var/nix/gcroots/auto/... -> $outDir/foo
-            fmt = "{}/" + attrname
-            script_text.append(cmd_args(outdir, format=(" ".join(["ln", "-snfv", storePath, fmt ]))))
-            script_text.append(cmd_args(outdir, format=(" ".join(["ln", "-snfv", "$(sl root)/" + fmt, gcroot ]))))
-            script_text.append("")
-
-        script, _ = ctx.actions.write(
-            "link.sh",
-            script_text,
-            is_executable = True,
-            allow_args = True,
-        )
-
-        ctx.actions.run(
-            cmd_args(["/usr/bin/env", "bash", script])
-                .hidden([outdir.as_output()]),
-            category = "nix",
-        )
-
-    ctx.actions.dynamic_output(
-        dynamic = [ tcpath ],
-        inputs = [ ],
-        outputs = [ gcrootdir ],
-        f = parse_nix_realisation_info,
-    )
-
+def __nix_toolchain_0(ctx):
+    deps = [ ctx.attrs.path[NixStoreOutputInfo].path ]
+    [ out, storepath ] = __mk_nix_build_cmd(ctx, ctx.attrs.hash, deps)
     return [
-        DefaultInfo(default_outputs = [ tcpath, gcrootdir ]),
-        NixRealizationInfo(rootdir = gcrootdir),
+        DefaultInfo(default_outputs = [out]),
+        NixStoreOutputInfo(path = out)
     ]
 
-## ---------------------------------------------------------------------------------------------------------------------
+def __nix_store_path_0(ctx):
+    deps = [ r[NixStoreOutputInfo].path for r in ctx.attrs.refs ]
+    [ out, storepath ] = __mk_nix_build_cmd(ctx, ctx.label.name, deps)
+    return [
+        DefaultInfo(default_outputs = [out]),
+        NixStoreOutputInfo(path = out)
+    ]
 
-def __nix_get_bin(ctx: "context", toolchain: "string", bin: "string") -> "list":
-    k = "_nix_" + toolchain
-    dep = getattr(ctx.attrs, k)
-    return [ cmd_args(dep[NixRealizationInfo].rootdir, format = "{}/out/bin/" + bin) ]
-
-def __nix_toolchain_dep(name: "string"):
-    return attrs.default_only(attrs.dep(default = "nix//{}".format(name)))
-
-def __nix_toolchain_deps(names: "list", attrs: "dict") -> "dict":
-    rs = {}
-    for name in names:
-        k = "_nix_" + name
-        rs[k] = __nix_toolchain_dep(name)
-    return rs | attrs
-
-def __nix_toolchain_rule(impl, deps: "list", attrs: "dict") -> "rule":
-    return rule(
-        impl = impl,
-        attrs = __nix_toolchain_deps(deps, attrs),
-    )
-
-## ---------------------------------------------------------------------------------------------------------------------
-
-# This rule yields a Provider that points and output /nix/store paths.
-nix_toolchain = rule(
-    impl = __nix_drv_impl,
-    attrs = {},
+__nix_toolchain = rule(
+    impl = __nix_toolchain_0,
+    attrs = {
+        "path": attrs.dep(),
+        "hash": attrs.string(),
+        "drv": attrs.string(),
+    },
 )
+
+__nix_store_path = rule(
+    impl = __nix_store_path_0,
+    attrs = {
+        "drv": attrs.string(),
+        "refs": attrs.list(attrs.dep(), default = []),
+    },
+)
+
+## ---------------------------------------------------------------------------------------------------------------------
 
 # A struct containing the exported API.
 nix = struct(
-    toolchain_rule = __nix_toolchain_rule,
-    get_bin = __nix_get_bin,
+    toolchain = __nix_toolchain,
+    store_path = __nix_store_path,
 )
+
+## ---------------------------------------------------------------------------------------------------------------------
