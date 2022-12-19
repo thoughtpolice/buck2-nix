@@ -73,10 +73,10 @@ jobs:
 
       - name: build package output paths for cache
         run: |
-          nix build --no-link --print-out-paths ./buck/nix#attrs \
+          nix build --accept-flake-config --no-link --print-out-paths ./buck/nix#attrs \
             | xargs cat \
             | xargs printf './buck/nix#%s\n' \
-            | xargs nix build -o push-pkgs
+            | xargs nix build --accept-flake-config -o push-pkgs
 
       - name: rebuild nix store cache
         run: |
