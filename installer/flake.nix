@@ -25,16 +25,10 @@
         , rustPlatform
         }:
 
-        stdenv.mkDerivation rec {
-          pname = "installer";
-          version = "0.1.0";
-
-          unpackPhase = ":";
-          installPhase = ''
-            mkdir -p $out/bin
-            echo 'echo hello' > $out/bin/installer
-            chmod +x $out/bin/installer
-          '';
+        rustPlatform.buildRustPackage rec {
+          name = "installer";
+          src = self;
+          cargoLock.lockFile = "${self}/Cargo.lock";
         }) { };
     });
     in flake-utils.lib.eachDefaultSystem (system:
