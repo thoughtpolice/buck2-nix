@@ -1,3 +1,4 @@
 buck/nix/toolchains.bzl linguist-generated=true
 buck/nix/TARGETS linguist-generated=true
 buck/nix/buck2/Cargo.lock linguist-generated=true
+.envrc linguist-language=bash
