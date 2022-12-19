@@ -11,7 +11,7 @@
 ## ---------------------------------------------------------------------------------------------------------------------
 
 load(
-  ":providers.bzl",
+  "@prelude//basics/providers.bzl",
   "NixRealizationInfo",
   "NixStoreOutputInfo",
 )

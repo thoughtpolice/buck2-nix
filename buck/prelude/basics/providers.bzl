@@ -14,3 +14,8 @@ NixRealizationInfo = provider(fields = [ "rootdir" ])
 NixStoreOutputInfo = provider(fields = [ "path" ])
 
 ## ---------------------------------------------------------------------------------------------------------------------
+
+providers = {
+    "NixRealizationInfo": NixRealizationInfo,
+    "NixStoreOutputInfo": NixStoreOutputInfo,
+}

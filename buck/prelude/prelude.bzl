@@ -4,4 +4,5 @@
 
 # Global import shim; anything exported here is available in *all* BUILD files!
 
-load(":attributes.bzl", "attributes")
+load("@prelude//basics/attributes.bzl", "attributes")
+load("@prelude//basics/providers.bzl", "providers")
