@@ -12,7 +12,6 @@
 
 load(
   "@prelude//basics/providers.bzl",
-  "NixRealizationInfo",
   "NixStoreOutputInfo",
 )
 
