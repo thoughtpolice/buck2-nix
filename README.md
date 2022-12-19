@@ -18,7 +18,7 @@ Nothing is stable and everything is permitted. Do not taunt happy fun ball.
 3) `trusted-users` includes your `$USER`
 
 `direnv` will warn you if either 2 or 3 are not satisfied when you move into
-this directory. See **[.envrc](/blob/main/.envrc)** for details.
+this directory. See **[.envrc](/.envrc)** for details.
 
 ## commands
 
