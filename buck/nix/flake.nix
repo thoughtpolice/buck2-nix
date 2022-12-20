@@ -38,9 +38,9 @@
         jobs = rec {
           packages = flake-utils.lib.flattenTree rec {
             # These are all tools from upstream
-            inherit (pkgs.gitAndTools) gh;
+            inherit (pkgs.gitAndTools) gh git;
             inherit (pkgs)
-              tagref sapling jq getopt
+              tagref sapling jq getopt jujutsu
               ;
 
             buck2 = pkgs.callPackage ./buck2 { };
@@ -52,7 +52,16 @@
           # interactive console that a developer uses when they use buck2, sl,
           # et cetera.
           devShells.default = pkgs.mkShell {
-            nativeBuildInputs = builtins.attrValues packages;
+            nativeBuildInputs = builtins.attrValues packages ++ [
+              # add a convenient alias for Super Smartlog. We can't put this in
+              # direnv so easily because it evaluates .envrc in a subshell.
+              # Slightly worse overhead, but oh well...
+              (pkgs.writers.writeBashBin "ssl" ''
+                #!${pkgs.runtimeShell}
+                exec ${pkgs.sapling}/bin/sl ssl "$@"
+              '')
+
+            ];
           };
         };
 

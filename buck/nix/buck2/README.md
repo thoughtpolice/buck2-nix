@@ -6,10 +6,10 @@ procedure.
 
 ## how to update
 
-Clone or update a copy of buck2, and run `cargo build --bin=buck2 --release`.
-This generates a `Cargo.lock` file; the buck2 team internally does not use
-`Cargo.lock` files, hence why we have to generate our own by running the build
-that way.
+```bash
+$(sl root)/buck/nix/buck2/update.sh
+```
 
-Then, just move the `Cargo.lock` here, and update `default.nix` in the normal
-way.
+> **NOTE**: The buck2 team internally does not use `Cargo.lock` files, hence why
+> we have to generate our own as well; otherwise this script would simply be
+> able to use `nix-update`
