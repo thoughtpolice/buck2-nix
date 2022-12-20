@@ -27,6 +27,8 @@ def __mk_nix_build_cmd(ctx, hash, deps=[]):
     storepath = "/nix/store/{}".format(hash)
     args = cmd_args([
         "nix", "build",
+
+        # see [ref:cache-url-warning]
         "--extra-substituters", "https://buck2-nix-cache.aseipp.dev/",
         "--trusted-public-keys", "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= buck2-nix-preview.aseipp.dev-1:sLpXPuuXpJdk7io25Dr5LrE9CIY1TgGQTPC79gkFj+o=",
         "--out-link", out.as_output(),

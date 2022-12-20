@@ -14,6 +14,7 @@
   };
 
   nixConfig = {
+    # see [ref:cache-url-warning]
     extra-substituters = "https://buck2-nix-cache.aseipp.dev/";
     trusted-public-keys = "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= buck2-nix-preview.aseipp.dev-1:sLpXPuuXpJdk7io25Dr5LrE9CIY1TgGQTPC79gkFj+o=";
   };
