@@ -250,6 +250,13 @@ fn check_trusted_users() -> Result<(), Report> {
         return Ok(());
     }
 
+    // XXX FIXME (aseipp): even if they aren't in trusted-users, that should be
+    // okay, as long as 'trusted-public-keys' and '{extra-,}substituters' are
+    // set up by an admin; so check those, too
+
+    // XXX FIXME (aseipp): if there's no substituter or public key, offer to set
+    // it up, only if we can 'sudo'. otherwise, fail like we do now.
+
     Err(eyre!(
         "'{}' is not part of the Nix `trusted-users` setting.",
         user
