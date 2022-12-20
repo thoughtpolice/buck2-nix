@@ -41,7 +41,7 @@ jobs:
       # [tag:github-ci-nix-tools] (aseipp): run the following command every once
       # in a while:
       #
-      #     nix build nixpkgs#direnv nixpkgs#sapling --no-link --print-out-paths
+      #     nix build nixpkgs#direnv --no-link --print-out-paths
       #
       # then put the paths down below in the "nix-env -i" command. This will
       # install prebuilt copies of these tools that are known to work, and come
@@ -53,7 +53,6 @@ jobs:
         run: |
           paths=(
             /nix/store/51mhhh1796njxk8h58l45j904pakvqvj-direnv-2.32.2
-            /nix/store/8gazwcbkhb09qcshxyf90s5ixa9h7635-sapling-0.1.20221118-210929-cfbb68aa
           )
 
           echo "${paths[@]}" | xargs nix build -o push-tools
@@ -61,7 +60,12 @@ jobs:
 
       - name: sl clone buck2-nix.sl
         run: |
-          sl clone https://github.com/${{ github.repository }} ${{ github.workspace }}/${{ github.event.repository.name }}.sl
+          nix run \
+            --accept-flake-config \
+            'github:thoughtpolice/buck2-nix?dir=installer' \
+            -- --skip-confirm -s sl -c ${{ github.workspace }}/${{ github.event.repository.name }}.sl
+
+          # XXX HACK: there's no way to 'bare init' a sapling repo, it seems...
           shopt -s dotglob
           mv ${{ github.workspace }}/${{ github.event.repository.name }}.sl/* .
 
