@@ -28,7 +28,7 @@
         rustPlatform.buildRustPackage rec {
           name = "installer";
           src = self;
-          cargoLock.lockFile = "${self}/Cargo.lock";
+          cargoLock.lockFile = ./Cargo.lock;
         }) { };
     });
     in flake-utils.lib.eachDefaultSystem (system:
