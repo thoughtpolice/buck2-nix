@@ -48,7 +48,7 @@ jobs:
               }
             }
 
-            if (!/^(feat|fix|doc|perf|refactor|test|chore): .*[^.]$/.test(pr.title)) {
+            if (!/^(feat|fix|doc|perf|refactor|test|chore)\((\w+)\): (.*[^.])$/.test(pr.title)) {
               var msg = 'Failing CI check due to bad PR title; skipping review (it already exists)';
               if (actions_state !== 'CHANGES_REQUESTED') {
                 await github.rest.pulls.createReview({
