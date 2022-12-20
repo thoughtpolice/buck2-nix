@@ -29,7 +29,7 @@
           name = "installer";
           src = self;
           cargoLock.lockFile = ./Cargo.lock;
-          postPatch = "cp ${./Cargo.lock} Cargo.lock";
+          postPatch = "cd installer";
         }) { };
     });
     in flake-utils.lib.eachDefaultSystem (system:
