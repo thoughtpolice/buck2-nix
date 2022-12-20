@@ -31,6 +31,16 @@
           inherit system;
           overlays = [ (import rust-overlay) ];
 
+          # [tag:ca-derivations] One day, we'll enable content-addressable
+          # derivations for all outputs here. This should significantly help any
+          # and all toolchain support in a number of ways, primarily through:
+          #
+          #  - early cut-off optimization
+          #  - self-authenticating paths (no more signing needed!)
+          #
+          # ideally, in a utopia, this would be the only way Nix worked in the
+          # future, but it's too buggy for right now...
+          #
           # XXX FIXME (aseipp): enable this, one day...
           config.contentAddressedByDefault = false;
         };
