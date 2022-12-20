@@ -10,15 +10,18 @@ set -o pipefail
 #     $ nix run nixpkgs#shellcheck -- ./buck/nix/update.sh
 
 FLAKE=0
+BUCK2=0
 TOOLCHAINS=0
 CACHE=0
 
+root=$(sl root)
+
 usage() {
-  echo "Usage: $0 [--flake|--toolchains|--cache|--all]"
+  echo "Usage: $0 [--flake|--buck2|--toolchains|--cache|--all]"
   exit 2
 }
 
-PARSED_ARGUMENTS=$(getopt -an update.sh -o ftca --long flake,toolchains,cache,all -- "$@")
+PARSED_ARGUMENTS=$(getopt -an update.sh -o fbtca --long flake,buck2,toolchains,cache,all -- "$@")
 VALID_ARGUMENTS=$?
 [ "$VALID_ARGUMENTS" != "0" ] && usage
 
@@ -26,6 +29,7 @@ eval set -- "$PARSED_ARGUMENTS"
 while : ; do
   case "$1" in
     -f | --flake)      FLAKE=1      ; shift ;;
+    -b | --buck2)      BUCK2=1      ; shift ;;
     -t | --toolchains) TOOLCHAINS=1 ; shift ;;
     -c | --cache)      CACHE=1      ; shift ;;
     -a | --all)        FLAKE=1; TOOLCHAINS=1; CACHE=1; shift ;;
@@ -35,16 +39,18 @@ while : ; do
   esac
 done
 
-[ "$FLAKE" = "0" ] && [ "$TOOLCHAINS" = "0" ] && [ "$CACHE" = "0" ] && usage
-echo "Updating flake: $FLAKE, toolchains: $TOOLCHAINS, cache: $CACHE"
+[ "$FLAKE" = "0" ] && [ "$BUCK2" = "0" ] && [ "$TOOLCHAINS" = "0" ] && [ "$CACHE" = "0" ] && usage
+echo "Updating flake: $FLAKE, buck2: $BUCK2, toolchains: $TOOLCHAINS, cache: $CACHE"
 
 if [ "$FLAKE" = "1" ]; then
-  root=$(sl root)
   nix flake update "${root}/buck/nix"
 fi
 
+if [ "$BUCK2" = "1" ]; then
+  exec "${root}/buck/nix/buck2/update.sh"
+fi
+
 if [ "$TOOLCHAINS" = "1" ]; then
-  root=$(sl root)
   nix build --accept-flake-config --print-out-paths "${root}/buck/nix#world"
 
   set -x
@@ -110,5 +116,5 @@ EOF
 fi
 
 if [ "$CACHE" = "1" ]; then
-  MANUAL_REBUILD_AND_PUSH=1 "$(sl root)/buck/nix/cache-upload.sh"
+  MANUAL_REBUILD_AND_PUSH=1 exec "${root}/buck/nix/cache-upload.sh"
 fi
