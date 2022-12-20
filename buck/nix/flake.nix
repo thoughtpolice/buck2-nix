@@ -38,7 +38,7 @@
         jobs = rec {
           packages = flake-utils.lib.flattenTree rec {
             # These are all tools from upstream
-            inherit (pkgs.gitAndTools) gh;
+            inherit (pkgs.gitAndTools) gh git;
             inherit (pkgs)
               tagref sapling jq getopt jujutsu
               ;
