@@ -28,7 +28,17 @@
         rustPlatform.buildRustPackage rec {
           name = "installer";
           src = self;
-          cargoLock.lockFile = "${self}/Cargo.lock";
+          cargoLock.lockFile = ./Cargo.lock;
+          # we have to cd into this directory because, when 'nix run' is used to
+          # run the installer, the ?dir parameter only refers to where the
+          # flake/nix code is located; the build process otherwise still execues
+          # within the git root dir (e.g. so ${self} points to the git root) and
+          # so we need to move into place before building rust code
+          #
+          # NOTE: this might break local 'nix run .' invocations
+          #
+          # XXX FIXME (aseipp): should this be filed as a nix bug?
+          postPatch = "cd installer";
         }) { };
     });
     in flake-utils.lib.eachDefaultSystem (system:
