@@ -9,7 +9,7 @@
 
 let
   rustChannel = "nightly";
-  rustVersion = "2022-09-27"; # XXX NOTE: sync with rust-toolchain
+  rustVersion = "2022-09-27";
 
   my-rust-bin = rust-bin."${rustChannel}"."${rustVersion}".default;
 
@@ -25,8 +25,8 @@ in rustPlatform.buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "facebookincubator";
     repo = "buck2";
-    rev = "5f4144051c11f091b648e4709d811fe514fa8191";
-    hash = "sha256-FUORSq9mwT4T4njKIbmj8Eie2nwsxnT1qArMCgqGQyA=";
+    rev = "f07f323345c2402a132d6b6c0088793006f53b8c";
+    hash = "sha256-5iRfMLba0r9iYVjPWw+YCds/gav+9Z1473/DDlV8ExY=";
   };
 
   cargoLock = {
