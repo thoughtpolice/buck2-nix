@@ -40,7 +40,7 @@
             # These are all tools from upstream
             inherit (pkgs.gitAndTools) gh;
             inherit (pkgs)
-              tagref sapling jq getopt
+              tagref sapling jq getopt jujutsu
               ;
 
             buck2 = pkgs.callPackage ./buck2 { };
