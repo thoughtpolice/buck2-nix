@@ -507,8 +507,11 @@ fn clone_src(args: &Args, scm: &Scm) -> Result<(), Report> {
         style(full_checkout_path.display()).bold()
     );
 
-    if args.skip_confirm
-        || Confirm::with_theme(&theme)
+    // NOTE: don't automatically allow the '.envrc' without confirmation, to be
+    // polite to the user; direnv can be dangerous, after all... and CI can handle
+    // this for us anyway. See [ref:direnv-allow-ci] for more details.
+    if !args.skip_confirm
+        && Confirm::with_theme(&theme)
             .with_prompt(format!(
                 r#"May I 'direnv allow' the .envrc file located in '{}'?"#,
                 style(full_checkout_path.display()).bold()
