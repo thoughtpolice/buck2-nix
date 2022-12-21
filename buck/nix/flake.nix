@@ -54,6 +54,7 @@
               tagref sapling jq getopt jujutsu
               ;
 
+            watchman = pkgs.callPackage ./buck2/watchman.nix { };
             buck2 = pkgs.callPackage ./buck2 { };
           };
 
