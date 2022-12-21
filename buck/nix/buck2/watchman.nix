@@ -1,6 +1,6 @@
 { stdenv, gcc12, gcc12Stdenv
 , fetchurl, fetchFromGitHub
-, rpmextract
+, dpkg
 , autoPatchelfHook
 , openssl
 , zlib, bzip2, xz, lz4, snappy, zstd
@@ -17,7 +17,7 @@ let
   version = "2022.12.19.00";
 
   file = {
-    x86_64-linux = "watchman-20221218.010722.0-1.fc36.x86_64.rpm"; # XXX FIXME (aseipp): name is wrong?
+    x86_64-linux = "watchman_ubuntu22.04_v${version}.deb";
   }."${stdenv.hostPlatform.system}" or (throw "Unsupported system: ${stdenv.hostPlatform.system}");
 
   baseurl = "https://github.com/facebook/watchman/releases/download";
@@ -50,17 +50,17 @@ gcc12Stdenv.mkDerivation {
   inherit version;
 
   src = dlbin {
-    x86_64-linux = "sha256-259AKteVefGs+bF7sE3PXE8jtdZ4BnOoqZKu+Bvt8Hs=";
+    x86_64-linux = "sha256-YMHClrPfZSZrsituge266RI96YY5kOk9iYryQaXqhL4=";
   };
 
-  unpackPhase = "rpmextract $src";
+  unpackPhase = "dpkg --fsys-tarfile $src | tar -xvf -";
 
   buildInputs = [
     openssl libevent glog0 gflags libsodium
     zlib bzip2 xz lz4 snappy zstd gcc12.cc.lib
     libunwind pcre2 boost174 double-conversion
   ];
-  nativeBuildInputs = [ autoPatchelfHook rpmextract ];
+  nativeBuildInputs = [ autoPatchelfHook dpkg ];
   dontConfigure = true;
 
   installPhase = ''
