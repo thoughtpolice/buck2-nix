@@ -250,6 +250,37 @@ fn check_trusted_users() -> Result<(), Report> {
         return Ok(());
     }
 
+    println!(
+        "{}Uh oh, you aren't part of the group of Nix 'trusted-users'...",
+        Emoji("🚨 ", "")
+    );
+
+    // [tag:cache-url-warning] we really need to make a stable URL and
+    // public key for the binary cache. one day, but until then, we need to
+    // replicate this mindlessly.
+    let configured_upstream_cache = run_cmd!(nix show-config | grep "substituters" | grep -q "https://buck2-nix-cache.aseipp.dev").is_ok();
+    let has_pubkey_configured = run_cmd!(nix show-config | grep "trusted-public-keys" | grep -q "buck2-nix-preview.aseipp.dev-1:sLpXPuuXpJdk7io25Dr5LrE9CIY1TgGQTPC79gkFj+o=").is_ok();
+
+    if configured_upstream_cache && has_pubkey_configured {
+        println!(
+            "{}But you have a properly configured upstream cache, so that's okay!",
+            Emoji("👍 ", ""),
+        );
+
+        let warn = |msg: &str| {
+            println!("  {}{}", Emoji("⚠️  ", "-> "), msg,);
+        };
+
+        // see [ref:cache-url-warning]; one day we can probably delete this warning when the URL is stable
+        warn("Note: your binary cache may stop working if the public key or URL changes in the future.");
+        warn("If you are part of the 'trusted-users' group, changes to the public key or URL will be automatically detected.");
+        warn("Because you're not part of the 'trusted-users' group, you will need to manually update your configuration.");
+        return Ok(());
+    }
+
+    // XXX FIXME (aseipp): if there's no substituter or public key, offer to set
+    // it up, only if we can 'sudo'. otherwise, fail like we do now.
+
     Err(eyre!(
         "'{}' is not part of the Nix `trusted-users` setting.",
         user

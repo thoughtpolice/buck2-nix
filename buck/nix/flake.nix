@@ -12,6 +12,7 @@
   };
 
   nixConfig = {
+    # see [ref:cache-url-warning]
     extra-substituters = "https://buck2-nix-cache.aseipp.dev/";
     trusted-public-keys = "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= buck2-nix-preview.aseipp.dev-1:sLpXPuuXpJdk7io25Dr5LrE9CIY1TgGQTPC79gkFj+o=";
   };
@@ -31,6 +32,16 @@
           inherit system;
           overlays = [ (import rust-overlay) ];
 
+          # [tag:ca-derivations] One day, we'll enable content-addressable
+          # derivations for all outputs here. This should significantly help any
+          # and all toolchain support in a number of ways, primarily through:
+          #
+          #  - early cut-off optimization
+          #  - self-authenticating paths (no more signing needed!)
+          #
+          # ideally, in a utopia, this would be the only way Nix worked in the
+          # future, but it's too buggy for right now...
+          #
           # XXX FIXME (aseipp): enable this, one day...
           config.contentAddressedByDefault = false;
         };
@@ -43,6 +54,7 @@
               tagref sapling jq getopt jujutsu
               ;
 
+            watchman = pkgs.callPackage ./buck2/watchman.nix { };
             buck2 = pkgs.callPackage ./buck2 { };
           };
 

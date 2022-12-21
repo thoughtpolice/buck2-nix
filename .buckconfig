@@ -5,3 +5,6 @@ nix = buck/nix
 
 [buildfile]
 name=TARGETS
+
+[project]
+ignore=.git,.sl,.jj

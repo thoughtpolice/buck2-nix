@@ -19,6 +19,14 @@ Generally, it's expected that:
 
 So: don't touch this. The details aren't all figured out yet.
 
+## so what now?
+
+upgrade things:
+
+```bash
+buck run nix//:update
+```
+
 <!-- refs -->
 
 [Nix]: https://nixos.org
