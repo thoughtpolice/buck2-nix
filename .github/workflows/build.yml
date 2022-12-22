@@ -67,6 +67,9 @@ jobs:
           mv ${{ github.workspace }}/${{ github.event.repository.name }}.sl/* .
 
       - name: direnv export
+        env:
+          CI_RUNNING: true
+          CI_RUNNING_SYSTEM: github-actions
         uses: ./.github/actions/direnv
 
       - name: buck build ...
