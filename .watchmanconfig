@@ -5,6 +5,7 @@
     ],
     "ignore_dirs": [
         "buck-out",
+        ".direnv",
         "installer/target"
     ],
     "ignore_vcs": [
