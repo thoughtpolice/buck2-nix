@@ -1,0 +1,22 @@
+{
+    "enforce_root_files": true,
+    "root_files": [
+        ".watchmanconfig"
+    ],
+    "ignore_dirs": [
+        "buck-out",
+        "installer/target"
+    ],
+    "ignore_vcs": [
+        ".git",
+        ".sl",
+        ".jj",
+        ".hg"
+    ],
+    "illegal_fstypes": [
+        "nfs",
+        "cifs",
+        "smb"
+    ],
+    "illegal_fstypes_advice": "use a local directory"
+}
