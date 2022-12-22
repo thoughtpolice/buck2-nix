@@ -3,3 +3,5 @@
 /.direnv
 
 **/node_modules
+
+.use_watchman
