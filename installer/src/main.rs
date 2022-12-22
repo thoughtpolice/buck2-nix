@@ -8,7 +8,7 @@
 #![allow(unused_imports)]
 
 use std::env;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::str::FromStr;
 use std::time::Duration;
 use std::{fmt::Display, thread};
@@ -143,7 +143,7 @@ fn main() -> Result<(), Report> {
 
     println!("\n{} {}\n", Emoji("🎉 ", ""), "Setup complete!");
 
-    if args.skip_confirm {
+    let full_checkout_path = if args.skip_confirm {
         if let Some(scm) = args.scm {
             clone_src(&args, &scm)
         } else {
@@ -158,7 +158,23 @@ fn main() -> Result<(), Report> {
             let scm = choose_scm()?;
             clone_src(&args, &scm)
         }
-    }
+    }?;
+
+    println!(
+        r#"{}{} {}
+
+  You can now 'cd' into '{}' and begin developing!
+
+  Upon doing so, {} will activate, populating your shell with the needed environment.
+"#,
+        Emoji("✔ ", "").green(),
+        style("Finished!").bold(),
+        Emoji("🎉 🎉 🎉", ""),
+        style(full_checkout_path.display()).bold(),
+        style("direnv").bold()
+    );
+
+    Ok(())
 }
 
 // -----------------------------------------------------------------------------
@@ -425,7 +441,7 @@ fn choose_scm() -> Result<Scm, Report> {
 }
 
 #[instrument]
-fn clone_src(args: &Args, scm: &Scm) -> Result<(), Report> {
+fn clone_src(args: &Args, scm: &Scm) -> Result<PathBuf, Report> {
     let theme = ColorfulTheme::default(); // XXX FIXME (aseipp): propagate
 
     // [tag:installer-setup-hashes] These hashes were taken from:
@@ -478,13 +494,13 @@ fn clone_src(args: &Args, scm: &Scm) -> Result<(), Report> {
         format!("{}/{}", path, repo)
     };
 
-    let full_checkout_path = Path::new(&full_checkout);
+    let full_checkout_path = PathBuf::from(&full_checkout);
     if full_checkout_path.exists() {
         println!(
             "The path {} already exists! Skipping",
             full_checkout_path.display(),
         );
-        return Ok(());
+        return Ok(full_checkout_path);
     }
 
     let upstream = &args.upstream;
@@ -507,7 +523,7 @@ fn clone_src(args: &Args, scm: &Scm) -> Result<(), Report> {
             .with_prompt(format!("{}\n  Do you wish to continue?", msg))
             .interact()?
     {
-        return Ok(());
+        return Ok(full_checkout_path);
     }
 
     if args.skip_confirm {
@@ -552,21 +568,36 @@ fn clone_src(args: &Args, scm: &Scm) -> Result<(), Report> {
         run_cmd!(direnv allow "${full_checkout_path}/.envrc")?;
     }
 
-    println!(
-        r#"{}{} {}
+    let watchman = Emoji("👀 ", "");
+    if !args.skip_confirm
+        && Confirm::with_theme(&theme)
+            .report(false)
+            .with_prompt(format!(
+                r#"Would you like to enable {}Watchman for file tracking?
 
-  You can now 'cd' into '{}' and begin developing!
-  
-  Upon doing so, {} will activate, populating your shell with the needed environment.
-"#,
-        Emoji("✔ ", "").green(),
-        style("Finished!").bold(),
-        Emoji("🎉 🎉 🎉", ""),
-        style(full_checkout_path.display()).bold(),
-        style("direnv").bold()
-    );
+    Watchman is an efficient daemon for tracking many file changes across a
+    large number of directories. The build system, Buck, can integrate directly
+    with Watchman to more efficiently track all file changes.
 
-    Ok(())
+    If you answer 'y' here, then Watchman will be enabled on-demand by creating
+    a transient systemd service. It is never installed permanently, and you can
+    remove this service at any time and it is not persistent. This is done by
+    creating a file named '.use_watchman' at the root of the repository.
+
+    You can undo any choice you make at any time.
+
+    Would you like to enable Watchman for file tracking?"#,
+                watchman
+            ))
+            .interact()?
+    {
+        run_cmd!(touch "${full_checkout_path}/.use_watchman")?;
+        println!("  {}Watchman enabled!\n", watchman);
+    } else {
+        println!("  {}Watchman not enabled\n", watchman);
+    }
+
+    Ok(full_checkout_path)
 }
 
 // -----------------------------------------------------------------------------
