@@ -36,7 +36,7 @@ environment? And what if I wrote it in **[Rust]** to learn more of it?
 nix run \
     --tarball-ttl 0 \
     --accept-flake-config \
-    'github:thoughtpolice/buck2-nix#setup?dir=buck/nix'
+    'github:thoughtpolice/buck2-nix?dir=buck/nix#setup'
 ```
 
 This tool will set up everything to build this repository correctly. I hope. The
