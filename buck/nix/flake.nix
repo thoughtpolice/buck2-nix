@@ -46,7 +46,7 @@
               # NOTE: this might break local 'nix run .' invocations
               #
               # XXX FIXME (aseipp): should this be filed as a nix bug?
-              postPatch = "ls -a && cd buck/nix/setup";
+              postPatch = "cd buck/nix";
             }) { };
         });
 
