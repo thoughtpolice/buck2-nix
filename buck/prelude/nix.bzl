@@ -26,7 +26,7 @@ def __mk_nix_build_cmd(ctx, hash, deps=[]):
     out = ctx.actions.declare_output("{}".format(hash))
     storepath = "/nix/store/{}".format(hash)
     args = cmd_args([
-        "nix", "build",
+        "nix", "build", "--accept-flake-config",
 
         # see [ref:cache-url-warning]
         "--extra-substituters", "https://buck2-nix-cache.aseipp.dev/",
