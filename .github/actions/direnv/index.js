@@ -5,7 +5,7 @@ async function run() {
     try {
         // [tag:direnv-allow-ci] We always allow any directory; this helps us avoid
         // cases where we want to make it 'easy' to run direnv on behalf of the user,
-        // like in the installer.
+        // like in the setup tool.
         cp.execSync('direnv allow', { encoding: "utf-8" });
         const envs = JSON.parse(cp.execSync('direnv export json', { encoding: "utf-8" }));
 

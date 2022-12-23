@@ -261,22 +261,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "installer"
-version = "0.1.0"
-dependencies = [
- "clap",
- "cmd_lib",
- "color-eyre",
- "console",
- "dialoguer",
- "eyre",
- "indicatif",
- "tracing",
- "tracing-error",
- "tracing-subscriber",
-]
-
-[[package]]
 name = "instant"
 version = "0.1.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -569,6 +553,22 @@ dependencies = [
  "itoa",
  "ryu",
  "serde",
+]
+
+[[package]]
+name = "setup"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "cmd_lib",
+ "color-eyre",
+ "console",
+ "dialoguer",
+ "eyre",
+ "indicatif",
+ "tracing",
+ "tracing-error",
+ "tracing-subscriber",
 ]
 
 [[package]]

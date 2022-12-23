@@ -28,9 +28,34 @@
 
     in flake-utils.lib.eachSystem systems (system:
       let
+        # This overlay is used to add the setup tool to the normal package set.
+        myOverlay = (final: _: {
+          our_setup_tool = final.callPackage (
+            { stdenv, rustPlatform }:
+
+            rustPlatform.buildRustPackage rec {
+              name = "setup";
+              src = self;
+              cargoLock.lockFile = ./setup/Cargo.lock;
+              # we have to cd into this directory because, when 'nix run' is used to
+              # run the setup tool, the ?dir parameter only refers to where the
+              # flake/nix code is located; the build process otherwise still execues
+              # within the git root dir (e.g. so ${self} points to the git root) and
+              # so we need to move into place before building rust code
+              #
+              # NOTE: this might break local 'nix run .' invocations
+              #
+              # XXX FIXME (aseipp): should this be filed as a nix bug?
+              postPatch = "ls -a && cd buck/nix/setup";
+            }) { };
+        });
+
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ (import rust-overlay) ];
+          overlays = [
+            (import rust-overlay)
+            myOverlay
+          ];
 
           # [tag:ca-derivations] One day, we'll enable content-addressable
           # derivations for all outputs here. This should significantly help any
@@ -94,5 +119,7 @@
 
           attrs = pkgs.writeText "attrs.txt" (pkgs.lib.concatStringsSep "\n" ([ "world" ] ++ (builtins.attrNames flatJobs)));
         } // flatJobs;
+
+        apps.setup = flake-utils.lib.mkApp { drv = pkgs.our_setup_tool; };
       });
 }

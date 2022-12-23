@@ -23,12 +23,12 @@ Nothing is stable and everything is permitted. Do not taunt happy fun ball.
 3) `trusted-users` includes your `$USER`
 
 `direnv` will warn you if either 2 or 3 are not satisfied when you move into
-this directory. See **[.envrc](/.envrc)** for details. The automated installer
+this directory. See **[.envrc](/.envrc)** for details. The automated setup tool
 also warns you about these facts.
 
 ## fully automated setup
 
-**Experiment**: what if we used `nix run` as an "installer" to setup `direnv` and
+**Experiment**: what if we used `nix run` as an "setup tool" to setup `direnv` and
 `nix`'s configuration? In other words, use it to bootstrap the development
 environment? And what if I wrote it in **[Rust]** to learn more of it?
 
@@ -36,17 +36,18 @@ environment? And what if I wrote it in **[Rust]** to learn more of it?
 nix run \
     --tarball-ttl 0 \
     --accept-flake-config \
-    'github:thoughtpolice/buck2-nix?dir=installer'
+    'github:thoughtpolice/buck2-nix?dir=buck/nix/setup'
 ```
 
 This tool will set up everything to build this repository correctly. I hope. The
 goal is that Nix along with the above command should be able to completely
 bootstrap your working environment. If it doesn't work, please [let me
-know](/issues). Check out the source code under **[./installer/](/installer)**
+know](/issues). Check out the source code under
+**[./buck/nix/setup/](/buck/nix/setup)**
 
 ## treading water
 
-Assuming the installer worked with the default configuration to clone under
+Assuming the setup tool worked with the default configuration to clone under
 `$HOME`:
 
 ```bash
