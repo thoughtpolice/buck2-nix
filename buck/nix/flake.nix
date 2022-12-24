@@ -77,6 +77,7 @@
             inherit (pkgs.gitAndTools) gh git;
             inherit (pkgs)
               tagref sapling jq getopt jujutsu
+              cargo # XXX FIXME (aseipp): needed by update.sh for buck2; get rid of somehow...
               ;
 
             watchman = pkgs.callPackage ./buck2/watchman.nix { };
