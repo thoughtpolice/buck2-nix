@@ -72,10 +72,22 @@ __nix_store_path = rule(
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-# A struct containing the exported API.
-nix = struct(
-    toolchain = __nix_toolchain,
-    store_path = __nix_store_path,
-)
+def interpret_toolchains(toolchains: {"string": "string"}, depgraph):
+    for t, h in toolchains.items():
+        drv = depgraph[h]["d"]
+        __nix_toolchain(
+            name = t,
+            hash = h,
+            path = ":{}".format(h),
+            drv = drv,
+            visibility = ["PUBLIC"],
+        )
+
+    for h, o in depgraph.items():
+        __nix_store_path(
+            name = h,
+            drv = o["d"],
+            refs = [ ":{}".format(r) for r in o["r"] ],
+        )
 
 ## ---------------------------------------------------------------------------------------------------------------------

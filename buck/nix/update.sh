@@ -128,9 +128,10 @@ if [ "$TOOLCHAINS" = "1" ]; then
   nix build --accept-flake-config --print-out-paths "${root}/buck/nix#world"
 
   set -x
-
-  # Build the Buck dependency graph for all Nix paths
-  (cat <<EOF
+  jq -r '.toolchainPackages | to_entries[] | [ .key, .value ] | join(" ")' ./result \
+    | while read -r name out; do echo "{ \"${name}\": \"${out:11}\" }"; done \
+    | jq -n 'reduce inputs as $in (null; . + $in)' \
+    | (cat <<EOF
 # SPDX-License-Identifier: MIT OR Apache-2.0
 
 # NOTE: DO NOT EDIT MANUALLY!
@@ -140,52 +141,26 @@ if [ "$TOOLCHAINS" = "1" ]; then
 #
 # NOTE: Please run the above command to regenerate this file.
 
-load("@prelude//:nix.bzl", "nix")
+# @nix//toolchains/data.bzl -- nix dependency graph information for buck
 
+# A mapping of all publicly available toolchains for Buck targets to consume,
+# keyed by name, with their Nix hash as the value.
+toolchains = $(cat /dev/stdin)
 EOF
-  ) > "${root}/buck/nix/toolchains/TARGETS"
-
-  depgraph="${root}/buck/nix/toolchains/depgraph.json"
+    ) > "${root}/buck/nix/toolchains/data.bzl"
   jq -r '.toolchainPackages | to_entries[] | .value' ./result \
     | xargs nix path-info -r --json \
     | jq '.[] | with_entries(select([.key] | inside(["path","deriver","references"]))) | { (.path[11:]): { "d": .deriver[11:], "r": (.references - [.path])  | map(.[11:]) } }' \
     | jq -n 'reduce inputs as $in (null; . + $in)' \
-    > "$depgraph"
+    | (cat <<EOF
 
-  jq -r '.toolchainPackages | to_entries[] | [ .key, .value ] | join(" ")' ./result \
-    | while read -r name out; do
-        dat=$(jq -r ".[\"${out:11}\"]" < "$depgraph")
-        d=$(echo "$dat" | jq -r '.d')
-
-        cat << EOF
-nix.toolchain(
-  name = "${name}",
-  hash = "${out:11}",
-  path = ":${out:11}",
-  drv = "${d:11}",
-  visibility = ["PUBLIC"],
-)
-
+# The "shallow" dependency graph of all Nix hashes, keyed by Nix hash, with
+# the value being a list of Nix hashes that are referenced by the key.
+# This graph is used to download dependencies on-demand when building targets,
+# but is not publicly exposed; only 'toolchains' is.
+depgraph = $(cat /dev/stdin)
 EOF
-      done \
-    >> "${root}/buck/nix/toolchains/TARGETS"
-
-  jq -r 'to_entries[] | .key' < "$depgraph" \
-    | while read -r path; do
-        dat=$(jq -r ".[\"${path}\"]" < "$depgraph")
-        d=$(echo "$dat" | jq -r '.d')
-        r=$(echo "$dat" | jq --indent 4 -r '.r | map(":\(.)")' | sed 's/^\]/  \]/')
-        cat << EOF
-nix.store_path(
-  name = "${path}",
-  drv = "${d}",
-  refs = ${r},
-)
-
-EOF
-      done \
-    >> "${root}/buck/nix/toolchains/TARGETS"
-  rm "$depgraph"
+    ) >> "${root}/buck/nix/toolchains/data.bzl"
   rm ./result*
 fi
 
