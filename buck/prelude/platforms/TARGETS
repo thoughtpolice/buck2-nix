@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: © 2022 Meta Platforms, Inc. and affiliates.
+# SPDX-FileCopyrightText: © 2022 Austin Seipp
+# SPDX-License-Identifier: MIT OR Apache-2.0
+
+load(":defs.bzl", "execution_platform", "host_config")
+
+execution_platform(
+    name = "default",
+    cpu_configuration = host_config.cpu,
+    os_configuration = host_config.os,
+    visibility = [ "prelude//...", "nix//..." ],
+)

@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: © 2022 Meta Platforms, Inc. and affiliates.
+# SPDX-FileCopyrightText: © 2022 Austin Seipp
+# SPDX-License-Identifier: MIT OR Apache-2.0
+
+load("@prelude//config.bzl", "config_setting")
+
+config_setting(
+    name = "x86_64",
+    constraint_values = [ "prelude//cpu/constraints:x86_64" ],
+    visibility = [ "PUBLIC" ],
+)
+
+config_setting(
+    name = "aarch64",
+    constraint_values = [ "prelude//cpu/constraints:aarch64" ],
+    visibility = [ "PUBLIC" ],
+)

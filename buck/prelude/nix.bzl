@@ -15,7 +15,27 @@ load(
   "NixStoreOutputInfo",
 )
 
+load(
+  "@prelude//platforms/defs.bzl",
+  "host_config",
+)
+
 ## ---------------------------------------------------------------------------------------------------------------------
+
+def __execution_platform_nix_name(ctx) -> str.type:
+    config_info = ctx.attrs._platform_info[ExecutionPlatformInfo].configuration
+    constraints = config_info.constraints
+    arch = None
+    os = None
+
+    for k, v in constraints.items():
+        if k.name == "cpu": arch = v
+        if k.name == "os":  os = v
+
+    if arch == None or os == None:
+        fail("could not determine architecture and/or OS")
+
+    return "{}-{}".format(arch.label.name, os.label.name)
 
 def __mk_nix_build_cmd(ctx, hash, deps=[]):
     # [tag:bzl-nix-cell] This rule should never be instantiated anywhere other
@@ -59,6 +79,7 @@ __nix_toolchain = rule(
         "path": attrs.dep(),
         "hash": attrs.string(),
         "drv": attrs.string(),
+        "_platform_info": attrs.default_only(attrs.dep(default = "@prelude//platforms:default")),
     },
 )
 
@@ -67,12 +88,17 @@ __nix_store_path = rule(
     attrs = {
         "drv": attrs.string(),
         "refs": attrs.list(attrs.dep(), default = []),
+        "_platform_info": attrs.default_only(attrs.dep(default = "@prelude//platforms:default")),
     },
 )
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def interpret_toolchains(toolchains: {"string": "string"}, depgraph):
+def interpret_toolchains(_toolchains, _depgraph):
+    nix_system = host_config.nix_system.replace("-", "_") # fix name for struct
+    toolchains = getattr(_toolchains, nix_system)
+    depgraph = getattr(_depgraph, nix_system)
+
     for t, h in toolchains.items():
         drv = depgraph[h]["d"]
         __nix_toolchain(
@@ -80,7 +106,7 @@ def interpret_toolchains(toolchains: {"string": "string"}, depgraph):
             hash = h,
             path = ":{}".format(h),
             drv = drv,
-            visibility = ["PUBLIC"],
+            visibility = [ "PUBLIC" ],
         )
 
     for h, o in depgraph.items():

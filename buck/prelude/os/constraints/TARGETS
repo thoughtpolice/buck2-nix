@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: © 2022 Meta Platforms, Inc. and affiliates.
+# SPDX-FileCopyrightText: © 2022 Austin Seipp
+# SPDX-License-Identifier: MIT OR Apache-2.0
+
+load("@prelude//config.bzl", "constraint_setting", "constraint_value")
+
+constraint_setting(name = "os", visibility = [ "PUBLIC" ])
+constraint_value(name = "linux",  constraint_setting = ":os", visibility = [ "PUBLIC" ])
+constraint_value(name = "darwin", constraint_setting = ":os", visibility = [ "PUBLIC" ])

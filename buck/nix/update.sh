@@ -126,6 +126,7 @@ fi
 
 if [ "$TOOLCHAINS" = "1" ]; then
   nix build --accept-flake-config --print-out-paths "${root}/buck/nix#world"
+  currentSystem=$(nix eval --impure --raw --expr 'builtins.currentSystem')
 
   set -x
   jq -r '.toolchainPackages | to_entries[] | [ .key, .value ] | join(" ")' ./result \
@@ -147,7 +148,7 @@ if [ "$TOOLCHAINS" = "1" ]; then
 # keyed by name, with their Nix hash as the value.
 toolchains = $(cat /dev/stdin)
 EOF
-    ) > "${root}/buck/nix/toolchains/data.bzl"
+    ) > "${root}/buck/nix/toolchains/bzl/${currentSystem}.bzl"
   jq -r '.toolchainPackages | to_entries[] | .value' ./result \
     | xargs nix path-info -r --json \
     | jq '.[] | with_entries(select([.key] | inside(["path","deriver","references"]))) | { (.path[11:]): { "d": .deriver[11:], "r": (.references - [.path])  | map(.[11:]) } }' \
@@ -160,7 +161,7 @@ EOF
 # but is not publicly exposed; only 'toolchains' is.
 depgraph = $(cat /dev/stdin)
 EOF
-    ) >> "${root}/buck/nix/toolchains/data.bzl"
+    ) >> "${root}/buck/nix/toolchains/bzl/${currentSystem}.bzl"
   rm ./result*
 fi
 
