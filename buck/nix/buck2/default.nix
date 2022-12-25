@@ -11,7 +11,9 @@ let
   rustChannel = "nightly";
   rustVersion = "2022-09-27";
 
-  my-rust-bin = rust-bin."${rustChannel}"."${rustVersion}".default;
+  my-rust-bin = rust-bin."${rustChannel}"."${rustVersion}".default.override {
+    extensions = [ "rust-analyzer" ];
+  };
 
   rustPlatform = makeRustPlatform {
     rustc = my-rust-bin;
