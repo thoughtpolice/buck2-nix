@@ -78,7 +78,7 @@ __nix_toolchain = rule(
     attrs = {
         "path": attrs.dep(),
         "hash": attrs.string(),
-        "drv": attrs.string(),
+        "drv": attrs.option(attrs.string(), default = None),
         "_platform_info": attrs.default_only(attrs.dep(default = "@prelude//platforms:default")),
     },
 )
@@ -86,7 +86,7 @@ __nix_toolchain = rule(
 __nix_store_path = rule(
     impl = __nix_store_path_0,
     attrs = {
-        "drv": attrs.string(),
+        "drv": attrs.option(attrs.string(), default = None),
         "refs": attrs.list(attrs.dep(), default = []),
         "_platform_info": attrs.default_only(attrs.dep(default = "@prelude//platforms:default")),
     },
@@ -100,19 +100,18 @@ def interpret_toolchains(_toolchains, _depgraph):
     depgraph = getattr(_depgraph, nix_system)
 
     for t, h in toolchains.items():
-        drv = depgraph[h]["d"]
         __nix_toolchain(
             name = t,
             hash = h,
             path = ":{}".format(h),
-            drv = drv,
+            drv = depgraph[h].get("d", None),
             visibility = [ "PUBLIC" ],
         )
 
     for h, o in depgraph.items():
         __nix_store_path(
             name = h,
-            drv = o["d"],
+            drv = o.get("d", None),
             refs = [ ":{}".format(r) for r in o["r"] ],
         )
 

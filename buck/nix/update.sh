@@ -151,7 +151,7 @@ EOF
     ) > "${root}/buck/nix/toolchains/bzl/${currentSystem}.bzl"
   jq -r '.toolchainPackages | to_entries[] | .value' ./result \
     | xargs nix path-info -r --json \
-    | jq '.[] | with_entries(select([.key] | inside(["path","deriver","references"]))) | { (.path[11:]): { "d": .deriver[11:], "r": (.references - [.path])  | map(.[11:]) } }' \
+    | jq '.[] | with_entries(select([.key] | inside(["path","deriver","references"]))) | { (.path[11:]): ({ "d": .deriver[11:], "r": (.references - [.path])  | map(.[11:]) } | del(..|select(. == null))) }' \
     | jq -n 'reduce inputs as $in (null; . + $in)' \
     | (cat <<EOF
 
