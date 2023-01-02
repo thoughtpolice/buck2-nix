@@ -4,6 +4,7 @@
     "files.associations": {
         // just use python for starlark, until we figure something out
         "*.bzl": "python",
+        "*.bxl": "python",
         "TARGETS": "python",
     },
 }
