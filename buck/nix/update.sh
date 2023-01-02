@@ -35,7 +35,7 @@ Usage:
     --flake|-f         Step 1: Update the flake.lock file.
     --buck2|-b         Step 2: Update buck2 nix expression
     --toolchains|-t    Step 3: Re-generate toolchain descriptions
-    --cache|-c         Step 4: Re-generate Buck dependency data
+    --cache|-c         Step 4: Upload toolchain data to cache
 
   Or, to do everything at once:
 
