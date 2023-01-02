@@ -47,13 +47,14 @@ EOF
 
 # ------------------------------------------------------------------------------
 
-PARSED_ARGUMENTS=$(getopt -an update.sh -o fbtca --long flake,buck2,toolchains,cache,all -- "$@")
+PARSED_ARGUMENTS=$(getopt -an update.sh -o hfbtca --long help,flake,buck2,toolchains,cache,all -- "$@")
 VALID_ARGUMENTS=$?
 [ "$VALID_ARGUMENTS" != "0" ] && usage
 
 eval set -- "$PARSED_ARGUMENTS"
 while : ; do
   case "$1" in
+    -h | --help)       usage ;;
     -f | --flake)      FLAKE=1      ; shift ;;
     -b | --buck2)      BUCK2=1      ; shift ;;
     -t | --toolchains) TOOLCHAINS=1 ; shift ;;
