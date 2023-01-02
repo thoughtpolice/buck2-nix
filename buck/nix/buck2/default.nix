@@ -22,19 +22,25 @@ let
 
 in rustPlatform.buildRustPackage rec {
   pname = "buck2";
-  version = "unstable-2022-12-24";
+  version = "unstable-2023-01-02";
 
   src = fetchFromGitHub {
     owner = "facebookincubator";
     repo = "buck2";
-    rev = "e65abe7f5ed31c49d70e1e032bd4c08413930c60";
-    hash = "sha256-SwqMKFYSmrTK2tErYhoxiTvSAsNlpTBKxm9VaOtzgPQ=";
+    rev = "d3ef67734cc015fe20fb37e8ad2a5224daaf5860";
+    hash = "sha256-D74TtPM7MG8P7JhhjDBhODGWn+pkKowteRWKGXmJLoE=";
   };
 
   cargoLock = {
     lockFile = ./Cargo.lock;
     outputHashes = {};
   };
+
+  PROTOC = "${protobuf}/bin/protoc";
+  PROTOC_INCLUDE = "${protobuf}/include";
+
+  nativeBuildInputs = [ protobuf pkg-config ];
+  buildInputs = [ openssl sqlite ];
 
   doCheck = false;
 
@@ -43,6 +49,10 @@ in rustPlatform.buildRustPackage rec {
     # circuit to 'notify' on aarch64; this lets us keep things compatible on
     # both aarch64-linux and x86_64-linux
     ./aarch64-linux-notify-hack.patch
+
+    # Disable vendored protoc binaries, since we can't patchelf them
+    # XXX FIXME (aseipp): submit upstream bug
+    ./no-vendored-protoc.patch
   ];
 
   # Put in the Cargo.lock file.
@@ -62,7 +72,4 @@ in rustPlatform.buildRustPackage rec {
     mv $out/bin/starlark  $out/bin/buck-starlark
     mv $out/bin/read_dump $out/bin/buck-read_dump
   '';
-
-  nativeBuildInputs = [ protobuf pkg-config ];
-  buildInputs = [ openssl sqlite ];
 }

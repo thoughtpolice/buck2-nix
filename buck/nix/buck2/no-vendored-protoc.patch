@@ -1,0 +1,29 @@
+commit e92d67e4568c5fa6bcfbbd7ee6e16b9f132114a9
+Author: Austin Seipp <aseipp@pobox.com>
+Date:   Mon Jan 2 00:46:31 2023 -0600
+
+    hack(protoc): do not use protoc-bin-vendored
+    
+    This package doesn't work under the Nix sandbox when using Cargo,
+    because the vendored binaries can't easily be patchelf'd to look at the
+    correct libc paths.
+    
+    Instead, just rely on PROTOC and PROTOC_INCLUDE being set manually.
+    
+    Signed-off-by: Austin Seipp <aseipp@pobox.com>
+
+diff --git a/app/buck2_protoc_dev/src/lib.rs b/app/buck2_protoc_dev/src/lib.rs
+index 69980b9a..fecdde46 100644
+--- a/app/buck2_protoc_dev/src/lib.rs
++++ b/app/buck2_protoc_dev/src/lib.rs
+@@ -80,8 +80,8 @@ impl Builder {
+ 
+     pub fn setup_protoc(self) -> Self {
+         // It would be great if there were on the config rather than an env variables...
+-        maybe_set_protoc();
+-        maybe_set_protoc_include();
++        //maybe_set_protoc();
++        //maybe_set_protoc_include();
+         self
+     }
+ 
