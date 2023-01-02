@@ -38,6 +38,13 @@ in rustPlatform.buildRustPackage rec {
 
   doCheck = false;
 
+  patches = [
+    # XXX FIXME (aseipp): Disable watchman support entirely and always short-
+    # circuit to 'notify' on aarch64; this lets us keep things compatible on
+    # both aarch64-linux and x86_64-linux
+    ./aarch64-linux-notify-hack.patch
+  ];
+
   # Put in the Cargo.lock file.
   #
   # XXX NOTE (aseipp): Also, for now, suppress a really annoying 'tracing'

@@ -22,8 +22,6 @@
       systems = with flake-utils.lib; [
         system.x86_64-linux
         system.aarch64-linux
-        system.x86_64-darwin
-        system.aarch64-darwin
       ];
 
     in flake-utils.lib.eachSystem systems (system:
@@ -72,7 +70,7 @@
         };
 
         jobs = rec {
-          packages = flake-utils.lib.flattenTree rec {
+          packages = flake-utils.lib.flattenTree (rec {
             # These are all tools from upstream
             inherit (pkgs.gitAndTools) gh git;
             inherit (pkgs)
@@ -80,9 +78,12 @@
               cargo # XXX FIXME (aseipp): needed by update.sh for buck2; get rid of somehow...
               ;
 
-            watchman = pkgs.callPackage ./buck2/watchman.nix { };
             buck2 = pkgs.callPackage ./buck2 { };
-          };
+          }) // (pkgs.lib.optionalAttrs (system == flake-utils.lib.system.x86_64-linux) {
+	    # watchman is only supported on aarch64-linux for now; in theory it
+	    # should be possible to port through the github release
+            watchman = pkgs.callPackage ./buck2/watchman.nix { };
+          });
 
           toolchains = import ./toolchains { inherit pkgs; };
 
