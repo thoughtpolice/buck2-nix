@@ -87,7 +87,7 @@ if [ "$BUCK2" = "1" ]; then
   echo "BUCK2: generating new version information"
   r=$(curl -sq https://api.github.com/repos/facebookincubator/buck2/commits/main | jq -r '.sha')
   v=unstable-$(date +"%Y-%m-%d")
-  i=$(nix run nixpkgs#nix-prefetch-git -- --quiet --url https://github.com/facebookincubator/buck2 --rev "$r") \
+  i=$(nix-prefetch-git --quiet --url https://github.com/facebookincubator/buck2 --rev "$r") \
   h=$(echo "$i" | jq -r '.sha256' | xargs nix hash to-sri --type sha256)
   p=$(echo "$i" | jq -r '.path')
 

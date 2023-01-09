@@ -110,7 +110,7 @@
             inherit (pkgs.gitAndTools) gh git;
             inherit (pkgs)
               tagref sapling jq getopt jujutsu
-              cargo # XXX FIXME (aseipp): needed by update.sh for buck2; get rid of somehow...
+              cargo nix-prefetch-git # XXX FIXME (aseipp): needed by update.sh for buck2; get rid of somehow...
               ;
 
             # Finally, any globally useful tools we package here go next. This is primarily
