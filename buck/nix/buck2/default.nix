@@ -22,13 +22,13 @@ let
 
 in rustPlatform.buildRustPackage rec {
   pname = "buck2";
-  version = "unstable-2023-01-02";
+  version = "unstable-2023-01-09";
 
   src = fetchFromGitHub {
     owner = "facebookincubator";
     repo = "buck2";
-    rev = "d3ef67734cc015fe20fb37e8ad2a5224daaf5860";
-    hash = "sha256-D74TtPM7MG8P7JhhjDBhODGWn+pkKowteRWKGXmJLoE=";
+    rev = "4e3bb60d5952e7b7557bcd5c829e1a4bee493083";
+    hash = "sha256-DVp6wmRNu8obQSupJ6ghiG75gbRMWRz+a0/OPpJjOJA=";
   };
 
   cargoLock = {
@@ -36,8 +36,8 @@ in rustPlatform.buildRustPackage rec {
     outputHashes = {};
   };
 
-  PROTOC = "${protobuf}/bin/protoc";
-  PROTOC_INCLUDE = "${protobuf}/include";
+  BUCK2_BUILD_PROTOC = "${protobuf}/bin/protoc";
+  BUCK2_BUILD_PROTOC_INCLUDE = "${protobuf}/include";
 
   nativeBuildInputs = [ protobuf pkg-config ];
   buildInputs = [ openssl sqlite ];
@@ -49,10 +49,6 @@ in rustPlatform.buildRustPackage rec {
     # circuit to 'notify' on aarch64; this lets us keep things compatible on
     # both aarch64-linux and x86_64-linux
     ./aarch64-linux-notify-hack.patch
-
-    # Disable vendored protoc binaries, since we can't patchelf them
-    # XXX FIXME (aseipp): submit upstream bug
-    ./no-vendored-protoc.patch
   ];
 
   # Put in the Cargo.lock file.
