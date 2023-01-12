@@ -55,10 +55,12 @@ eval set -- "$PARSED_ARGUMENTS"
 while : ; do
   case "$1" in
     -h | --help)       usage ;;
-    -f | --flake)      FLAKE=1      ; shift ;;
-    -b | --buck2)      BUCK2=1      ; shift ;;
-    -t | --toolchains) TOOLCHAINS=1 ; shift ;;
-    -c | --cache)      CACHE=1      ; shift ;;
+    # XXX (aseipp): always update toolchains when updating the flake, since not
+    # doing so is basically an error
+    -f | --flake)      FLAKE=1; TOOLCHAINS=1 ; shift ;;
+    -b | --buck2)      BUCK2=1               ; shift ;;
+    -t | --toolchains) TOOLCHAINS=1          ; shift ;;
+    -c | --cache)      CACHE=1               ; shift ;;
     -a | --all)        FLAKE=1; BUCK2=1; TOOLCHAINS=1; CACHE=1; shift ;;
 
     --) shift; break ;;
