@@ -74,7 +74,7 @@ printf "\nUpdating flake=$FLAKE, buck2=$BUCK2, toolchains=$TOOLCHAINS, cache=$CA
 ## Step 1: Update the flake.lock file.
 
 if [ "$FLAKE" = "1" ]; then
-  nix flake update "${root}/buck/nix"
+  nix flake --accept-flake-config update "${root}/buck/nix"
 fi
 
 # ------------------------------------------------------------------------------
