@@ -15,13 +15,12 @@ load("@prelude//basics/providers.bzl", "NixStoreOutputInfo")
 ## ---------------------------------------------------------------------------------------------------------------------
 
 def __run_bash_impl(ctx):
-    out = ctx.actions.declare_output("{}.sh".format(ctx.label.name))
-    result = ctx.actions.copy_file(out, ctx.attrs.src)
+    cmd = [
+        cmd_args(ctx.attrs._bash[NixStoreOutputInfo].path, format="{}/bin/bash"),
+        ctx.attrs.src
+    ]
 
-    cmd = [ cmd_args(ctx.attrs._bash[NixStoreOutputInfo].path, format="{}/bin/bash") ]
-    cmd.append(result)
-
-    return [ DefaultInfo(default_outputs = [out]), RunInfo(args = cmd) ]
+    return [ DefaultInfo(), RunInfo(args = cmd) ]
 
 run_bash = rule(
     impl = __run_bash_impl,
