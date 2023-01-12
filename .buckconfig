@@ -6,6 +6,12 @@ nix = buck/nix
 [buildfile]
 name=TARGETS
 
+[build]
+execution_platforms = prelude//platforms:default
+
+[parser]
+target_platform_detector_spec = target:root//...->prelude//platforms:default
+
 [project]
 ignore=.git,.sl,.jj
 

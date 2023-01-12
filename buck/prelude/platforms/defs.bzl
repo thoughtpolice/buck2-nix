@@ -67,3 +67,21 @@ host_config = struct(
     os = _host_os_configuration(),
     nix_system = _nix_system(),
 )
+
+def generate_platforms(variants):
+    for (cpu, os) in variants:
+        execution_platform(
+            name = "{}-{}".format(cpu, os),
+            cpu_configuration = "prelude//cpu:{}".format(cpu),
+            os_configuration = "prelude//os:{}".format(os),
+            visibility = [ "prelude//...", "nix//..." ],
+        )
+
+    # Finally, generate the default platform selection, which matches the host
+    # platform.
+    execution_platform(
+        name = "default",
+        cpu_configuration = _host_cpu_configuration(),
+        os_configuration = _host_os_configuration(),
+        visibility = [ "prelude//...", "nix//..." ],
+    )

@@ -1,6 +1,14 @@
+load("@prelude//:alias.bzl", "alias")
 load("@prelude//:bash.bzl", "run_bash")
 
 run_bash(
     name = "echo-test",
     src = "echo-test.sh",
+)
+
+alias(
+    name = "testing",
+    actual = select({
+        "prelude//os:linux": ":echo-test",
+    }),
 )

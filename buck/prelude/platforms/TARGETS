@@ -2,11 +2,10 @@
 # SPDX-FileCopyrightText: © 2022 Austin Seipp
 # SPDX-License-Identifier: MIT OR Apache-2.0
 
-load(":defs.bzl", "execution_platform", "host_config")
+load(":defs.bzl", "generate_platforms")
 
-execution_platform(
-    name = "default",
-    cpu_configuration = host_config.cpu,
-    os_configuration = host_config.os,
-    visibility = [ "prelude//...", "nix//..." ],
-)
+generate_platforms([
+    ("x86_64", "linux"),
+    ("aarch64", "linux"),
+    # XXX FIXME (aseipp): macOS support
+])
