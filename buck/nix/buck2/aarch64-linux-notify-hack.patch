@@ -3,20 +3,20 @@ Author: Austin Seipp <aseipp@pobox.com>
 Date:   Sat Dec 24 21:28:50 2022 -0600
 
     hack(file_watcher): short-circuit aarch64-linux to "notify"
-    
+
     Watchman doesn't even have binaries for this platform yet, so supporting
     it isn't needed.
-    
+
     Signed-off-by: Austin Seipp <aseipp@pobox.com>
 
-diff --git a/buck2_server/src/file_watcher/mod.rs b/buck2_server/src/file_watcher/mod.rs
+diff --git a/app/buck2_server/src/file_watcher/mod.rs b/app/buck2_server/src/file_watcher/mod.rs
 index 229b6de8..47c4585b 100644
---- a/buck2_server/src/file_watcher/mod.rs
-+++ b/buck2_server/src/file_watcher/mod.rs
+--- a/app/buck2_server/src/file_watcher/mod.rs
++++ b/app/buck2_server/src/file_watcher/mod.rs
 @@ -47,7 +47,18 @@ impl dyn FileWatcher {
              "watchman"
          };
- 
+
 -        match root_config.get("buck2", "file_watcher").unwrap_or(default) {
 +        let choice = if cfg!(target_arch = "aarch64") && cfg!(target_os = "linux") {
 +            // XXX FIXME (aseipp): always default to notify on aarch64, as watchman

@@ -22,13 +22,13 @@ let
 
 in rustPlatform.buildRustPackage rec {
   pname = "buck2";
-  version = "unstable-2023-01-12";
+  version = "unstable-2023-01-20";
 
   src = fetchFromGitHub {
     owner = "facebookincubator";
     repo = "buck2";
-    rev = "1207d5d103094a2bb837087442593d73db2394ff";
-    hash = "sha256-HG/xB6iJzUTUo15FGPeJ4vE6tJAUnJqQdlME7V4iLqk=";
+    rev = "9f4c8d0289e1d7546bd3aa88aadd4b20c79d52ff";
+    hash = "sha256-esWZ2cqIGcF4156Vc2MJoEyPhWDH0lOROh40vq8b0Jo=";
   };
 
   cargoLock = {
@@ -58,7 +58,7 @@ in rustPlatform.buildRustPackage rec {
   # buck2 with buck2 under Nix (ugh...) then we can get rid of this.
   postPatch = ''
     cp ${./Cargo.lock} Cargo.lock
-    substituteInPlace buck2_server/src/daemon/common.rs \
+    substituteInPlace app/buck2_server/src/daemon/common.rs \
       --replace 'tracing::warn!("Cargo build detected:' '//tracing::warn!("Cargo build detected:'
   '';
 

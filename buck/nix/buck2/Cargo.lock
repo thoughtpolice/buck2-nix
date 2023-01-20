@@ -233,9 +233,9 @@ dependencies = [
 
 [[package]]
 name = "async-recursion"
-version = "1.0.0"
+version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2cda8f4bcc10624c4e85bc66b3f452cca98cfa5ca002dc83a16aad2367641bea"
+checksum = "3b015a331cc64ebd1774ba119538573603427eaace0a1950c423ab971f903796"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -265,9 +265,9 @@ dependencies = [
 
 [[package]]
 name = "async-trait"
-version = "0.1.61"
+version = "0.1.62"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "705339e0e4a9690e2908d2b3d049d85682cf19fbd5782494498fbf7003a6a282"
+checksum = "689894c2db1ea643a50834b999abf1c110887402542955ff5451dab8f861f9ed"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -366,6 +366,12 @@ name = "base64"
 version = "0.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9e1b586273c5702936fe7b7d6896644d8be71e6314cfe09d3167c95f712589e8"
+
+[[package]]
+name = "base64"
+version = "0.21.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a4a4ddaa51a5bc52a6948f74c06d20aaaddb71924eab79b8c97a8c556e942d6a"
 
 [[package]]
 name = "beef"
@@ -477,6 +483,7 @@ dependencies = [
  "anyhow",
  "async-trait",
  "buck2_build_api",
+ "buck2_cli_proto",
  "buck2_client_ctx",
  "buck2_common",
  "buck2_core",
@@ -489,9 +496,9 @@ dependencies = [
  "buck2_query",
  "buck2_server_ctx",
  "clap 3.2.23",
- "cli_proto",
  "derive_more",
  "dice",
+ "dupe",
  "futures 0.3.25",
  "gazebo",
  "indent_write",
@@ -516,6 +523,7 @@ dependencies = [
  "blake3",
  "buck2_build_api_derive",
  "buck2_build_info",
+ "buck2_cli_proto",
  "buck2_common",
  "buck2_core",
  "buck2_data",
@@ -528,12 +536,12 @@ dependencies = [
  "buck2_query_parser",
  "buck2_test_api",
  "chrono",
- "cli_proto",
  "crossbeam-epoch",
  "dashmap 4.0.2",
  "derivative",
  "derive_more",
  "dice",
+ "dupe",
  "either",
  "fancy-regex 0.5.0",
  "fbinit",
@@ -602,6 +610,7 @@ dependencies = [
  "anyhow",
  "async-trait",
  "buck2_build_api",
+ "buck2_cli_proto",
  "buck2_common",
  "buck2_core",
  "buck2_data",
@@ -615,10 +624,10 @@ dependencies = [
  "buck2_query_parser",
  "buck2_server_ctx",
  "clap 3.2.23",
- "cli_proto",
  "derivative",
  "derive_more",
  "dice",
+ "dupe",
  "either",
  "fbinit",
  "futures 0.3.25",
@@ -636,6 +645,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "buck2_cli_proto"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "buck2_data",
+ "buck2_protoc_dev",
+ "prost",
+ "prost-types",
+ "serde",
+ "thiserror",
+ "tonic",
+]
+
+[[package]]
 name = "buck2_client"
 version = "0.1.0"
 dependencies = [
@@ -644,18 +667,21 @@ dependencies = [
  "async-compression",
  "async-recursion",
  "async-trait",
+ "buck2_cli_proto",
  "buck2_client_ctx",
  "buck2_common",
  "buck2_core",
  "buck2_data",
  "buck2_events",
  "buck2_execute",
+ "buck2_query_common",
+ "buck2_util",
  "bytes 1.3.0",
  "chrono",
  "clap 3.2.23",
- "cli_proto",
  "crossterm",
  "dice",
+ "dupe",
  "futures 0.3.25",
  "gazebo",
  "httparse",
@@ -678,6 +704,7 @@ dependencies = [
  "tokio",
  "tokio-stream",
  "tokio-util 0.7.4",
+ "tracing",
  "walkdir",
 ]
 
@@ -691,19 +718,20 @@ dependencies = [
  "async-trait",
  "blake3",
  "buck2_build_info",
+ "buck2_cli_proto",
  "buck2_common",
  "buck2_core",
  "buck2_data",
  "buck2_events",
  "buck2_test_api",
+ "buck2_util",
  "bytes 1.3.0",
  "chrono",
  "clap 3.2.23",
- "cli_proto",
  "crossterm",
  "derivative",
  "derive_more",
- "dice",
+ "dupe",
  "fbinit",
  "fs2",
  "futures 0.3.25",
@@ -756,6 +784,7 @@ dependencies = [
  "derive_more",
  "dice",
  "dirs 3.0.2",
+ "dupe",
  "faccess",
  "fbinit",
  "futures 0.3.25",
@@ -767,7 +796,6 @@ dependencies = [
  "indoc",
  "internment_tweaks",
  "itertools",
- "libc",
  "maplit",
  "more_futures",
  "nix 0.22.3",
@@ -799,10 +827,12 @@ dependencies = [
  "assert_matches",
  "async-trait",
  "blake3",
+ "buck2_util",
  "compact_str",
  "dashmap 4.0.2",
  "derivative",
  "derive_more",
+ "dupe",
  "either",
  "fnv",
  "futures 0.3.25",
@@ -834,7 +864,6 @@ dependencies = [
  "tokio",
  "tracing",
  "tracing-subscriber",
- "winapi",
 ]
 
 [[package]]
@@ -885,13 +914,15 @@ dependencies = [
  "async-trait",
  "base64 0.13.1",
  "buck2_build_info",
+ "buck2_cli_proto",
  "buck2_core",
  "buck2_data",
+ "buck2_util",
  "byteorder",
- "cli_proto",
  "crossbeam-channel",
  "crossbeam-epoch",
  "derive_more",
+ "dupe",
  "fbinit",
  "futures 0.3.25",
  "gazebo",
@@ -922,11 +953,13 @@ dependencies = [
  "buck2_events",
  "buck2_interpreter",
  "buck2_node",
+ "buck2_util",
  "chrono",
  "crossbeam-channel",
  "derivative",
  "derive_more",
  "dice",
+ "dupe",
  "either",
  "fbinit",
  "futures 0.3.25",
@@ -969,10 +1002,12 @@ dependencies = [
  "buck2_execute",
  "buck2_forkserver",
  "buck2_forkserver_proto",
+ "buck2_util",
  "bytesize",
  "chrono",
  "derivative",
  "derive_more",
+ "dupe",
  "faccess",
  "futures 0.3.25",
  "gazebo",
@@ -1005,7 +1040,9 @@ dependencies = [
  "buck2_core",
  "buck2_forkserver_proto",
  "buck2_grpc",
+ "buck2_util",
  "bytes 1.3.0",
+ "dupe",
  "futures 0.3.25",
  "gazebo",
  "gazebo_lint",
@@ -1063,6 +1100,7 @@ dependencies = [
  "derivative",
  "derive_more",
  "dice",
+ "dupe",
  "futures 0.3.25",
  "gazebo",
  "gazebo_lint",
@@ -1099,6 +1137,7 @@ dependencies = [
  "bumpalo",
  "derive_more",
  "dice",
+ "dupe",
  "gazebo",
  "hashbrown 0.12.3",
  "itertools",
@@ -1123,6 +1162,7 @@ dependencies = [
  "buck2_query",
  "buck2_query_parser",
  "derive_more",
+ "dupe",
  "either",
  "gazebo",
  "gazebo_lint",
@@ -1143,9 +1183,9 @@ name = "buck2_profile"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "buck2_cli_proto",
  "buck2_core",
  "buck2_interpreter",
- "cli_proto",
  "inferno",
  "starlark",
 ]
@@ -1170,6 +1210,7 @@ dependencies = [
  "buck2_query_derive",
  "buck2_query_parser",
  "derive_more",
+ "dupe",
  "enum-iterator",
  "fancy-regex 0.5.0",
  "futures 0.3.25",
@@ -1183,6 +1224,18 @@ dependencies = [
  "starlark_map",
  "thiserror",
  "tokio",
+]
+
+[[package]]
+name = "buck2_query_common"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "buck2_cli_proto",
+ "buck2_core",
+ "clap 3.2.23",
+ "dupe",
+ "thiserror",
 ]
 
 [[package]]
@@ -1204,6 +1257,7 @@ dependencies = [
  "anyhow",
  "buck2_core",
  "derive_more",
+ "dupe",
  "enum-map",
  "gazebo",
  "gazebo_lint",
@@ -1223,6 +1277,7 @@ dependencies = [
  "async-trait",
  "bincode",
  "buck2_build_api",
+ "buck2_cli_proto",
  "buck2_common",
  "buck2_core",
  "buck2_data",
@@ -1234,11 +1289,12 @@ dependencies = [
  "buck2_interpreter_for_build",
  "buck2_profile",
  "buck2_server_ctx",
+ "buck2_util",
  "chrono",
- "cli_proto",
  "constant_time_eq 0.2.4",
  "crossbeam-channel",
  "dice",
+ "dupe",
  "fbinit",
  "flate2",
  "futures 0.3.25",
@@ -1279,6 +1335,7 @@ dependencies = [
  "async-trait",
  "blake3",
  "buck2_build_api",
+ "buck2_cli_proto",
  "buck2_common",
  "buck2_core",
  "buck2_data",
@@ -1288,14 +1345,14 @@ dependencies = [
  "buck2_node",
  "buck2_query",
  "buck2_server_ctx",
+ "buck2_util",
  "chrono",
- "cli_proto",
  "derivative",
  "dice",
+ "dupe",
  "futures 0.3.25",
  "gazebo",
  "indent_write",
- "indexmap",
  "install_proto",
  "itertools",
  "once_cell",
@@ -1304,6 +1361,7 @@ dependencies = [
  "serde",
  "serde_json",
  "siphasher",
+ "starlark_map",
  "tempfile",
  "thiserror",
  "tokio",
@@ -1321,13 +1379,14 @@ dependencies = [
  "anyhow",
  "async-condvar-fair",
  "async-trait",
+ "buck2_cli_proto",
  "buck2_common",
  "buck2_core",
  "buck2_data",
  "buck2_events",
- "cli_proto",
  "derive_more",
  "dice",
+ "dupe",
  "futures 0.3.25",
  "gazebo",
  "itertools",
@@ -1340,12 +1399,38 @@ dependencies = [
 ]
 
 [[package]]
+name = "buck2_starlark"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-recursion",
+ "async-trait",
+ "buck2_cli_proto",
+ "buck2_client_ctx",
+ "buck2_common",
+ "buck2_core",
+ "buck2_data",
+ "buck2_events",
+ "buck2_interpreter",
+ "buck2_server_ctx",
+ "clap 3.2.23",
+ "dice",
+ "dupe",
+ "ref-cast",
+ "serde",
+ "serde_json",
+ "starlark",
+ "thiserror",
+]
+
+[[package]]
 name = "buck2_test"
 version = "0.1.0"
 dependencies = [
  "anyhow",
  "async-trait",
  "buck2_build_api",
+ "buck2_cli_proto",
  "buck2_common",
  "buck2_core",
  "buck2_data",
@@ -1359,11 +1444,12 @@ dependencies = [
  "buck2_node",
  "buck2_server_ctx",
  "buck2_test_api",
+ "buck2_util",
  "chrono",
- "cli_proto",
  "dashmap 4.0.2",
  "derive_more",
  "dice",
+ "dupe",
  "futures 0.3.25",
  "gazebo",
  "host_sharing",
@@ -1391,6 +1477,7 @@ dependencies = [
  "buck2_grpc",
  "buck2_test_proto",
  "derive_more",
+ "dupe",
  "futures 0.3.25",
  "gazebo",
  "gazebo_lint",
@@ -1414,16 +1501,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "buck2_util"
+version = "0.1.0"
+dependencies = [
+ "libc",
+ "tokio",
+ "winapi",
+]
+
+[[package]]
 name = "bumpalo"
-version = "3.11.1"
+version = "3.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "572f695136211188308f16ad2ca5c851a712c464060ae6974944458eb83880ba"
+checksum = "0d261e256854913907f67ed06efbc3338dfe6179796deefc1ff763fc1aee5535"
 
 [[package]]
 name = "bytemuck"
-version = "1.12.3"
+version = "1.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aaa3a8d9a1ca92e282c96a32d6511b695d7d994d1d102ba85d279f9b2756947f"
+checksum = "c041d3eab048880cb0b86b256447da3f18859a163c3b8d8893f4e6368abe6393"
 
 [[package]]
 name = "byteorder"
@@ -1550,13 +1646,13 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.0.32"
+version = "4.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a7db700bc935f9e43e88d00b0850dae18a63773cfbec6d8e070fccf7fef89a39"
+checksum = "4ec7a4128863c188deefe750ac1d1dfe66c236909f845af04beed823638dc1b2"
 dependencies = [
  "bitflags",
- "clap_derive 4.0.21",
- "clap_lex 0.3.0",
+ "clap_derive 4.1.0",
+ "clap_lex 0.3.1",
  "is-terminal",
  "once_cell",
  "strsim 0.10.0",
@@ -1579,9 +1675,9 @@ dependencies = [
 
 [[package]]
 name = "clap_derive"
-version = "4.0.21"
+version = "4.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0177313f9f02afc995627906bbd8967e2be069f5261954222dac78290c2b9014"
+checksum = "684a277d672e91966334af371f1a7b5833f9aa00b07c84e92fbce95e00208ce8"
 dependencies = [
  "heck 0.4.0",
  "proc-macro-error",
@@ -1601,9 +1697,9 @@ dependencies = [
 
 [[package]]
 name = "clap_lex"
-version = "0.3.0"
+version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0d4198f73e42b4936b35b5bb248d81d2b595ecb170da0bac7655c54eedfa8da8"
+checksum = "783fe232adfca04f90f56201b26d79682d4cd2625e0bc7290b95123afe558ade"
 dependencies = [
  "os_str_bytes",
 ]
@@ -1620,6 +1716,7 @@ dependencies = [
  "buck2_audit",
  "buck2_build_api",
  "buck2_bxl",
+ "buck2_cli_proto",
  "buck2_client",
  "buck2_client_ctx",
  "buck2_common",
@@ -1631,11 +1728,12 @@ dependencies = [
  "buck2_server",
  "buck2_server_commands",
  "buck2_server_ctx",
+ "buck2_starlark",
  "buck2_test",
  "clap 3.2.23",
- "cli_proto",
  "dice",
  "dirs 3.0.2",
+ "dupe",
  "fbinit",
  "futures 0.3.25",
  "gazebo",
@@ -1659,20 +1757,6 @@ dependencies = [
  "tokio-stream",
  "which",
  "winapi",
-]
-
-[[package]]
-name = "cli_proto"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "buck2_data",
- "buck2_protoc_dev",
- "prost",
- "prost-types",
- "serde",
- "thiserror",
- "tonic",
 ]
 
 [[package]]
@@ -1990,9 +2074,9 @@ dependencies = [
 
 [[package]]
 name = "cxx"
-version = "1.0.86"
+version = "1.0.87"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "51d1075c37807dcf850c379432f0df05ba52cc30f279c5cfc43cc221ce7f8579"
+checksum = "b61a7545f753a88bcbe0a70de1fcc0221e10bfc752f576754fa91e663db1622e"
 dependencies = [
  "cc",
  "cxxbridge-flags",
@@ -2002,9 +2086,9 @@ dependencies = [
 
 [[package]]
 name = "cxx-build"
-version = "1.0.86"
+version = "1.0.87"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5044281f61b27bc598f2f6647d480aed48d2bf52d6eb0b627d84c0361b17aa70"
+checksum = "f464457d494b5ed6905c63b0c4704842aba319084a0a3561cdc1359536b53200"
 dependencies = [
  "cc",
  "codespan-reporting",
@@ -2017,15 +2101,15 @@ dependencies = [
 
 [[package]]
 name = "cxxbridge-flags"
-version = "1.0.86"
+version = "1.0.87"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "61b50bc93ba22c27b0d31128d2d130a0a6b3d267ae27ef7e4fae2167dfe8781c"
+checksum = "43c7119ce3a3701ed81aca8410b9acf6fc399d2629d057b87e2efa4e63a3aaea"
 
 [[package]]
 name = "cxxbridge-macro"
-version = "1.0.86"
+version = "1.0.87"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "39e61fda7e62115119469c7b3591fd913ecca96fb766cfd3f2e2502ab7bc87a5"
+checksum = "65e07508b90551e610910fa648a1878991d367064997a596135b86df30daf07e"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2110,6 +2194,7 @@ dependencies = [
  "dashmap 4.0.2",
  "derivative",
  "derive_more",
+ "dupe",
  "fnv",
  "futures 0.3.25",
  "gazebo",
@@ -2139,6 +2224,7 @@ dependencies = [
  "criterion",
  "derive_more",
  "dice",
+ "dupe",
  "futures 0.3.25",
  "gazebo",
  "gazebo_lint",
@@ -2180,19 +2266,18 @@ dependencies = [
 
 [[package]]
 name = "dirs"
-version = "2.0.2"
+version = "3.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13aea89a5c93364a98e9b37b2fa237effbb694d5cfe01c5b70941f7eb087d5e3"
+checksum = "30baa043103c9d0c2a57cf537cc2f35623889dc0d405e6c3cccfadbc81c71309"
 dependencies = [
- "cfg-if 0.1.10",
  "dirs-sys",
 ]
 
 [[package]]
 name = "dirs"
-version = "3.0.2"
+version = "4.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "30baa043103c9d0c2a57cf537cc2f35623889dc0d405e6c3cccfadbc81c71309"
+checksum = "ca3aa72a6f96ea37bbc5aa912f6788242832f75369bdfdadcb0e38423f100059"
 dependencies = [
  "dirs-sys",
 ]
@@ -2240,6 +2325,22 @@ name = "dunce"
 version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0bd4b30a6560bbd9b4620f4de34c3f14f60848e58a9b7216801afcb4c7b31c3c"
+
+[[package]]
+name = "dupe"
+version = "0.8.1"
+dependencies = [
+ "dupe_derive",
+]
+
+[[package]]
+name = "dupe_derive"
+version = "0.8.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
 
 [[package]]
 name = "either"
@@ -2662,17 +2763,14 @@ dependencies = [
 [[package]]
 name = "gazebo"
 version = "0.8.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d4cfd241cd4d34c5f96bacd2b6ead66171c835713b848162dfedb52d38bf1416"
 dependencies = [
+ "dupe",
  "gazebo_derive",
 ]
 
 [[package]]
 name = "gazebo_derive"
 version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a4afe97206e1db9c227c539f9757fb8e8197cb44e380231de1eb5b75fdea7267"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -3095,6 +3193,7 @@ name = "internment_tweaks"
 version = "0.1.0"
 dependencies = [
  "allocative",
+ "dupe",
  "gazebo",
  "gazebo_lint",
  "hashbrown 0.12.3",
@@ -3125,9 +3224,9 @@ dependencies = [
 
 [[package]]
 name = "io-lifetimes"
-version = "1.0.3"
+version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "46112a93252b123d31a119a8d1a1ac19deac4fac6e0e8b0df58f0d4e5870e63c"
+checksum = "e7d6c6f8c91b4b9ed43484ad1a938e393caf35960fce7f82a040497207bd8e9e"
 dependencies = [
  "libc",
  "windows-sys",
@@ -3545,6 +3644,7 @@ dependencies = [
  "allocative",
  "buck2_data",
  "buck2_events",
+ "dupe",
  "futures 0.3.25",
  "gazebo",
  "gazebo_lint",
@@ -4013,15 +4113,6 @@ dependencies = [
 
 [[package]]
 name = "phf"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3dfb61232e34fcb633f43d12c58f83c1df82962dcdfa565a4e866ffc17dafe12"
-dependencies = [
- "phf_shared 0.8.0",
-]
-
-[[package]]
-name = "phf"
 version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fabbf1ead8a5bcbc20f5f8b939ee3f5b0f6f281b6ad3468b84656b658b455259"
@@ -4041,22 +4132,12 @@ dependencies = [
 
 [[package]]
 name = "phf_codegen"
-version = "0.8.0"
+version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cbffee61585b0411840d3ece935cce9cb6321f01c45477d30066498cd5e1a815"
+checksum = "a56ac890c5e3ca598bbdeaa99964edb5b0258a583a9eb6ef4e89fc85d9224770"
 dependencies = [
- "phf_generator 0.8.0",
- "phf_shared 0.8.0",
-]
-
-[[package]]
-name = "phf_generator"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "17367f0cc86f2d25802b2c26ee58a7b23faeccf78a396094c13dced0d0182526"
-dependencies = [
- "phf_shared 0.8.0",
- "rand 0.7.3",
+ "phf_generator",
+ "phf_shared 0.11.1",
 ]
 
 [[package]]
@@ -4075,20 +4156,11 @@ version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "92aacdc5f16768709a569e913f7451034034178b05bdc8acda226659a3dccc66"
 dependencies = [
- "phf_generator 0.11.1",
+ "phf_generator",
  "phf_shared 0.11.1",
  "proc-macro2",
  "quote",
  "syn",
-]
-
-[[package]]
-name = "phf_shared"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c00cf8b9eafe68dde5e9eaa2cef8ee84a9336a47d566ec55ca16589633b65af7"
-dependencies = [
- "siphasher",
 ]
 
 [[package]]
@@ -4281,9 +4353,9 @@ checksum = "dc375e1527247fe1a97d8b7156678dfe7c1af2fc075c9a4db3690ecd2a148068"
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.49"
+version = "1.0.50"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "57a8eca9f9c4ffde41714334dee777596264c7825420f521abc92b5b5deb63a5"
+checksum = "6ef7d57beacfaf2d8aee5937dab7b7f28de3cb8b1828479bb5de2a7106f2bae2"
 dependencies = [
  "unicode-ident",
 ]
@@ -4472,7 +4544,6 @@ dependencies = [
  "rand_chacha 0.2.2",
  "rand_core 0.5.1",
  "rand_hc",
- "rand_pcg",
 ]
 
 [[package]]
@@ -4529,15 +4600,6 @@ name = "rand_hc"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ca3129af7b92a17112d59ad498c6f81eaf463253766b90396d39ea7a39d6613c"
-dependencies = [
- "rand_core 0.5.1",
-]
-
-[[package]]
-name = "rand_pcg"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "16abd0c1b639e9eb4d7c50c0b8100b0d0f849be2349829c740fe8e6eb4816429"
 dependencies = [
  "rand_core 0.5.1",
 ]
@@ -4655,6 +4717,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "buck2_core",
+ "dupe",
  "futures 0.3.25",
  "gazebo",
  "gazebo_lint",
@@ -4678,11 +4741,11 @@ dependencies = [
 
 [[package]]
 name = "reqwest"
-version = "0.11.13"
+version = "0.11.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "68cc60575865c7831548863cc02356512e3f1dc2f3f82cb837d7fc4cc8f3c97c"
+checksum = "21eed90ec8570952d53b772ecf8f206aa1ec9a3d76b2521c56c42973f2d91ee9"
 dependencies = [
- "base64 0.13.1",
+ "base64 0.21.0",
  "bytes 1.3.0",
  "encoding_rs",
  "futures-core",
@@ -4710,6 +4773,7 @@ dependencies = [
  "url",
  "wasm-bindgen",
  "wasm-bindgen-futures",
+ "wasm-streams",
  "web-sys",
  "winreg",
 ]
@@ -4763,9 +4827,9 @@ dependencies = [
 
 [[package]]
 name = "rustix"
-version = "0.36.6"
+version = "0.36.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4feacf7db682c6c329c4ede12649cd36ecab0f3be5b7d74e6a20304725db4549"
+checksum = "d4fdebc4b395b7fbb9ab11e462e20ed9051e7b16e42d24042c776eca0ac81b03"
 dependencies = [
  "bitflags",
  "errno",
@@ -4891,9 +4955,9 @@ checksum = "ddccb15bcce173023b3fedd9436f882a0739b8dfb45e4f6b6002bee5929f61b2"
 
 [[package]]
 name = "security-framework"
-version = "2.7.0"
+version = "2.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2bc1bb97804af6631813c55739f771071e0f2ed33ee20b68c86ec505d906356c"
+checksum = "645926f31b250a2dca3c232496c2d898d91036e45ca0e97e0e2390c54e11be36"
 dependencies = [
  "bitflags",
  "core-foundation",
@@ -4904,9 +4968,9 @@ dependencies = [
 
 [[package]]
 name = "security-framework-sys"
-version = "2.6.1"
+version = "2.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0160a13a177a45bfb43ce71c01580998474f556ad854dcbca936dd2841a5c556"
+checksum = "31c9bb296072e961fcbd8853511dd39c2d8be2deb1e17c6860b1d30732b323b4"
 dependencies = [
  "core-foundation-sys",
  "libc",
@@ -5176,10 +5240,11 @@ dependencies = [
  "anyhow",
  "argfile",
  "bumpalo",
- "clap 4.0.32",
+ "clap 4.1.1",
  "debugserver-types",
  "derivative",
  "derive_more",
+ "dupe",
  "either",
  "erased-serde",
  "fancy-regex 0.10.0",
@@ -5218,6 +5283,7 @@ dependencies = [
 name = "starlark_derive"
 version = "0.9.0-pre"
 dependencies = [
+ "dupe",
  "gazebo",
  "gazebo_lint",
  "proc-macro2",
@@ -5230,6 +5296,7 @@ name = "starlark_map"
 version = "0.9.0-pre"
 dependencies = [
  "allocative",
+ "dupe",
  "fnv",
  "gazebo",
  "gazebo_lint",
@@ -5416,9 +5483,9 @@ dependencies = [
 
 [[package]]
 name = "termcolor"
-version = "1.1.3"
+version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bab24d30b911b2376f3a13cc2cd443142f0c81dda04c118693e35b3835757755"
+checksum = "be55cf8942feac5c765c2c993422806843c9a9a45d4d5c407ad6dd2ea95eb9b6"
 dependencies = [
  "winapi-util",
 ]
@@ -5449,14 +5516,14 @@ dependencies = [
 
 [[package]]
 name = "terminfo"
-version = "0.7.3"
+version = "0.7.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "76971977e6121664ec1b960d1313aacfa75642adc93b9d4d53b247bd4cb1747e"
+checksum = "da31aef70da0f6352dbcb462683eb4dd2bfad01cf3fc96cf204547b9a839a585"
 dependencies = [
- "dirs 2.0.2",
+ "dirs 4.0.0",
  "fnv",
  "nom 5.1.2",
- "phf 0.8.0",
+ "phf 0.11.1",
  "phf_codegen",
 ]
 
@@ -5644,9 +5711,9 @@ checksum = "cda74da7e1a664f795bb1f8a87ec406fb89a02522cf6e50620d016add6dbbf5c"
 
 [[package]]
 name = "tokio"
-version = "1.24.1"
+version = "1.24.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1d9f76183f91ecfb55e1d7d5602bd1d979e38a3a522fe900241cf195624d67ae"
+checksum = "597a12a59981d9e3c38d216785b0c37399f6e415e8d0712047620f189371b0bb"
 dependencies = [
  "autocfg",
  "bytes 1.3.0",
@@ -5741,9 +5808,9 @@ dependencies = [
 
 [[package]]
 name = "toml"
-version = "0.5.10"
+version = "0.5.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1333c76748e868a4d9d1017b5ab53171dfd095f70c712fdb4653a406547f598f"
+checksum = "f4f7f0dd8d50a853a531c426359045b1998f04219d88799810762cd4ad314234"
 dependencies = [
  "serde",
 ]
@@ -5957,9 +6024,9 @@ dependencies = [
 
 [[package]]
 name = "unicode-bidi"
-version = "0.3.8"
+version = "0.3.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "099b7128301d285f79ddd55b9a83d5e6b9e97c92e0ea0daebee7263e932de992"
+checksum = "d54675592c1dbefd78cbd98db9bacd89886e1ca50692a0692baefffdeb92dd58"
 
 [[package]]
 name = "unicode-ident"
@@ -6170,6 +6237,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1c38c045535d93ec4f0b4defec448e4291638ee608530863b1e2ba115d4fff7f"
 
 [[package]]
+name = "wasm-streams"
+version = "0.2.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6bbae3363c08332cadccd13b67db371814cd214c2524020932f0804b8cf7c078"
+dependencies = [
+ "futures-util",
+ "js-sys",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+]
+
+[[package]]
 name = "watchman_client"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6245,9 +6325,9 @@ dependencies = [
 
 [[package]]
 name = "which"
-version = "4.3.0"
+version = "4.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1c831fbbee9e129a8cf93e7747a82da9d95ba8e16621cae60ec2cdc849bacb7b"
+checksum = "2441c784c52b289a054b7201fc93253e288f094e2f4be9058343127c4226a269"
 dependencies = [
  "either",
  "libc",
