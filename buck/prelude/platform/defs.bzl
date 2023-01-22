@@ -37,16 +37,16 @@ execution_platform = rule(
 def _host_cpu_configuration() -> str.type:
     arch = host_info().arch
     if arch.is_aarch64:
-        return "prelude//cpu:aarch64"
+        return "prelude//platform/cpu:aarch64"
     else:
-        return "prelude//cpu:x86_64"
+        return "prelude//platform/cpu:x86_64"
 
 def _host_os_configuration() -> str.type:
     os = host_info().os
     if os.is_macos:
-        return "prelude//os:darwin"
+        return "prelude//platform/os:darwin"
     else:
-        return "prelude//os:linux"
+        return "prelude//platform/os:linux"
 
 def _nix_system() -> str.type:
     arch = host_info().arch
@@ -72,8 +72,8 @@ def generate_platforms(variants):
     for (cpu, os) in variants:
         execution_platform(
             name = "{}-{}".format(cpu, os),
-            cpu_configuration = "prelude//cpu:{}".format(cpu),
-            os_configuration = "prelude//os:{}".format(os),
+            cpu_configuration = "prelude//platform/cpu:{}".format(cpu),
+            os_configuration = "prelude//platform/os:{}".format(os),
             visibility = [ "prelude//...", "nix//..." ],
         )
 

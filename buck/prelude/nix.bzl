@@ -16,7 +16,7 @@ load(
 )
 
 load(
-  "@prelude//platforms/defs.bzl",
+  "@prelude//platform/defs.bzl",
   "host_config",
 )
 
@@ -79,7 +79,7 @@ __nix_toolchain = rule(
         "path": attrs.dep(),
         "hash": attrs.string(),
         "drv": attrs.option(attrs.string(), default = None),
-        "_platform_info": attrs.default_only(attrs.dep(default = "@prelude//platforms:default")),
+        "_platform_info": attrs.default_only(attrs.dep(default = "@prelude//platform:default")),
     },
 )
 
@@ -88,7 +88,7 @@ __nix_store_path = rule(
     attrs = {
         "drv": attrs.option(attrs.string(), default = None),
         "refs": attrs.list(attrs.dep(), default = []),
-        "_platform_info": attrs.default_only(attrs.dep(default = "@prelude//platforms:default")),
+        "_platform_info": attrs.default_only(attrs.dep(default = "@prelude//platform:default")),
     },
 )
 

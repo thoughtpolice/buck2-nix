@@ -9,6 +9,6 @@ run_bash(
 alias(
     name = "testing",
     actual = select({
-        "prelude//os:linux": ":echo-test",
+        "prelude//platform/os:linux": ":echo-test",
     }),
 )

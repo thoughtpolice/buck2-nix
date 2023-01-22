@@ -6,12 +6,12 @@ load("@prelude//config.bzl", "config_setting")
 
 config_setting(
     name = "x86_64",
-    constraint_values = [ "prelude//cpu/constraints:x86_64" ],
+    constraint_values = [ "prelude//platform/cpu/constraints:x86_64" ],
     visibility = [ "PUBLIC" ],
 )
 
 config_setting(
     name = "aarch64",
-    constraint_values = [ "prelude//cpu/constraints:aarch64" ],
+    constraint_values = [ "prelude//platform/cpu/constraints:aarch64" ],
     visibility = [ "PUBLIC" ],
 )

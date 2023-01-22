@@ -6,12 +6,12 @@ load("@prelude//config.bzl", "config_setting")
 
 config_setting(
     name = "linux",
-    constraint_values = [ "prelude//os/constraints:linux" ],
+    constraint_values = [ "prelude//platform/os/constraints:linux" ],
     visibility = [ "PUBLIC" ],
 )
 
 config_setting(
     name = "darwin",
-    constraint_values = [ "prelude//os/constraints:darwin" ],
+    constraint_values = [ "prelude//platform/os/constraints:darwin" ],
     visibility = [ "PUBLIC" ],
 )
