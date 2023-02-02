@@ -7,4 +7,5 @@
 load("@prelude//basics/attributes.bzl", "attributes")
 load("@prelude//basics/providers.bzl", "providers")
 
+load_symbols(attributes)
 load_symbols(providers)

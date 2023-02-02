@@ -19,12 +19,14 @@ def __rust_binary_impl(ctx: "context") -> ["provider"]:
     out_name = ctx.attrs.out if ctx.attrs.out else ctx.label.name
     out = ctx.actions.declare_output(out_name)
 
-    cmd = [ cmd_args(ctx.attrs._rust_stable[NixStoreOutputInfo].path, format="{}/bin/rustc") ]
+    cmd = [
+        cmd_args(ctx.attrs._rust_stable[NixStoreOutputInfo].path, format="{}/bin/rustc"),
+    ]
     cmd.append(["--crate-type=bin", file, "-o", out.as_output()])
-    ctx.actions.run(cmd, category = "rustc")
+    ctx.actions.run(cmd, category = "rustc", identifier = file.basename)
 
     return [
-        DefaultInfo(default_outputs = [out]),
+        DefaultInfo(default_output = out),
         RunInfo(args = cmd_args([out])),
     ]
 

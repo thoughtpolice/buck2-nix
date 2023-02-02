@@ -25,7 +25,7 @@ def __zip_impl(ctx):
         cmd.append(s)
 
     ctx.actions.run(cmd, category = "zip")
-    return [ DefaultInfo(default_outputs = [out]) ]
+    return [ DefaultInfo(default_output = out) ]
 
 zip_file = rule(
     impl = __zip_impl,
