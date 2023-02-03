@@ -11,10 +11,13 @@
 ## ---------------------------------------------------------------------------------------------------------------------
 
 load("@prelude//basics/providers.bzl", "NixStoreOutputInfo")
+load("@prelude//license.bzl", "check_spdx_license")
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
 def __rust_binary_impl(ctx: "context") -> ["provider"]:
+    check_spdx_license(ctx)
+
     file = ctx.attrs.file
     out_name = ctx.attrs.out if ctx.attrs.out else ctx.label.name
     out = ctx.actions.declare_output(out_name)
@@ -35,6 +38,7 @@ rust_binary = rule(
     attrs = {
         "file": attrs.source(),
         "out": attrs.option(attrs.string(), default = None),
+        "license": attrs.string(),
         "_rust_stable": attrs.default_only(attrs.dep(default = "@nix//toolchains:rust-stable")),
     },
 )

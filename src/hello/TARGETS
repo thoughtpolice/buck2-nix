@@ -4,4 +4,6 @@ rust_binary(
     name = "main",
     file = "./main.rs",
     out = "hello",
+
+    license = "MIT OR Apache-2.0",
 )
