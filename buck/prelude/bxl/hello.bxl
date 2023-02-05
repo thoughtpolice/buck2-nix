@@ -1,0 +1,15 @@
+def main(ctx):
+    ctx.output.print("hello world")
+
+    bool_arg = ctx.cli_args.bool_arg
+    target = ctx.cli_args.target
+    ctx.output.print("bool_arg: {}".format(bool_arg))
+    ctx.output.print("target: {}".format(target))
+
+    default_info = ctx.analysis("root//src/hello:main").providers()[DefaultInfo]
+    ctx.output.print("info: {}".format(default_info))
+
+args = {
+    "bool_arg": cli_args.option(cli_args.bool()),
+    "target": cli_args.option(cli_args.target_label()),
+}

@@ -1,0 +1,66 @@
+# SPDX-FileCopyrightText: © 2022 Meta Platforms, Inc. and affiliates.
+# SPDX-FileCopyrightText: © 2022 Austin Seipp
+# SPDX-License-Identifier: MIT OR Apache-2.0
+
+# @prelude//download.bzl -- download utilities
+#
+# HOW TO USE THIS MODULE:
+#
+#    load("@prelude//download.bzl", "download_tarball")
+
+## ---------------------------------------------------------------------------------------------------------------------
+
+def _download_tarball(ctx: "context") -> ["provider"]:
+    """Download a 'fixed output' tarball from a URL. By 'fixed output', this means that
+    the tarball is downloaded and extracted to a directory, and the hash of the
+    directory is checked against the expected hash. This is useful for downloading
+    tarballs that can contain the same content but have different hashes, such as
+    git repositories, or tarballs compressed with different compression algorithms.
+    """
+
+    dl_script, _ = ctx.actions.write(
+        "download_{}.sh".format(ctx.label.name),
+        [
+            "#!/usr/bin/env bash",
+            "set -euo pipefail",
+            "curl -sLo \"$1\" {}".format(ctx.attrs.url),
+            "mkdir -p \"$2\"",
+            "tar xf \"$1\" -C \"$2\" --strip-components=1",
+            "hash=$(nix hash path --type sha256 \"$2\")",
+            "if ! [ \"$hash\" = \"{}\" ]; then".format(ctx.attrs.hash),
+            "  echo \"hash mismatch:\"",
+            "  echo \"  expected '{}'\"".format(ctx.attrs.hash),
+            "  echo \"       got '$hash'\"",
+            "  exit 1",
+            "fi",
+            "", # XXX: newline for readability in terminal
+        ],
+        allow_args = True,
+        is_executable = True,
+    )
+
+    tarball_out = ctx.actions.declare_output("{}.tar.gz".format(ctx.label.name))
+    dir_out = ctx.actions.declare_output(ctx.label.name, dir = True)
+    cmd = cmd_args([dl_script, tarball_out.as_output(), dir_out.as_output()])
+    ctx.actions.run(cmd, category = "curl", identifier = ctx.attrs.url)
+
+    return [
+        DefaultInfo(
+            default_output = dir_out,
+            sub_targets = {
+                "tar": [ DefaultInfo(default_output = tarball_out) ]
+            }
+        ),
+    ]
+
+__tarball = rule(
+    impl = _download_tarball,
+    attrs = {
+        "url": attrs.string(),
+        "hash": attrs.string(),
+    },
+)
+
+download = struct(
+    tarball = __tarball,
+)

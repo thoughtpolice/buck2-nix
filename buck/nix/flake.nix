@@ -109,7 +109,8 @@
             # These are all tools from upstream
             inherit (pkgs.gitAndTools) gh git;
             inherit (pkgs)
-              tagref sapling jq getopt jujutsu
+              coreutils curl # downloading and fundamental scripts
+              tagref sapling jq getopt jujutsu # utilities
               cargo nix-prefetch-git # XXX FIXME (aseipp): needed by update.sh for buck2; get rid of somehow...
               ;
 
@@ -138,6 +139,13 @@
               # Slightly worse overhead, but oh well...
               (pkgs.writeShellScriptBin "ssl" ''
                 exec ${pkgs.sapling}/bin/sl ssl "$@"
+              '')
+
+              # add a convenient alias for 'buck bxl' on some scripts. note that
+              # the 'bxl' cell location can be changed in .buckconfig without
+              # changing the script
+              (pkgs.writeShellScriptBin "bxl" ''
+                exec ${jobs.packages.buck2}/bin/buck bxl "bxl//top.bxl:$1" -- "''${@:2}"
               '')
             ];
           };

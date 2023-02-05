@@ -1,0 +1,13 @@
+load("@prelude//nixpkgs.bzl", "nix")
+
+nix.build(
+    name = "oil",
+    expr = "pkgs.oil",
+    visibility = [ "root//..." ],
+)
+
+nix.build(
+    name = "bash",
+    expr = "pkgs.bash",
+    visibility = [ "root//..." ],
+)

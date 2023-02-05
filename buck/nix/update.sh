@@ -205,7 +205,7 @@ if [ "$SPDX" = "1" ]; then
 #
 # NOTE: Please run the above command to regenerate this file.
 
-# @nix//basics/spdx.bzl -- SPDX license data for buck
+# @prelude//basics/spdx.bzl -- SPDX license data for buck
 
 # Raw SPDX license data
 license_list = $(cat /dev/stdin)

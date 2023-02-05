@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: © 2022 Austin Seipp
 # SPDX-License-Identifier: MIT OR Apache-2.0
 
-# @prelude//:nix.bzl -- tools for driving Nix files and toolchains for Buck.
+# @prelude//nix.bzl -- tools for driving Nix files and toolchains for Buck.
 #
 # HOW TO USE THIS MODULE:
 #

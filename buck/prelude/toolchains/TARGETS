@@ -1,0 +1,18 @@
+load("@prelude//download.bzl", "download")
+load("@prelude//nixpkgs.bzl", "nix")
+
+download.tarball(
+    name = "nixpkgs-src",
+    hash = "sha256-jHvkAwkbAj1s0O5riHMghSDHh9iz8AwLTbXQuVQKQcg=",
+    url = "https://github.com/nixos/nixpkgs/archive/{}.tar.gz"
+        .format("5a211d5e8d18b20b5a2b22157266cc00f8c4f3b9"),
+    visibility = [ 'prelude//toolchains/...'],
+)
+
+download.tarball(
+    name = "rust-overlay-src",
+    hash = "sha256-mcmGElt04ZaW2Xx7flDQ812X0O2oUlS4rCw1Al4x0qw=",
+    url = "https://github.com/oxalica/rust-overlay/archive/{}.tar.gz"
+        .format("1f1d13846ae88826391e5d65d85247a30982671b"),
+    visibility = [ 'prelude//toolchains/...'],
+)

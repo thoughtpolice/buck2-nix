@@ -1,9 +1,9 @@
-load("@prelude//:rust.bzl", "rust_binary")
+load("@prelude//toolchains/rust/main.bzl", "rust")
 
-rust_binary(
+license("MIT OR Apache-2.0")
+
+rust.binary(
     name = "main",
     file = "./main.rs",
     out = "hello",
-
-    license = "MIT OR Apache-2.0",
 )

@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: © 2022 Austin Seipp
 # SPDX-License-Identifier: MIT OR Apache-2.0
 
-# @prelude//:license.bzl -- license helpers
+# @prelude//license.bzl -- license helpers
 #
 # This module provides for code to use SPDX-compatible license expressions
 # inside rules. It contains a valid list of all SPDX license identifiers, as

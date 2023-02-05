@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: © 2022 Austin Seipp
 # SPDX-License-Identifier: MIT OR Apache-2.0
 
-# @prelude//:prelude.bzl -- Global import shim.
+# @prelude//prelude.bzl -- Global import shim.
 #
 # NOTE: this module is handled in a special way by Buck2; anything exported here
 # by using a public symbol name is available in *all* BUILD files, available to
@@ -35,9 +35,31 @@
 load("@prelude//basics/attributes.bzl", "attributes")
 load("@prelude//basics/providers.bzl", "providers")
 
+load("@prelude//basics/alias.bzl", _alias = "alias")
+load("@prelude//basics/asserts.bzl", _asserts = "asserts")
+load("@prelude//basics/paths.bzl", _paths = "paths")
+
 ## ---------------------------------------------------------------------------------------------------------------------
+
+# Load all attributes and providers in the default environment. This is largely
+# helpful so that random one-off .bzl files have basic types available.
 
 load_symbols(attributes)
 load_symbols(providers)
 
 ## ---------------------------------------------------------------------------------------------------------------------
+
+def license(expr: "string") -> "NoneType":
+    oncall(expr)
+
+## ---------------------------------------------------------------------------------------------------------------------
+
+# Finally, export the symbols we want to be globally available, which are mostly
+# a set of very primitive and/or generic rules and macros that can be used
+# anywhere.
+
+load_symbols({
+    "alias": _alias,
+    "asserts": _asserts,
+    "paths": _paths,
+})

@@ -1,13 +1,12 @@
-load("@prelude//:alias.bzl", "alias")
-load("@prelude//:bash.bzl", "run_bash")
+load("@prelude//toolchains/bash/main.bzl", "bash")
 
-run_bash(
+bash.run(
     name = "echo-test",
     src = "echo-test.sh",
 )
 
 alias(
-    name = "testing",
+    name = "main",
     actual = select({
         "prelude//platform/os:linux": ":echo-test",
     }),
