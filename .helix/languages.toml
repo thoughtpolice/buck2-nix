@@ -1,3 +1,7 @@
 [[language]]
 name = "starlark"
 file-types = [ "TARGETS", "bzl", "bxl" ]
+
+[[language]]
+name = "prolog"
+file-types = [ "pro" ]
