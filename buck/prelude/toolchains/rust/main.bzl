@@ -32,7 +32,7 @@ def __toolchain(
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def __binary_impl(ctx):
+def __binary_impl(ctx: "context") -> ["provider"]:
     out = ctx.actions.declare_output(ctx.attrs.out if ctx.attrs.out else ctx.label.name)
 
     cmd = [

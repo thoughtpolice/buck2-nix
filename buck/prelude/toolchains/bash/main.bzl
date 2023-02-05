@@ -10,7 +10,7 @@
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def __run_impl(ctx):
+def __run_impl(ctx: "context") -> ["provider"]:
     cmd = [
         cmd_args(ctx.attrs._sh[DefaultInfo].default_outputs[0], format="{}/bin/osh"),
         ctx.attrs.src
