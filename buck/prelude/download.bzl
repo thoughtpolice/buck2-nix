@@ -42,7 +42,7 @@ def _download_tarball(ctx: "context") -> ["provider"]:
     tarball_out = ctx.actions.declare_output("{}.tar.gz".format(ctx.label.name))
     dir_out = ctx.actions.declare_output(ctx.label.name, dir = True)
     cmd = cmd_args([dl_script, tarball_out.as_output(), dir_out.as_output()])
-    ctx.actions.run(cmd, category = "curl", identifier = ctx.attrs.url)
+    ctx.actions.run(cmd, category = "download_tarball", identifier = ctx.attrs.url)
 
     return [
         DefaultInfo(
@@ -57,10 +57,51 @@ __tarball = rule(
     impl = _download_tarball,
     attrs = {
         "url": attrs.string(),
-        "hash": attrs.string(),
+        # XXX: set a default to nixpkgs' lib.fakeHash, so it's always wrong, and must be fixed
+        "hash": attrs.string(default = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="),
     },
 )
 
+## ---------------------------------------------------------------------------------------------------------------------
+
+def __file_impl(ctx: "context") -> ["provider"]:
+    dl_script, _ = ctx.actions.write(
+        "download_{}.sh".format(ctx.label.name),
+        [
+            "#!/usr/bin/env bash",
+            "set -euo pipefail",
+            "curl -sLo \"$1\" {}".format(ctx.attrs.url),
+            "hash=$(nix hash path --type sha256 \"$1\")",
+            "if ! [ \"$hash\" = \"{}\" ]; then".format(ctx.attrs.hash),
+            "  echo \"hash mismatch:\"",
+            "  echo \"  expected '{}'\"".format(ctx.attrs.hash),
+            "  echo \"       got '$hash'\"",
+            "  exit 1",
+            "fi",
+            "", # XXX: newline for readability in terminal
+        ],
+        allow_args = True,
+        is_executable = True,
+    )
+
+    out = ctx.actions.declare_output(ctx.label.name)
+    cmd = cmd_args([dl_script, out.as_output() ])
+    ctx.actions.run(cmd, category = "download_file", identifier = ctx.attrs.url)
+
+    return [ DefaultInfo(default_output = out) ]
+
+__file = rule(
+    impl = __file_impl,
+    attrs = {
+        "url": attrs.string(),
+        # XXX: set a default to nixpkgs' lib.fakeHash, so it's always wrong, and must be fixed
+        "hash": attrs.string(default = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+    },
+)
+
+## ---------------------------------------------------------------------------------------------------------------------
+
 download = struct(
     tarball = __tarball,
+    file = __file,
 )
