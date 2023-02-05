@@ -17,5 +17,11 @@ providers = {
     "NixStoreOutputInfo": NixStoreOutputInfo,
 }
 
-load("@prelude//nixpkgs.bzl", "nix")
-providers.update([(k, v) for k, v in nix.providers.items()])
+def _update(s):
+    p = getattr(s, "providers", None)
+    providers.update([(k, v) for k, v in p.items()])
+
+load("@prelude//nixpkgs.bzl", "nix"); _update(nix)
+load("@prelude//toolchains/bash/main.bzl", "bash"); _update(bash)
+load("@prelude//toolchains/rust/main.bzl", "rust"); _update(rust)
+load("@prelude//toolchains/zip/main.bzl", "zipfile"); _update(zipfile)

@@ -30,4 +30,6 @@ __run = rule(
 
 bash = struct(
     run = __run,
+
+    providers = {},
 )

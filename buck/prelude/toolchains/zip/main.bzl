@@ -36,4 +36,6 @@ __create = rule(
 
 zipfile = struct(
     create = __create,
+
+    providers = {},
 )
