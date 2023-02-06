@@ -75,6 +75,14 @@ def _nix_build(ctx: "context"):
         identifier = "{}.nix".format(ctx.label.name),
     )
 
+    run_info = []
+    if ctx.attrs.binary != None:
+        run_info.append(
+            RunInfo(
+                args = cmd_args(out_link, format="{}/" + ctx.attrs.binary),
+            ),
+        )
+
     return [
         DefaultInfo(
             default_output = out_link,
@@ -83,12 +91,13 @@ def _nix_build(ctx: "context"):
                 "builder": [ DefaultInfo(default_output = build_sh) ],
             },
         ),
-    ]
+    ] + run_info
 
 __build = rule(
     impl = _nix_build,
     attrs = {
         "expr": attrs.string(),
+        "binary": attrs.option(attrs.string(), default = None),
         "_nixpkgs": attrs.default_only(attrs.dep(default = "prelude//toolchains:nixpkgs-src")),
         "_overlays": attrs.default_only(attrs.list(attrs.dep(), default = [
             "prelude//toolchains:rust-overlay-src",

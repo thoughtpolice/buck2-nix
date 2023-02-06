@@ -3,5 +3,6 @@ load("@prelude//nixpkgs.bzl", "nix")
 nix.build(
     name = "scryer",
     expr = "pkgs.scryer-prolog",
+    binary = "bin/scryer-prolog",
     visibility = [ "root//..." ],
 )
