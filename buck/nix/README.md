@@ -24,7 +24,7 @@ So: don't touch this. The details aren't all figured out yet.
 upgrade things:
 
 ```bash
-buck run nix//:update
+buck run root//buck/nix:update -- --help
 ```
 
 <!-- refs -->

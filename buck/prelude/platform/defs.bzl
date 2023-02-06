@@ -74,7 +74,7 @@ def generate_platforms(variants):
             name = "{}-{}".format(cpu, os),
             cpu_configuration = "prelude//platform/cpu:{}".format(cpu),
             os_configuration = "prelude//platform/os:{}".format(os),
-            visibility = [ "prelude//...", "nix//..." ],
+            visibility = [ "prelude//..." ],
         )
 
     # Finally, generate the default platform selection, which matches the host
@@ -83,5 +83,5 @@ def generate_platforms(variants):
         name = "default",
         cpu_configuration = _host_cpu_configuration(),
         os_configuration = _host_os_configuration(),
-        visibility = [ "prelude//...", "nix//..." ],
+        visibility = [ "prelude//..." ],
     )

@@ -78,8 +78,7 @@ from a typical `direnv` setup with Nix Flakes, which are "eager" to put things
 in your shell environment immediately.
 
 And so, the very first time you run this, you'll see many Nix paths downloading
-into your store from the binary cache, with target names directly under the
-`nix//` cell.
+into your store from the binary cache.
 
 Now, clean `buck-out/`, then kill the `buck2d` daemon
 

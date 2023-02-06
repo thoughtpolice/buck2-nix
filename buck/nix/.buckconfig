@@ -1,5 +1,0 @@
-[repositories]
-nix = .
-
-[buildfile]
-name=TARGETS

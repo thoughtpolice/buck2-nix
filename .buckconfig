@@ -2,7 +2,6 @@
 root = .
 prelude = buck/prelude
 bxl = buck/prelude/bxl
-nix = buck/nix
 
 [buildfile]
 name=TARGETS
