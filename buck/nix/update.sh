@@ -33,7 +33,7 @@ Usage:
 
     --flake|-f         Step 1: Update the flake.lock file.
     --buck2|-b         Step 2: Update buck2 nix expression
-    --cache|-c         Step 5: Upload toolchain data to cache
+    --cache|-c         Step 3: Upload toolchain data to cache
 
   Or, to do everything at once:
 
@@ -70,7 +70,7 @@ done
   [ "$CACHE" = "0" ] && \
   usage
 
-printf "\nUpdating flake=$FLAKE, buck2=$BUCK2, toolchains=$TOOLCHAINS, spdx=$SPDX, cache=$CACHE\n\n"
+printf "\nUpdating flake=$FLAKE, buck2=$BUCK2, cache=$CACHE\n\n"
 
 # ------------------------------------------------------------------------------
 
