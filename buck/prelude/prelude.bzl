@@ -51,6 +51,7 @@ load_symbols(providers)
 
 def license(expr: "string") -> "NoneType":
     oncall(expr)
+    return None
 
 ## ---------------------------------------------------------------------------------------------------------------------
 

@@ -1,5 +1,4 @@
 load("@prelude//download.bzl", "download")
-load("@prelude//nixpkgs.bzl", "nix")
 
 download.tarball(
     name = "nixpkgs-src",

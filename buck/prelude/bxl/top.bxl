@@ -1,5 +1,5 @@
 load("@bxl//hello.bxl", _hello_main = "main", _hello_args = "args")
-hello = bxl(impl = _hello_main, cli_args = _hello_args)
-
 load("@bxl//licenses.bxl", _licenses_main = "main", _licenses_args = "args")
+
+hello = bxl(impl = _hello_main, cli_args = _hello_args)
 license_check = bxl(impl = _licenses_main, cli_args = _licenses_args)

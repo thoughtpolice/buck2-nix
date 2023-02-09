@@ -7,6 +7,11 @@
 #
 #    load("@prelude//:providers.bzl", ...)
 
+load("@prelude//nixpkgs.bzl", "nix");
+load("@prelude//toolchains/bash/main.bzl", "bash");
+load("@prelude//toolchains/rust/main.bzl", "rust");
+load("@prelude//toolchains/zip/main.bzl", "zipfile");
+
 ## ---------------------------------------------------------------------------------------------------------------------
 
 NixStoreOutputInfo = provider(fields = [ "path" ])
@@ -21,7 +26,7 @@ def _update(s):
     p = getattr(s, "providers", None)
     providers.update([(k, v) for k, v in p.items()])
 
-load("@prelude//nixpkgs.bzl", "nix"); _update(nix)
-load("@prelude//toolchains/bash/main.bzl", "bash"); _update(bash)
-load("@prelude//toolchains/rust/main.bzl", "rust"); _update(rust)
-load("@prelude//toolchains/zip/main.bzl", "zipfile"); _update(zipfile)
+_update(nix)
+_update(bash)
+_update(rust)
+_update(zipfile)
