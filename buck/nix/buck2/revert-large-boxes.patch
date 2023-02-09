@@ -1,0 +1,454 @@
+commit 2d6e11e8c578ccf5a4a5b82aacf90d748aade411
+Author: Austin Seipp <aseipp@pobox.com>
+Date:   Wed Feb 8 21:38:36 2023 -0600
+
+    Revert "buck2: data: box large variants"
+    
+    This reverts commit afb3307b6141d87b88f1de9f7f74bd9791ad2293.
+
+diff --git a/Cargo.toml b/Cargo.toml
+index a67b28cc9..733b0528c 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -150,10 +150,8 @@ pin-project = "0.4.29"
+ plist = "0.5"
+ pretty_assertions = "1.2.1"
+ proc-macro2 = "1.0"
+-prost = "0.11.6"
+-prost-build = "0.11.6"
+-prost-derive = "0.11.6"
+-prost-types = "0.11.6"
++prost = "0.11"
++prost-types = "0.11"
+ protoc-bin-vendored = "3.0.0"
+ quote = "1.0.3"
+ rand = { version = "0.8.4", features = ["small_rng"] }
+@@ -191,8 +189,8 @@ tokio = { version = "1.5", features = ["full"] }
+ tokio-stream = { version = "0.1.4", features = ["fs", "io-util", "net", "sync", "time"] }
+ tokio-util = { version = "0.6", features = ["full"] }
+ toml = "0.5.8"
+-tonic = "0.8.3"
+-tonic-build = { version = "0.8.4", features = ["prost", "cleanup-markdown"] }
++tonic = "0.8.2"
++tonic-build = { version = "0.8.2", features = ["prost", "cleanup-markdown"] }
+ tower = "0.4"
+ tower-layer = "0.3.1"
+ tower-service = "0.3.2"
+@@ -291,13 +289,3 @@ incremental = true
+ 
+ [profile.bench]
+ incremental = true
+-
+-[patch.crates-io]
+-# For https://github.com/tokio-rs/prost/pull/802
+-prost = { git = "https://github.com/krallin/prost.git", rev = "90b7e204c66f6baed0b1426ce456fb70d16b1cdb", version = "0.11.6"}
+-prost-build = { git = "https://github.com/krallin/prost.git", rev = "90b7e204c66f6baed0b1426ce456fb70d16b1cdb", version = "0.11.6"}
+-prost-types = { git = "https://github.com/krallin/prost.git", rev = "90b7e204c66f6baed0b1426ce456fb70d16b1cdb", version = "0.11.6"}
+-prost-derive = { git = "https://github.com/krallin/prost.git", rev = "90b7e204c66f6baed0b1426ce456fb70d16b1cdb", version = "0.11.6"}
+-# For https://github.com/hyperium/tonic/pull/1252
+-tonic = { git = "https://github.com/krallin/tonic.git", rev = "c67fc25b636b48b90c83dfc8dd1f89c00b84846d", version = "0.8.3" }
+-tonic-build = { git = "https://github.com/krallin/tonic.git", rev = "c67fc25b636b48b90c83dfc8dd1f89c00b84846d", version = "0.8.4" }
+diff --git a/app/buck2_build_api/src/actions/calculation.rs b/app/buck2_build_api/src/actions/calculation.rs
+index b8fb37870..8890e1a5f 100644
+--- a/app/buck2_build_api/src/actions/calculation.rs
++++ b/app/buck2_build_api/src/actions/calculation.rs
+@@ -209,7 +209,7 @@ async fn build_action_no_redirect(
+ 
+         (
+             action_result,
+-            box buck2_data::ActionExecutionEnd {
++            buck2_data::ActionExecutionEnd {
+                 key: Some(action.key().as_proto()),
+                 kind: action.kind().into(),
+                 name: Some(buck2_data::ActionName {
+diff --git a/app/buck2_client/src/commands/log/what_ran.rs b/app/buck2_client/src/commands/log/what_ran.rs
+index 58747f250..c154bcd4e 100644
+--- a/app/buck2_client/src/commands/log/what_ran.rs
++++ b/app/buck2_client/src/commands/log/what_ran.rs
+@@ -137,7 +137,7 @@ impl WhatRanCommand {
+ trait WhatRanComandImplementation: Default {
+     fn event(
+         &mut self,
+-        event: Box<buck2_data::BuckEvent>,
++        event: buck2_data::BuckEvent,
+         output: &mut impl WhatRanOutputWriter,
+         options: &WhatRanOptions,
+     ) -> anyhow::Result<()>;
+@@ -165,7 +165,7 @@ trait WhatRanComandImplementation: Default {
+ #[derive(Default)]
+ pub struct WhatRanImpl {
+     /// Maps action spans to their details.
+-    known_actions: HashMap<u64, Box<buck2_data::BuckEvent>>,
++    known_actions: HashMap<u64, buck2_data::BuckEvent>,
+ }
+ 
+ impl WhatRanState<u64> for WhatRanImpl {
+@@ -184,7 +184,7 @@ impl WhatRanComandImplementation for WhatRanImpl {
+     /// WhatRanRelevantAction, but it doesn't hurt to always check both.
+     fn event(
+         &mut self,
+-        event: Box<buck2_data::BuckEvent>,
++        event: buck2_data::BuckEvent,
+         output: &mut impl WhatRanOutputWriter,
+         options: &WhatRanOptions,
+     ) -> anyhow::Result<()> {
+@@ -208,13 +208,12 @@ pub struct WhatFailedImpl {
+     known_actions: HashMap<u64, WhatFailedEntry>,
+ }
+ 
+-#[allow(clippy::vec_box)]
+ struct WhatFailedEntry {
+     /// Knwon to be a WhatRanRelevantAction.
+-    event: Box<buck2_data::BuckEvent>,
++    event: buck2_data::BuckEvent,
+ 
+     /// Known to be a CommandReproducer.
+-    reproducers: Vec<Box<buck2_data::BuckEvent>>,
++    reproducers: Vec<buck2_data::BuckEvent>,
+ }
+ 
+ impl WhatRanState<u64> for WhatFailedImpl {
+@@ -233,7 +232,7 @@ impl WhatRanComandImplementation for WhatFailedImpl {
+     /// WhatRanRelevantAction, but it doesn't hurt to always check both.
+     fn event(
+         &mut self,
+-        event: Box<buck2_data::BuckEvent>,
++        event: buck2_data::BuckEvent,
+         output: &mut impl WhatRanOutputWriter,
+         options: &WhatRanOptions,
+     ) -> anyhow::Result<()> {
+diff --git a/app/buck2_client_ctx/src/events_ctx.rs b/app/buck2_client_ctx/src/events_ctx.rs
+index 451e00753..ea850a3dd 100644
+--- a/app/buck2_client_ctx/src/events_ctx.rs
++++ b/app/buck2_client_ctx/src/events_ctx.rs
+@@ -102,7 +102,7 @@ impl EventsCtx {
+         &mut self,
+         next: Option<Vec<anyhow::Result<StreamValue>>>,
+         shutdown: &mut Option<buck2_data::DaemonShutdown>,
+-    ) -> anyhow::Result<ControlFlow<Box<CommandResult>, ()>> {
++    ) -> anyhow::Result<ControlFlow<CommandResult, ()>> {
+         let next = next.context(BuckdCommunicationError::MissingCommandResult)?;
+         let mut events = Vec::with_capacity(next.len());
+         for next in next {
+@@ -171,7 +171,7 @@ impl EventsCtx {
+                         // Make sure we still flush if next produces an error is accurate
+                         match self.handle_stream_next(next, &mut shutdown).await? {
+                             ControlFlow::Continue(()) => {}
+-                            ControlFlow::Break(res) => break *res,
++                            ControlFlow::Break(res) => break res,
+                         }
+                     }
+                     Some(event) = tailers.stream.recv() => {
+diff --git a/app/buck2_client_ctx/src/replayer.rs b/app/buck2_client_ctx/src/replayer.rs
+index a0f7ac4c0..a62aeda33 100644
+--- a/app/buck2_client_ctx/src/replayer.rs
++++ b/app/buck2_client_ctx/src/replayer.rs
+@@ -28,7 +28,7 @@ use crate::subscribers::event_log::Invocation;
+ struct Pending {
+     #[pin]
+     delay: Sleep,
+-    event: Option<Box<buck2_data::BuckEvent>>,
++    event: Option<buck2_data::BuckEvent>,
+ }
+ 
+ #[pin_project]
+diff --git a/app/buck2_client_ctx/src/stream_value.rs b/app/buck2_client_ctx/src/stream_value.rs
+index a6135517f..34487e5f8 100644
+--- a/app/buck2_client_ctx/src/stream_value.rs
++++ b/app/buck2_client_ctx/src/stream_value.rs
+@@ -15,8 +15,8 @@ use serde::Serialize;
+ #[derive(Allocative, Deserialize)]
+ #[allow(clippy::large_enum_variant)]
+ pub enum StreamValue {
+-    Result(Box<CommandResult>),
+-    Event(Box<buck2_data::BuckEvent>),
++    Result(CommandResult),
++    Event(buck2_data::BuckEvent),
+ }
+ 
+ impl StreamValue {
+diff --git a/app/buck2_client_ctx/src/subscribers/event_log/mod.rs b/app/buck2_client_ctx/src/subscribers/event_log/mod.rs
+index 8f1ce94f0..de5acee85 100644
+--- a/app/buck2_client_ctx/src/subscribers/event_log/mod.rs
++++ b/app/buck2_client_ctx/src/subscribers/event_log/mod.rs
+@@ -1061,7 +1061,9 @@ mod tests {
+             .serialize_to_protobuf_length_delimited(&mut actual)
+             .unwrap();
+         let expected = buck2_cli_proto::CommandProgress {
+-            progress: Some(command_progress::Progress::Event(event.into())),
++            progress: Some(command_progress::Progress::Event(
++                buck2_data::BuckEvent::from(event),
++            )),
+         }
+         .encode_length_delimited_to_vec();
+         assert_eq!(expected, actual);
+diff --git a/app/buck2_client_ctx/src/subscribers/recorder.rs b/app/buck2_client_ctx/src/subscribers/recorder.rs
+index 3233301a8..2d58e45f6 100644
+--- a/app/buck2_client_ctx/src/subscribers/recorder.rs
++++ b/app/buck2_client_ctx/src/subscribers/recorder.rs
+@@ -240,7 +240,7 @@ mod imp {
+                     None,
+                     None,
+                     buck2_data::RecordEvent {
+-                        data: Some((box record).into()),
++                        data: Some(record.into()),
+                     }
+                     .into(),
+                 );
+diff --git a/app/buck2_events/src/lib.rs b/app/buck2_events/src/lib.rs
+index 5215748c7..a28f4f960 100644
+--- a/app/buck2_events/src/lib.rs
++++ b/app/buck2_events/src/lib.rs
+@@ -60,7 +60,7 @@ use crate::trace::TraceId;
+ #[derive(Debug, Clone, PartialEq, Serialize)]
+ pub struct BuckEvent {
+     /// Full event, the rest of the fields are caches.
+-    event: Box<buck2_data::BuckEvent>,
++    event: buck2_data::BuckEvent,
+ 
+     /// A timestamp for when this event was emitted.
+     timestamp: SystemTime,
+@@ -90,7 +90,7 @@ impl BuckEvent {
+             data: Some(data),
+         };
+         BuckEvent {
+-            event: box event,
++            event,
+             timestamp,
+             span_id,
+             parent_id,
+@@ -191,16 +191,16 @@ impl BuckEvent {
+     }
+ }
+ 
+-impl From<BuckEvent> for Box<buck2_data::BuckEvent> {
++impl From<BuckEvent> for buck2_data::BuckEvent {
+     fn from(e: BuckEvent) -> Self {
+         e.event
+     }
+ }
+ 
+-impl TryFrom<Box<buck2_data::BuckEvent>> for BuckEvent {
++impl TryFrom<buck2_data::BuckEvent> for BuckEvent {
+     type Error = anyhow::Error;
+ 
+-    fn try_from(event: Box<buck2_data::BuckEvent>) -> anyhow::Result<BuckEvent> {
++    fn try_from(event: buck2_data::BuckEvent) -> anyhow::Result<BuckEvent> {
+         event.data.as_ref().ok_or(BuckEventError::MissingData)?;
+         fn new_span_id(num: u64) -> Option<SpanId> {
+             NonZeroU64::new(num).map(SpanId)
+@@ -348,7 +348,7 @@ mod tests {
+         );
+         assert_eq!(
+             test,
+-            BuckEvent::try_from(Box::<buck2_data::BuckEvent>::from(test.clone())).unwrap()
++            BuckEvent::try_from(buck2_data::BuckEvent::from(test.clone())).unwrap()
+         );
+     }
+ 
+diff --git a/app/buck2_events/src/sink/scribe.rs b/app/buck2_events/src/sink/scribe.rs
+index 209e236b0..45a60db7e 100644
+--- a/app/buck2_events/src/sink/scribe.rs
++++ b/app/buck2_events/src/sink/scribe.rs
+@@ -95,7 +95,7 @@ mod fbcode {
+         // Encodes message into something scribe understands.
+         fn encode_message(&self, mut event: BuckEvent, is_truncated: bool) -> Option<Vec<u8>> {
+             Self::smart_truncate_event(event.data_mut());
+-            let proto: Box<buck2_data::BuckEvent> = event.into();
++            let proto: buck2_data::BuckEvent = event.into();
+ 
+             // Add a header byte to indicate this is _not_ base64 encoding.
+             let mut buf = Vec::with_capacity(proto.encoded_len() + 1);
+diff --git a/app/buck2_execute_impl/src/executors/caching.rs b/app/buck2_execute_impl/src/executors/caching.rs
+index 268d67b2f..f4377bf35 100644
+--- a/app/buck2_execute_impl/src/executors/caching.rs
++++ b/app/buck2_execute_impl/src/executors/caching.rs
+@@ -244,7 +244,7 @@ impl CachingExecutor {
+ 
+                 (
+                     res,
+-                    box buck2_data::CacheUploadEnd {
++                    buck2_data::CacheUploadEnd {
+                         key: Some(target.action_key.as_proto()),
+                         name: Some(name),
+                         action_digest: digest.to_string(),
+diff --git a/app/buck2_protoc_dev/src/lib.rs b/app/buck2_protoc_dev/src/lib.rs
+index 628311a47..880724c0b 100644
+--- a/app/buck2_protoc_dev/src/lib.rs
++++ b/app/buck2_protoc_dev/src/lib.rs
+@@ -98,12 +98,6 @@ impl Builder {
+         }
+     }
+ 
+-    pub fn boxed<P: AsRef<str>>(self, path: P) -> Self {
+-        Self {
+-            tonic: self.tonic.boxed(path),
+-        }
+-    }
+-
+     pub fn setup_protoc(self) -> Self {
+         // It would be great if there were on the config rather than an env variables...
+         maybe_set_protoc();
+diff --git a/app/buck2_server/src/daemon/server.rs b/app/buck2_server/src/daemon/server.rs
+index 5d19119aa..00912a98b 100644
+--- a/app/buck2_server/src/daemon/server.rs
++++ b/app/buck2_server/src/daemon/server.rs
+@@ -406,9 +406,9 @@ impl BuckdServer {
+         } = ActiveCommand::new(&dispatch);
+         let data = daemon_state.data()?;
+ 
+-        dispatch.instant_event(
+-            box snapshot::SnapshotCollector::pre_initialization_snapshot(data.start_time),
+-        );
++        dispatch.instant_event(snapshot::SnapshotCollector::pre_initialization_snapshot(
++            data.start_time,
++        ));
+ 
+         let configure_bxl_file_globals = self.0.callbacks.configure_bxl_file_globals();
+ 
+@@ -531,9 +531,9 @@ fn result_to_command_result<R: Into<command_result::Result>>(
+ 
+ fn error_to_command_progress(e: anyhow::Error) -> CommandProgress {
+     CommandProgress {
+-        progress: Some(command_progress::Progress::Result(
+-            box error_to_command_result(e),
+-        )),
++        progress: Some(command_progress::Progress::Result(error_to_command_result(
++            e,
++        ))),
+     }
+ }
+ 
+@@ -591,7 +591,7 @@ fn pump_events<E: EventSource>(
+                 match control_event {
+                     ControlEvent::CommandResult(result) => {
+                         let _ignore = output_send.send(Ok(CommandProgress {
+-                            progress: Some(command_progress::Progress::Result(box result)),
++                            progress: Some(command_progress::Progress::Result(result)),
+                         }));
+                     }
+                 }
+@@ -680,20 +680,18 @@ where
+ 
+     let daemon_shutdown_stream = daemon_shutdown_channel
+         .map_ok(move |shutdown| CommandProgress {
+-            progress: Some(command_progress::Progress::Event(
+-                box buck2_data::BuckEvent {
+-                    timestamp: Some(SystemTime::now().into()),
+-                    trace_id: trace_id.to_string(),
+-                    span_id: 0,
+-                    parent_id: 0,
+-                    data: Some(
+-                        buck2_data::InstantEvent {
+-                            data: Some(shutdown.into()),
+-                        }
+-                        .into(),
+-                    ),
+-                },
+-            )),
++            progress: Some(command_progress::Progress::Event(buck2_data::BuckEvent {
++                timestamp: Some(SystemTime::now().into()),
++                trace_id: trace_id.to_string(),
++                span_id: 0,
++                parent_id: 0,
++                data: Some(
++                    buck2_data::InstantEvent {
++                        data: Some(shutdown.into()),
++                    }
++                    .into(),
++                ),
++            })),
+         })
+         .into_stream()
+         .filter_map(|e| {
+diff --git a/app/buck2_server/src/heartbeat_guard.rs b/app/buck2_server/src/heartbeat_guard.rs
+index 88d15214b..9e642c4ac 100644
+--- a/app/buck2_server/src/heartbeat_guard.rs
++++ b/app/buck2_server/src/heartbeat_guard.rs
+@@ -48,7 +48,7 @@ impl HeartbeatGuard {
+                 loop {
+                     let snapshot = collector.create_snapshot();
+                     match events.lock().expect("Poisoned lock").as_ref() {
+-                        Some(events) => events.instant_event(box snapshot),
++                        Some(events) => events.instant_event(snapshot),
+                         None => break,
+                     }
+                     interval.tick().await;
+@@ -70,7 +70,7 @@ impl Drop for HeartbeatGuard {
+         // Synchronously remove access for sending new heartbeats.
+         if let Some(events) = maybe_events.take() {
+             // Send one last snapshot.
+-            events.instant_event(box self.collector.create_snapshot());
++            events.instant_event(self.collector.create_snapshot());
+         }
+         // Cancel the task as well.
+         self.handle.abort();
+diff --git a/buck2_cli_proto/build.rs b/buck2_cli_proto/build.rs
+index 6bb1cc0a3..b35f430a9 100644
+--- a/buck2_cli_proto/build.rs
++++ b/buck2_cli_proto/build.rs
+@@ -30,8 +30,6 @@ fn main() -> io::Result<()> {
+         .field_attribute("delay", "#[serde(with = \"serialize_duration\")]")
+         .field_attribute("ProfileResponse.elapsed", "#[serde(with = \"serialize_duration\")]")
+ 
+-        .boxed("CommandProgress.progress.event")
+-        .boxed("CommandProgress.progress.result")
+         .extern_path(".buck.data", "::buck2_data")
+         .compile(proto_files, &[".", &events_include])
+ }
+diff --git a/buck2_data/build.rs b/buck2_data/build.rs
+index 467c11005..0409b736b 100644
+--- a/buck2_data/build.rs
++++ b/buck2_data/build.rs
+@@ -141,9 +141,5 @@ fn main() -> io::Result<()> {
+             "RemoteCommand.queue_time",
+             "#[serde(with = \"crate::serialize_duration\")]",
+         )
+-        .boxed("RecordEvent.data.invocation_record")
+-        .boxed("SpanEndEvent.data.action_execution")
+-        .boxed("SpanEndEvent.data.cache_upload")
+-        .boxed("InstantEvent.data.snapshot")
+         .compile(proto_files, &["."])
+ }
+diff --git a/shim/third-party/rust/Cargo.toml b/shim/third-party/rust/Cargo.toml
+index 4c51c1b6e..ff5a5df5e 100644
+--- a/shim/third-party/rust/Cargo.toml
++++ b/shim/third-party/rust/Cargo.toml
+@@ -116,10 +116,8 @@ pin-project = "0.4.29"
+ plist = "0.5"
+ pretty_assertions = "1.2.1"
+ proc-macro2 = "1.0"
+-prost = "0.11.6"
+-prost-build = "0.11.6"
+-prost-derive = "0.11.6"
+-prost-types = "0.11.6"
++prost = "0.11"
++prost-types = "0.11"
+ quote = "1.0.3"
+ rand = { version = "0.8.4", features = ["small_rng"] }
+ ref-cast = "1.0.0"
+@@ -158,8 +156,8 @@ tokio = { version = "1.5", features = ["full"] }
+ tokio-stream = { version = "0.1.4", features = ["fs", "io-util", "net", "sync", "time"] }
+ tokio-util = { version = "0.6", features = ["full"] }
+ toml = "0.5.8"
+-tonic = "0.8.3"
+-tonic-build = { version = "0.8.4", features = ["prost", "cleanup-markdown"] }
++tonic = "0.8.2"
++tonic-build = { version = "0.8.2", features = ["prost", "cleanup-markdown"] }
+ tower = "0.4"
+ tower-layer = "0.3.1"
+ tower-service = "0.3.2"
+@@ -174,13 +172,3 @@ winapi = { version = "0.3", features = ["everything"] }
+ xattr = "0.2.2"
+ zip = "0.5"
+ zstd = "=0.11.1"
+-
+-[patch.crates-io]
+-# For https://github.com/tokio-rs/prost/pull/802
+-prost = { git = "https://github.com/krallin/prost.git", rev = "90b7e204c66f6baed0b1426ce456fb70d16b1cdb", version = "0.11.6"}
+-prost-build = { git = "https://github.com/krallin/prost.git", rev = "90b7e204c66f6baed0b1426ce456fb70d16b1cdb", version = "0.11.6"}
+-prost-types = { git = "https://github.com/krallin/prost.git", rev = "90b7e204c66f6baed0b1426ce456fb70d16b1cdb", version = "0.11.6"}
+-prost-derive = { git = "https://github.com/krallin/prost.git", rev = "90b7e204c66f6baed0b1426ce456fb70d16b1cdb", version = "0.11.6"}
+-# For https://github.com/hyperium/tonic/pull/1252
+-tonic = { git = "https://github.com/krallin/tonic.git", rev = "c67fc25b636b48b90c83dfc8dd1f89c00b84846d", version = "0.8.3" }
+-tonic-build = { git = "https://github.com/krallin/tonic.git", rev = "c67fc25b636b48b90c83dfc8dd1f89c00b84846d", version = "0.8.4" }

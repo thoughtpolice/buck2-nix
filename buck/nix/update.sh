@@ -103,7 +103,10 @@ if [ "$BUCK2" = "1" ]; then
   d="$t/buck2"
 
   echo "BUCK2: generating new Cargo.lock file"
-  cp -r "$p" "$d" && chmod -R +w "$d" && (cd "$d" && cargo --quiet generate-lockfile)
+  cp -r "$p" "$d" && chmod -R +w "$d"
+  (cd "$d" \
+    && patch -p1 < "$root/buck/nix/buck2/revert-large-boxes.patch" \
+    && cargo --quiet generate-lockfile)
   cp "$d/Cargo.lock" "$root/buck/nix/buck2/Cargo.lock"
 
   # update the toolchain based on the rust-toolchain file
