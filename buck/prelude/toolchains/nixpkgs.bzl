@@ -98,7 +98,7 @@ def __overlays_list(ls: ["string"]) -> "attribute":
     ]))
 
 __nix_attrs = {
-    "_nixpkgs": attrs.default_only(attrs.dep(default = "prelude//toolchains:nixpkgs")),
+    "_nixpkgs": attrs.default_only(attrs.dep(default = "prelude//toolchains:nixpkgs-src")),
     "_overlays": __overlays_list([
         "rust",
     ]),
@@ -132,5 +132,6 @@ nix = struct(
 
     attrs = __nix_attrs,
 
+    attributes = {},
     providers = {},
 )

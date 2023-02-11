@@ -49,5 +49,6 @@ __scryer_program = rule(
 prolog = struct(
     scryer_program = __scryer_program,
 
+    attributes = {},
     providers = {},
 )

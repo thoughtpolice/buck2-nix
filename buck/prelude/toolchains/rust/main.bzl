@@ -105,6 +105,7 @@ rust = struct(
     toolchain = __toolchain,
     binary = __binary,
 
+    attributes = {},
     providers = {
         "RustToolchainInfo": RustToolchainInfo,
         "RustPlatformInfo": RustPlatformInfo,

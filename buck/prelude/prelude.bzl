@@ -41,7 +41,7 @@ load("@prelude//basics/providers.bzl", "providers")
 
 load("@prelude//basics/alias.bzl", _alias = "alias")
 load("@prelude//basics/asserts.bzl", _asserts = "asserts")
-load("@prelude//basics/filegroup.bzl", _filegroup = "filegroup")
+load("@prelude//basics/files.bzl", _files = "files")
 load("@prelude//basics/paths.bzl", _paths = "paths")
 
 ## ---------------------------------------------------------------------------------------------------------------------
@@ -68,6 +68,6 @@ load_symbols({
     "alias": _alias,
     "asserts": _asserts,
     "config": _config,
-    "filegroup": _filegroup,
+    "files": _files,
     "paths": _paths,
 })
