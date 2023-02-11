@@ -1,4 +1,4 @@
-load("@prelude//nixpkgs.bzl", "nix")
+load("@prelude//toolchains/nixpkgs.bzl", "nix")
 
 nix.rules.build(
     name = "oil",

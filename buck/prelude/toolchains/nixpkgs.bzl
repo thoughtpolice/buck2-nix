@@ -6,7 +6,7 @@
 #
 # HOW TO USE THIS MODULE:
 #
-#    load("@prelude//toolchains/nixpkgs.bzl", "...")
+#    load("@prelude//toolchains/nixpkgs.bzl", "nix")
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
@@ -107,6 +107,14 @@ __build = rule(
     },
 )
 
+## ---------------------------------------------------------------------------------------------------------------------
+
+def __get_toolchain(key: str.type, name: str.type, ps: ["_a"]) -> "attribute":
+    name: str.type = "@prelude//toolchains/{}:{}".format(key, name)
+    return attrs.toolchain_dep(default = name, providers = ps)
+
+## ---------------------------------------------------------------------------------------------------------------------
+
 nix = struct(
     rules = struct(
         build = __build,
@@ -114,6 +122,7 @@ nix = struct(
 
     macros = struct(
         build = __nix_build,
+        get_toolchain = __get_toolchain,
     ),
 
     attrs = __nix_attrs,

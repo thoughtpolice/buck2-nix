@@ -1,6 +1,6 @@
 ## ---------------------------------------------------------------------------------------------------------------------
 
-load("@prelude//nixpkgs.bzl", "nix")
+load("@prelude//toolchains/nixpkgs.bzl", "nix")
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
@@ -83,10 +83,7 @@ __binary = rule(
     attrs = {
         "file": attrs.source(),
         "out": attrs.option(attrs.string(), default = None),
-        "_toolchain": attrs.toolchain_dep(
-            default = "@prelude//toolchains/rust:rust-stable",
-            providers = [ RustToolchainInfo ]
-        ),
+        "_toolchain": nix.macros.get_toolchain('rust', 'rust-stable', [ RustToolchainInfo ]),
     },
 )
 

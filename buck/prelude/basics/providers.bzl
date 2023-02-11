@@ -7,7 +7,7 @@
 #
 #    load("@prelude//:providers.bzl", ...)
 
-load("@prelude//nixpkgs.bzl", "nix");
+load("@prelude//toolchains/nixpkgs.bzl", "nix");
 load("@prelude//toolchains/bash/main.bzl", "bash");
 load("@prelude//toolchains/rust/main.bzl", "rust");
 load("@prelude//toolchains/zip/main.bzl", "zipfile");
