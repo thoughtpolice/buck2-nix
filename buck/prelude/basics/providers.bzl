@@ -14,19 +14,16 @@ load("@prelude//toolchains/zip/main.bzl", "zipfile");
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-NixStoreOutputInfo = provider(fields = [ "path" ])
+providers: {str.type: "provider"} = { }
 
-## ---------------------------------------------------------------------------------------------------------------------
+def _update(ps):
+    """Update the providers dict with the given provider value, exported from a toolchain."""
+    for (k, v) in ps.items():
+        if k in providers:
+            fail("Provider '{}' already exists!".format(k))
+        providers[k] = v
 
-providers = {
-    "NixStoreOutputInfo": NixStoreOutputInfo,
-}
-
-def _update(s):
-    p = getattr(s, "providers", None)
-    providers.update([(k, v) for k, v in p.items()])
-
-_update(nix)
-_update(bash)
-_update(rust)
-_update(zipfile)
+_update(nix.providers)
+_update(bash.providers)
+_update(rust.providers)
+_update(zipfile.providers)
