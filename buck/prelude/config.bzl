@@ -79,6 +79,7 @@ config_setting = rule(
         "values": attrs.dict(key = attrs.string(), value = attrs.string(), sorted = False, default = {}),
         "within_view": attrs.option(attrs.option(attrs.list(attrs.string())), default = None),
     },
+    is_configuration_rule = True,
 )
 
 constraint_setting = rule(
@@ -86,6 +87,7 @@ constraint_setting = rule(
     attrs = {
         "within_view": attrs.option(attrs.option(attrs.list(attrs.string())), default = None),
     },
+    is_configuration_rule = True,
 )
 
 constraint_value = rule(
@@ -94,6 +96,7 @@ constraint_value = rule(
         "constraint_setting": attrs.configuration_label(),
         "within_view": attrs.option(attrs.option(attrs.list(attrs.string())), default = None),
     },
+    is_configuration_rule = True,
 )
 
 platform = rule(
@@ -103,6 +106,7 @@ platform = rule(
         "deps": attrs.list(attrs.configuration_label(), default = []),
         "within_view": attrs.option(attrs.option(attrs.list(attrs.string())), default = None),
     },
+    is_configuration_rule = True,
 )
 
 ## ---------------------------------------------------------------------------------------------------------------------
