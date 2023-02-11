@@ -1,6 +1,6 @@
 load("@prelude//nixpkgs.bzl", "nix")
 
-nix.build(
+nix.rules.build(
     name = "scryer",
     expr = "pkgs.scryer-prolog",
     binary = "bin/scryer-prolog",

@@ -1,12 +1,12 @@
 load("@prelude//nixpkgs.bzl", "nix")
 
-nix.build(
+nix.rules.build(
     name = "oil",
     expr = "pkgs.oil",
     visibility = [ "root//..." ],
 )
 
-nix.build(
+nix.rules.build(
     name = "bash",
     expr = "pkgs.bash",
     visibility = [ "root//..." ],

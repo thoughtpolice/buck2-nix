@@ -8,10 +8,9 @@
 #
 #    load("@prelude//toolchains/nixpkgs.bzl", "...")
 
-
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def _nix_build(ctx: "context"):
+def __nix_build(ctx: "context", name: str.type, expr: str.type, binary: [str.type, None] = None) -> ["provider"]:
     nixpkgs = ctx.attrs._nixpkgs[DefaultInfo].default_outputs[0]
     overlays = [o[DefaultInfo].default_outputs[0] for o in ctx.attrs._overlays]
 
@@ -41,7 +40,7 @@ def _nix_build(ctx: "context"):
             cmd_args(nixpkgs, format="with import (buckroot \"{}\")"),
             "{ inherit config overlays; };",
             "  (",
-            "    " + ctx.attrs.expr,
+            "    " + expr,
             "  )",
             "", # XXX: newline for readability in terminal
         ],
@@ -72,11 +71,11 @@ def _nix_build(ctx: "context"):
     ctx.actions.run(
         cmd_args([build_sh_cmd, out_link.as_output()]),
         category = "nix_build",
-        identifier = "{}.nix".format(ctx.label.name),
+        identifier = "{}.nix".format(name),
     )
 
     run_info = []
-    if ctx.attrs.binary != None:
+    if binary != None:
         run_info.append(
             RunInfo(
                 args = cmd_args(out_link, format="{}/" + ctx.attrs.binary),
@@ -93,20 +92,31 @@ def _nix_build(ctx: "context"):
         ),
     ] + run_info
 
+__nix_attrs = {
+    "_nixpkgs": attrs.default_only(attrs.dep(default = "prelude//toolchains:nixpkgs-src")),
+    "_overlays": attrs.default_only(attrs.list(attrs.dep(), default = [
+        "prelude//toolchains:rust-overlay-src",
+    ])),
+}
+
 __build = rule(
-    impl = _nix_build,
-    attrs = {
+    impl = lambda ctx: __nix_build(ctx, ctx.label.name, ctx.attrs.expr, ctx.attrs.binary),
+    attrs = __nix_attrs | {
         "expr": attrs.string(),
         "binary": attrs.option(attrs.string(), default = None),
-        "_nixpkgs": attrs.default_only(attrs.dep(default = "prelude//toolchains:nixpkgs-src")),
-        "_overlays": attrs.default_only(attrs.list(attrs.dep(), default = [
-            "prelude//toolchains:rust-overlay-src",
-        ])),
     },
 )
 
 nix = struct(
-    build = __build,
+    rules = struct(
+        build = __build,
+    ),
+
+    macros = struct(
+        build = __nix_build,
+    ),
+
+    attrs = __nix_attrs,
 
     providers = {},
 )

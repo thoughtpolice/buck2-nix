@@ -1,21 +1,24 @@
 load(":main.bzl", "rust")
 
 rust.toolchain(
-    name = "stock",
+    name = "rust-stable",
     channel = "stable",
     version = "1.67.0",
+    visibility = [ "root//..." ],
 )
 
 rust.toolchain(
-    name = "stock",
+    name = "rust-nightly",
     channel = "nightly",
     version = "2023-02-03",
+    visibility = [ "root//..." ],
 )
 
 rust.toolchain(
-    name = "arm-linux",
+    name = "rust-nightly-arm",
     channel = "nightly",
     version = "2023-02-03",
     extensions = [ "rust-src" ],
     targets = [ "arm-unknown-linux-gnueabihf" ],
+    visibility = [ "root//..." ],
 )

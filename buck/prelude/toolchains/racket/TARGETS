@@ -1,6 +1,6 @@
 load("@prelude//nixpkgs.bzl", "nix")
 
-nix.build(
+nix.rules.build(
     name = "racket-latest",
     expr = "pkgs.racket",
     binary = "bin/drracket",

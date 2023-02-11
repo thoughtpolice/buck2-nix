@@ -1,6 +1,6 @@
 load("@prelude//nixpkgs.bzl", "nix")
 
-nix.build(
+nix.rules.build(
     name = "zip",
     expr = "pkgs.zip",
     visibility = [ "root//..." ],
