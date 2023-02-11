@@ -9,28 +9,34 @@
 
 """Bash toolchain."""
 
+load("@prelude//basics/files.bzl", "files")
+
 ## ---------------------------------------------------------------------------------------------------------------------
 
 def __run_impl(ctx: "context") -> ["provider"]:
-    cmd = [
-        cmd_args(ctx.attrs._sh[DefaultInfo].default_outputs[0], format="{}/bin/osh"),
-        ctx.attrs.src
-    ]
+    cmd = [ cmd_args(ctx.attrs._sh[DefaultInfo].default_outputs[0], format="{}/bin/osh") ]
+    cmd.append(ctx.attrs.args)
 
     return [ DefaultInfo(), RunInfo(args = cmd) ]
 
-__run = rule(
+__run_rule = rule(
+    doc = """Run a bash script (EXPERIMENTAL: uses the Oil interpreter)""",
     impl = __run_impl,
     attrs = {
-        "src": attrs.source(allow_directory = False),
+        "args": attrs.list(attrs.arg()),
         "_sh": attrs.default_only(attrs.dep(default = "@prelude//toolchains/bash:oil")),
     },
 )
+
+def __run(name, src):
+    files.export_file(name = src, src = src)
+    return __run_rule(name = name, args = [ "$(location :{})".format(src) ])
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
 bash = struct(
     run = __run,
 
+    attributes = {},
     providers = {},
 )
