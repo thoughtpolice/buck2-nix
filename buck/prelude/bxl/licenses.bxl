@@ -1,3 +1,16 @@
+# SPDX-FileCopyrightText: © 2022 Austin Seipp
+# SPDX-License-Identifier: Apache-2.0
+
+# @prelude//bxl/licenses.bxl -- License information for BXL.
+#
+# HOW TO USE THIS MODULE (from the command line):
+#
+#     $ bxl license_check
+
+doc = """License check for BXL scripts."""
+
+## ---------------------------------------------------------------------------------------------------------------------
+
 def main(ctx):
     target = ctx.cli_args.target or "root//..."
     rust_bins = ctx.cquery().kind("rust_binary", target)

@@ -1,5 +1,19 @@
-load("@bxl//hello.bxl", _hello_main = "main", _hello_args = "args")
-load("@bxl//licenses.bxl", _licenses_main = "main", _licenses_args = "args")
+# SPDX-FileCopyrightText: © 2022 Austin Seipp
+# SPDX-License-Identifier: Apache-2.0
 
-hello = bxl(impl = _hello_main, cli_args = _hello_args)
-license_check = bxl(impl = _licenses_main, cli_args = _licenses_args)
+# @prelude//bxl/top.bxl -- top-level entry point for BXL scripts.
+#
+# HOW TO USE THIS MODULE:
+#
+#     Command line:
+#         $ bxl license_check
+
+"""Top-level entry point for BXL scripts."""
+
+## ---------------------------------------------------------------------------------------------------------------------
+
+load("@bxl//hello.bxl", _hello_main = "main", _hello_args = "args", _hello_doc = "doc")
+load("@bxl//licenses.bxl", _licenses_main = "main", _licenses_args = "args", _licenses_doc = "doc")
+
+hello = bxl(impl = _hello_main, cli_args = _hello_args, doc = _hello_doc)
+license_check = bxl(impl = _licenses_main, cli_args = _licenses_args, doc = _licenses_doc)

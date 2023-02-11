@@ -1,11 +1,13 @@
 # SPDX-FileCopyrightText: © 2022 Austin Seipp
 # SPDX-License-Identifier: Apache-2.0
 
-# @prelude//:providers.bzl -- Build info providers for Buck.
+# @prelude//basics/providers.bzl -- Build info providers for Buck.
 #
 # HOW TO USE THIS MODULE:
 #
-#    load("@prelude//:providers.bzl", ...)
+#   N/A. Providers are automatically loaded by the prelude.
+
+"""Providers used by all Buck rules in this prelude."""
 
 load("@prelude//toolchains/nixpkgs.bzl", "nix");
 load("@prelude//toolchains/bash/main.bzl", "bash");

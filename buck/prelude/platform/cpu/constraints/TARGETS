@@ -2,8 +2,8 @@
 # SPDX-FileCopyrightText: © 2022 Austin Seipp
 # SPDX-License-Identifier: MIT OR Apache-2.0
 
-load("@prelude//config.bzl", "constraint_setting", "constraint_value")
+load("@prelude//config.bzl", "config")
 
-constraint_setting(name = "cpu", visibility = [ "PUBLIC" ])
-constraint_value(name = "x86_64", constraint_setting = ":cpu", visibility = [ "PUBLIC" ])
-constraint_value(name = "aarch64", constraint_setting = ":cpu", visibility = [ "PUBLIC" ])
+config.constraint(name = "cpu", visibility = [ "PUBLIC" ])
+config.value(name = "x86_64", constraint = ":cpu", visibility = [ "PUBLIC" ])
+config.value(name = "aarch64", constraint = ":cpu", visibility = [ "PUBLIC" ])

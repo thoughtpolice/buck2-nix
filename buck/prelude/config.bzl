@@ -6,7 +6,9 @@
 #
 # HOW TO USE THIS MODULE:
 #
-#    load("@prelude//config.bzl", "nix")
+#    load("@prelude//config.bzl", "config")
+
+"""Configuration rules and information."""
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
@@ -20,7 +22,7 @@
 #   "constraint_values": attrs.list(attrs.configuration_label(), default = []),
 #   "values": attrs.dict(key = attrs.string(), value = attrs.string(), sorted = False, default = {}),
 def _config_setting_impl(ctx):
-    subinfos = [_constraint_values_to_configuration(ctx.attrs.constraint_values)]
+    subinfos = [_constraint_values_to_configuration(ctx.attrs.constraints)]
     subinfos.append(ConfigurationInfo(constraints = {}, values = ctx.attrs.values))
     return [DefaultInfo(), _configuration_info_union(subinfos)]
 
@@ -34,7 +36,7 @@ def _constraint_setting_impl(ctx):
 #  constraint_setting: the target constraint that this is a value of
 def _constraint_value_impl(ctx):
     constraint_value = ConstraintValueInfo(
-        setting = ctx.attrs.constraint_setting[ConstraintSettingInfo],
+        setting = ctx.attrs.constraint[ConstraintSettingInfo],
         label = ctx.label.raw_target(),
     )
     return [
@@ -54,7 +56,7 @@ def _constraint_value_impl(ctx):
 def _platform_impl(ctx):
     subinfos = (
         [dep[PlatformInfo].configuration for dep in ctx.attrs.deps] +
-        [_constraint_values_to_configuration(ctx.attrs.constraint_values)]
+        [_constraint_values_to_configuration(ctx.attrs.constraints)]
     )
     return [
         DefaultInfo(),
@@ -69,47 +71,6 @@ def _platform_impl(ctx):
             configuration = _configuration_info_union(subinfos),
         ),
     ]
-
-## ---------------------------------------------------------------------------------------------------------------------
-
-config_setting = rule(
-    impl = _config_setting_impl,
-    attrs = {
-        "constraint_values": attrs.list(attrs.configuration_label(), default = []),
-        "values": attrs.dict(key = attrs.string(), value = attrs.string(), sorted = False, default = {}),
-        "within_view": attrs.option(attrs.option(attrs.list(attrs.string())), default = None),
-    },
-    is_configuration_rule = True,
-)
-
-constraint_setting = rule(
-    impl = _constraint_setting_impl,
-    attrs = {
-        "within_view": attrs.option(attrs.option(attrs.list(attrs.string())), default = None),
-    },
-    is_configuration_rule = True,
-)
-
-constraint_value = rule(
-    impl = _constraint_value_impl,
-    attrs = {
-        "constraint_setting": attrs.configuration_label(),
-        "within_view": attrs.option(attrs.option(attrs.list(attrs.string())), default = None),
-    },
-    is_configuration_rule = True,
-)
-
-platform = rule(
-    impl = _platform_impl,
-    attrs = {
-        "constraint_values": attrs.list(attrs.configuration_label(), default = []),
-        "deps": attrs.list(attrs.configuration_label(), default = []),
-        "within_view": attrs.option(attrs.option(attrs.list(attrs.string())), default = None),
-    },
-    is_configuration_rule = True,
-)
-
-## ---------------------------------------------------------------------------------------------------------------------
 
 def _configuration_info_union(infos):
     if len(infos) == 0:
@@ -131,3 +92,55 @@ def _constraint_values_to_configuration(values):
         info[ConstraintValueInfo].setting.label: info[ConstraintValueInfo]
         for info in values
     }, values = {})
+
+## ---------------------------------------------------------------------------------------------------------------------
+
+__config_setting = rule(
+    doc = """A rule that defines a configuration setting.""",
+    impl = _config_setting_impl,
+    attrs = {
+        "constraints": attrs.list(attrs.configuration_label(), default = []),
+        "values": attrs.dict(key = attrs.string(), value = attrs.string(), sorted = False, default = {}),
+        "within_view": attrs.option(attrs.option(attrs.list(attrs.string())), default = None),
+    },
+    is_configuration_rule = True,
+)
+
+__constraint_setting = rule(
+    doc = """A rule that defines a constraint setting.""",
+    impl = _constraint_setting_impl,
+    attrs = {
+        "within_view": attrs.option(attrs.option(attrs.list(attrs.string())), default = None),
+    },
+    is_configuration_rule = True,
+)
+
+__constraint_value = rule(
+    doc = """A rule that defines a constraint value.""",
+    impl = _constraint_value_impl,
+    attrs = {
+        "constraint": attrs.configuration_label(),
+        "within_view": attrs.option(attrs.option(attrs.list(attrs.string())), default = None),
+    },
+    is_configuration_rule = True,
+)
+
+__platform = rule(
+    doc = """A rule that defines a platform.""",
+    impl = _platform_impl,
+    attrs = {
+        "constraints": attrs.list(attrs.configuration_label(), default = []),
+        "deps": attrs.list(attrs.configuration_label(), default = []),
+        "within_view": attrs.option(attrs.option(attrs.list(attrs.string())), default = None),
+    },
+    is_configuration_rule = True,
+)
+
+config = struct(
+    platform = __platform,
+    setting = __config_setting,
+    constraint = __constraint_setting,
+    value = __constraint_value,
+)
+
+## ---------------------------------------------------------------------------------------------------------------------

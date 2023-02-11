@@ -1,13 +1,11 @@
 # SPDX-FileCopyrightText: © 2017 The Bazel Authors. All rights reserved.
 # SPDX-License-Identifier: MIT OR Apache-2.0
 
-# @prelude//basics/asserts.bzl -- Testing support.
+# @prelude//basics/asserts.bzl -- Assertion functions.
 #
 # HOW TO USE THIS MODULE:
 #
 #    load("@prelude//basics/asserts.bzl", "asserts")
-
-## ---------------------------------------------------------------------------------------------------------------------
 
 """Testing support.
 
@@ -15,6 +13,8 @@ This is a modified version of https://github.com/bazelbuild/bazel-skylib/blob/ma
 Currently, if there are any failures, these are raised immediately by calling fail(),
 which trigger an analysis-time build error.
 """
+
+## ---------------------------------------------------------------------------------------------------------------------
 
 def _assert_equals(expected, actual, msg = None):
     """Asserts that the given `expected` and `actual` are equal.

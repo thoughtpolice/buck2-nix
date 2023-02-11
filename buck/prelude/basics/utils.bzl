@@ -8,17 +8,20 @@
 #
 #    load("@prelude//basics/utils.bzl", "utils")
 
+"""Miscellaneous utilities."""
+
 ## ---------------------------------------------------------------------------------------------------------------------
 
 def _value_or(x: [None, "_a"], default: "_a") -> "_a":
+    """Return the value of `x` if it's not None, otherwise return `default`."""
     return default if x == None else x
 
-# Flatten a list of lists into a list
 def _flatten(xss: [["_a"]]) -> ["_a"]:
+    """Flatten a list of lists into a list."""
     return [x for xs in xss for x in xs]
 
-# Flatten a list of dicts into a dict
 def _flatten_dict(xss: [{"_a": "_b"}]) -> {"_a": "_b"}:
+    """Flatten a list of dicts into a dict."""
     return {k: v for xs in xss for k, v in xs.items()}
 
 ## ---------------------------------------------------------------------------------------------------------------------

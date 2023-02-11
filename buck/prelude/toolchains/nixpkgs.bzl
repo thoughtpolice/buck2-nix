@@ -92,11 +92,16 @@ def __nix_build(ctx: "context", name: str.type, expr: str.type, binary: [str.typ
         ),
     ] + run_info
 
+def __overlays_list(ls: ["string"]) -> "attribute":
+    return attrs.default_only(attrs.list(attrs.dep(), default = [
+        "prelude//toolchains:nixpkgs-overlay-{}".format(l) for l in ls
+    ]))
+
 __nix_attrs = {
-    "_nixpkgs": attrs.default_only(attrs.dep(default = "prelude//toolchains:nixpkgs-src")),
-    "_overlays": attrs.default_only(attrs.list(attrs.dep(), default = [
-        "prelude//toolchains:rust-overlay-src",
-    ])),
+    "_nixpkgs": attrs.default_only(attrs.dep(default = "prelude//toolchains:nixpkgs")),
+    "_overlays": __overlays_list([
+        "rust",
+    ]),
 }
 
 __build = rule(

@@ -6,18 +6,13 @@
 #
 # HOW TO USE THIS MODULE:
 #
-#    load("@prelude//download.bzl", "download_tarball")
+#    load("@prelude//download.bzl", "download")
+
+"""Rules for downloading files and tarball assets."""
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
 def _download_tarball(ctx: "context") -> ["provider"]:
-    """Download a 'fixed output' tarball from a URL. By 'fixed output', this means that
-    the tarball is downloaded and extracted to a directory, and the hash of the
-    directory is checked against the expected hash. This is useful for downloading
-    tarballs that can contain the same content but have different hashes, such as
-    git repositories, or tarballs compressed with different compression algorithms.
-    """
-
     dl_script, _ = ctx.actions.write(
         "download_{}.sh".format(ctx.label.name),
         [
@@ -60,6 +55,12 @@ __tarball = rule(
         # XXX: set a default to nixpkgs' lib.fakeHash, so it's always wrong, and must be fixed
         "hash": attrs.string(default = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="),
     },
+    doc = """Download a 'fixed output' tarball from a URL. By 'fixed output', this means that
+    the tarball is downloaded and extracted to a directory, and the hash of the
+    directory is checked against the expected hash. This is useful for downloading
+    tarballs that can contain the same content but have different hashes, such as
+    git repositories, or tarballs compressed with different compression algorithms.
+    """,
 )
 
 ## ---------------------------------------------------------------------------------------------------------------------
@@ -97,6 +98,7 @@ __file = rule(
         # XXX: set a default to nixpkgs' lib.fakeHash, so it's always wrong, and must be fixed
         "hash": attrs.string(default = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="),
     },
+    doc = """Download a file from a given URL, given a hash of the file.""",
 )
 
 ## ---------------------------------------------------------------------------------------------------------------------

@@ -30,13 +30,18 @@
 # REMEMBER: Do not taunt Happy Fun Ball, and do not add things to this file
 # unless absolutely necessary.
 
+"""Global Buck prelude."""
+
 ## ---------------------------------------------------------------------------------------------------------------------
+
+load("@prelude//config.bzl", _config = "config")
 
 load("@prelude//basics/attributes.bzl", "attributes")
 load("@prelude//basics/providers.bzl", "providers")
 
 load("@prelude//basics/alias.bzl", _alias = "alias")
 load("@prelude//basics/asserts.bzl", _asserts = "asserts")
+load("@prelude//basics/filegroup.bzl", _filegroup = "filegroup")
 load("@prelude//basics/paths.bzl", _paths = "paths")
 
 ## ---------------------------------------------------------------------------------------------------------------------
@@ -62,5 +67,7 @@ def license(expr: "string") -> "NoneType":
 load_symbols({
     "alias": _alias,
     "asserts": _asserts,
+    "config": _config,
+    "filegroup": _filegroup,
     "paths": _paths,
 })

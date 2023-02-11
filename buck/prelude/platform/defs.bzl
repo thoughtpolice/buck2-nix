@@ -2,6 +2,16 @@
 # SPDX-FileCopyrightText: © 2022 Austin Seipp
 # SPDX-License-Identifier: MIT OR Apache-2.0
 
+# @prelude//platform/defs.bzl -- platform and host definitions
+#
+# HOW TO USE THIS MODULE:
+#
+#    load("@prelude//platform/defs.bzl", "host_config")
+
+"""Platform and host definitions."""
+
+## ---------------------------------------------------------------------------------------------------------------------
+
 def _execution_platform_impl(ctx: "context") -> ["provider"]:
     constraints = dict()
     constraints.update(ctx.attrs.cpu_configuration[ConfigurationInfo].constraints)

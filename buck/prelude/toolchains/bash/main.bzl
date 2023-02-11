@@ -1,12 +1,13 @@
-# SPDX-FileCopyrightText: © 2022 Meta Platforms, Inc. and affiliates.
 # SPDX-FileCopyrightText: © 2022 Austin Seipp
 # SPDX-License-Identifier: MIT OR Apache-2.0
 
-# @prelude//bash.bzl -- bash utilities
+# @prelude//toolchains/bash/main.bzl -- bash utilities
 #
 # HOW TO USE THIS MODULE:
 #
-#    load("@prelude//:bash.bzl", "run_bash")
+#    load("@prelude//toolchains/bash/main.bzl", "bash")
+
+"""Bash toolchain."""
 
 ## ---------------------------------------------------------------------------------------------------------------------
 

@@ -1,3 +1,16 @@
+# SPDX-FileCopyrightText: © 2022 Austin Seipp
+# SPDX-License-Identifier: Apache-2.0
+
+# @prelude//bxl/hello.bxl -- Hello world, in BXL.
+#
+# HOW TO USE THIS MODULE:
+#
+#     $ bxl license_check
+
+doc = """Hello world, in BXL."""
+
+## ---------------------------------------------------------------------------------------------------------------------
+
 def main(ctx):
     ctx.output.print("hello world")
 

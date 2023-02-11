@@ -7,8 +7,6 @@
 #
 #    load("@prelude//basics/paths.bzl", "paths")
 
-## ---------------------------------------------------------------------------------------------------------------------
-
 """Skylib module containing file path manipulation functions.
 
 NOTE: The functions in this module currently only support paths with Unix-style
@@ -17,6 +15,8 @@ with backslash separators or drive letters.
 
 The corresponding unittest file is: fbcode/buck2/tests/targets/starlib/paths_tests.bzl
 """
+
+## ---------------------------------------------------------------------------------------------------------------------
 
 def _basename(p: str.type) -> str.type:
     """Returns the basename (i.e., the file portion) of a path.

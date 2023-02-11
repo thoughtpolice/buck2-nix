@@ -1,3 +1,14 @@
+# SPDX-FileCopyrightText: © 2022 Austin Seipp
+# SPDX-License-Identifier: MIT OR Apache-2.0
+
+# @prelude//toolchains/rust/main.bzl -- rust toolchain
+#
+# HOW TO USE THIS MODULE:
+#
+#    load("@prelude//toolchains/rust/main.bzl", "rust")
+
+"""Rust toolchain."""
+
 ## ---------------------------------------------------------------------------------------------------------------------
 
 load("@prelude//toolchains/nixpkgs.bzl", "nix")
@@ -79,6 +90,7 @@ def __binary_impl(ctx: "context") -> ["provider"]:
     ]
 
 __binary = rule(
+    doc = """Build a rust binary.""",
     impl = __binary_impl,
     attrs = {
         "file": attrs.source(),
