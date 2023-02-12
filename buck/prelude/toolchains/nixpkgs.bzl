@@ -54,6 +54,7 @@ def __nix_build(ctx: "context", name: str.type, expr: str.type, binary: [str.typ
         cmd_args([
             "#!/usr/bin/env bash",
             "set -euo pipefail",
+            "export NIX_PATH=",
             "nix build -I buckroot=\"$(buck root -k project)\" \\",
             cmd_args(build_nix, format="  -f {} \\"),
             "  --out-link \"$1\"",
