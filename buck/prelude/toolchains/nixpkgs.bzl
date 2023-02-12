@@ -119,6 +119,14 @@ def __get_toolchain(key: str.type, name: str.type, ps: ["_a"]) -> "attribute":
     name: str.type = "@prelude//toolchains/{}:{}".format(key, name)
     return attrs.toolchain_dep(default = name, providers = ps)
 
+def __toolchain_rule(impl, attrs, **kwargs):
+    return rule(
+        impl = impl,
+        attrs = __nix_attrs | attrs,
+        is_toolchain_rule = True,
+        **kwargs,
+    )
+
 ## ---------------------------------------------------------------------------------------------------------------------
 
 nix = struct(
@@ -129,6 +137,7 @@ nix = struct(
     macros = struct(
         build = __nix_build,
         get_toolchain = __get_toolchain,
+        toolchain_rule = __toolchain_rule,
     ),
 
     attrs = __nix_attrs,

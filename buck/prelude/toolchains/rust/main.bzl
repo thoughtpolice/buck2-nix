@@ -23,8 +23,6 @@ __toolchain_attrs = {
 RustToolchainInfo = provider(fields = __toolchain_attrs.keys())
 RustPlatformInfo = provider(fields = [ "name" ])
 
-## ---------------------------------------------------------------------------------------------------------------------
-
 def ctx2toolchain(ctx: "context") -> "RustToolchainInfo":
     info = ctx.attrs._toolchain[RustToolchainInfo]
     attrs = dict()
@@ -63,15 +61,14 @@ def __toolchain_impl(ctx: "context") -> ["provider"]:
         #RustPlatformInfo(), # XXX FIXME (aseipp): ???
     ])
 
-__toolchain = rule(
+__toolchain = nix.macros.toolchain_rule(
     impl = __toolchain_impl,
-    attrs = nix.attrs | {
+    attrs = {
         "channel": attrs.string(default = "stable"),
         "version": attrs.string(),
         "extensions": attrs.list(attrs.string(), default = []),
         "targets": attrs.list(attrs.string(), default = []),
     },
-    is_toolchain_rule = True,
 )
 
 ## ---------------------------------------------------------------------------------------------------------------------
