@@ -36,7 +36,7 @@ def _execution_platform_impl(ctx: "context") -> ["provider"]:
         ExecutionPlatformRegistrationInfo(platforms = [platform]),
     ]
 
-execution_platform = rule(
+__execution_platform = rule(
     impl = _execution_platform_impl,
     attrs = {
         "cpu_configuration": attrs.dep(providers = [ConfigurationInfo]),
@@ -64,17 +64,18 @@ host_config = struct(
 )
 
 def generate_platforms(variants):
+    """Generate execution platforms for the given variants, as well as a default
+    execution platform matching the host platform."""
+
     for (cpu, os) in variants:
-        execution_platform(
+        __execution_platform(
             name = "{}-{}".format(cpu, os),
             cpu_configuration = "prelude//platform/cpu:{}".format(cpu),
             os_configuration = "prelude//platform/os:{}".format(os),
             visibility = [ "prelude//..." ],
         )
 
-    # Finally, generate the default platform selection, which matches the host
-    # platform.
-    execution_platform(
+    __execution_platform(
         name = "default",
         cpu_configuration = _host_cpu_configuration(),
         os_configuration = _host_os_configuration(),
