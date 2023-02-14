@@ -58,24 +58,9 @@ def _host_os_configuration() -> str.type:
     else:
         return "prelude//platform/os:linux"
 
-def _nix_system() -> str.type:
-    arch = host_info().arch
-    os = host_info().os
-    if arch.is_aarch64 and os.is_linux:
-        return "aarch64-linux"
-    elif arch.is_x86_64 and os.is_linux:
-        return "x86_64-linux"
-    elif arch.is_aarch64 and os.is_macos:
-        return "aarch64-darwin"
-    elif arch.is_x86_64 and os.is_macos:
-        return "x86_64-darwin"
-    else:
-        fail("Unsupported host platform: %s" % host_info())
-
 host_config = struct(
     cpu = _host_cpu_configuration(),
     os = _host_os_configuration(),
-    nix_system = _nix_system(),
 )
 
 def generate_platforms(variants):

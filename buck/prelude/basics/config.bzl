@@ -36,23 +36,12 @@ def _constraint_values_to_configuration(values):
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-# config_setting() accepts a list of constraint_values and a list of values
-# (buckconfig keys + expected values) and matches if all of those match.
-#
-# This is implemented as forming a single ConfigurationInfo from the union of the
-# referenced values and the config keys.
-#
-# Attributes:
-#   "constraint_values": attrs.list(attrs.configuration_label(), default = []),
-#   "values": attrs.dict(key = attrs.string(), value = attrs.string(), sorted = False, default = {}),
-def _config_setting_impl(ctx):
-    subinfos = [_constraint_values_to_configuration(ctx.attrs.constraints)]
-    subinfos.append(ConfigurationInfo(constraints = {}, values = ctx.attrs.values))
-    return [DefaultInfo(), _configuration_info_union(subinfos)]
-
-# constraint_setting() targets just declare the existence of a constraint.
+# Declare the existence of a constraint.
 def _constraint_setting_impl(ctx):
-    return [DefaultInfo(), ConstraintSettingInfo(label = ctx.label.raw_target())]
+    return [
+        DefaultInfo(),
+        ConstraintSettingInfo(label = ctx.label.raw_target())
+    ]
 
 # constraint_value() declares a specific value of a constraint_setting.
 #
@@ -71,6 +60,24 @@ def _constraint_value_impl(ctx):
             constraint_value.setting.label: constraint_value,
         }, values = {}),
     ]
+
+## ---------------------------------------------------------------------------------------------------------------------
+
+# config_setting() accepts a list of constraint_values and a list of values
+# (buckconfig keys + expected values) and matches if all of those match.
+#
+# This is implemented as forming a single ConfigurationInfo from the union of the
+# referenced values and the config keys.
+#
+# Attributes:
+#   "constraint_values": attrs.list(attrs.configuration_label(), default = []),
+#   "values": attrs.dict(key = attrs.string(), value = attrs.string(), sorted = False, default = {}),
+def _config_setting_impl(ctx):
+    subinfos = [_constraint_values_to_configuration(ctx.attrs.constraints)]
+    subinfos.append(ConfigurationInfo(constraints = {}, values = ctx.attrs.values))
+    return [DefaultInfo(), _configuration_info_union(subinfos)]
+
+## ---------------------------------------------------------------------------------------------------------------------
 
 # platform() declares a platform, it is a list of constraint values.
 #
@@ -98,19 +105,8 @@ def _platform_impl(ctx):
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-__config_setting = rule(
-    doc = """A rule that defines a configuration setting.""",
-    impl = _config_setting_impl,
-    attrs = {
-        "constraints": attrs.list(attrs.configuration_label(), default = []),
-        "values": attrs.dict(key = attrs.string(), value = attrs.string(), sorted = False, default = {}),
-        "within_view": attrs.option(attrs.option(attrs.list(attrs.string())), default = None),
-    },
-    is_configuration_rule = True,
-)
-
 __constraint_setting = rule(
-    doc = """A rule that defines a constraint setting.""",
+    doc = """A rule that simply declares the existence of a constraint.""",
     impl = _constraint_setting_impl,
     attrs = {
         "within_view": attrs.option(attrs.option(attrs.list(attrs.string())), default = None),
@@ -119,10 +115,29 @@ __constraint_setting = rule(
 )
 
 __constraint_value = rule(
-    doc = """A rule that defines a constraint value.""",
+    doc = """A rule that defines a specific value that a constraint may evaluate to.
+
+    Note that the value here lists the constraint it applies to, not the other way around.""",
     impl = _constraint_value_impl,
     attrs = {
         "constraint": attrs.configuration_label(),
+        "within_view": attrs.option(attrs.option(attrs.list(attrs.string())), default = None),
+    },
+    is_configuration_rule = True,
+)
+
+__config_setting = rule(
+    doc = """A rule that defines a configuration setting.
+
+    A configuration setting is defined by a set of constraint *values* which and
+    a set of `.buckconfig` values, and only matches if all of the constraint
+    values are satisfied properly and all of the values match the desired
+    configuration.""",
+
+    impl = _config_setting_impl,
+    attrs = {
+        "constraints": attrs.list(attrs.configuration_label(), default = []),
+        "values": attrs.dict(key = attrs.string(), value = attrs.string(), sorted = False, default = {}),
         "within_view": attrs.option(attrs.option(attrs.list(attrs.string())), default = None),
     },
     is_configuration_rule = True,
@@ -138,7 +153,6 @@ __platform = rule(
     },
     is_configuration_rule = True,
 )
-
 
 config = struct(
     platform = __platform,
