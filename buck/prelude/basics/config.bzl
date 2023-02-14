@@ -2,13 +2,37 @@
 # SPDX-FileCopyrightText: © 2022 Austin Seipp
 # SPDX-License-Identifier: MIT OR Apache-2.0
 
-# @prelude//config.bzl -- configuration for the prelude.
+# @prelude//basics/config.bzl -- configuration for the prelude.
 #
 # HOW TO USE THIS MODULE:
 #
-#    load("@prelude//config.bzl", "config")
+#    load("@prelude//basics/config.bzl", "config")
 
 """Configuration rules and information."""
+
+## ---------------------------------------------------------------------------------------------------------------------
+
+def _configuration_info_union(infos):
+    """Perform a union of all ConfigurationInfo providers in `infos`."""
+
+    if len(infos) == 0:
+        return ConfigurationInfo(constraints = {}, values = {})
+    if len(infos) == 1:
+        return infos[0]
+
+    return ConfigurationInfo(
+        constraints = {k: v for info in infos for (k, v) in info.constraints.items()},
+        values = {k: v for info in infos for (k, v) in info.values.items()},
+    )
+
+def _constraint_values_to_configuration(values):
+    """Convert a list of ConstraintValueInfo providers to a ConfigurationInfo provider."""
+
+    return ConfigurationInfo(constraints = {
+        info[ConstraintValueInfo].setting.label: info[ConstraintValueInfo]
+        for info in values
+    }, values = {})
+
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
@@ -72,27 +96,6 @@ def _platform_impl(ctx):
         ),
     ]
 
-def _configuration_info_union(infos):
-    if len(infos) == 0:
-        return ConfigurationInfo(
-            constraints = {},
-            values = {},
-        )
-    if len(infos) == 1:
-        return infos[0]
-    constraints = {k: v for info in infos for (k, v) in info.constraints.items()}
-    values = {k: v for info in infos for (k, v) in info.values.items()}
-    return ConfigurationInfo(
-        constraints = constraints,
-        values = values,
-    )
-
-def _constraint_values_to_configuration(values):
-    return ConfigurationInfo(constraints = {
-        info[ConstraintValueInfo].setting.label: info[ConstraintValueInfo]
-        for info in values
-    }, values = {})
-
 ## ---------------------------------------------------------------------------------------------------------------------
 
 __config_setting = rule(
@@ -135,6 +138,7 @@ __platform = rule(
     },
     is_configuration_rule = True,
 )
+
 
 config = struct(
     platform = __platform,

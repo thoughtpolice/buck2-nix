@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: © 2022 Austin Seipp
 # SPDX-License-Identifier: MIT OR Apache-2.0
 
-load("@prelude//config.bzl", "config")
+load("@prelude//basics/config.bzl", "config")
 
 config.constraint(name = "os", visibility = [ "PUBLIC" ])
 config.value(name = "linux",  constraint = ":os", visibility = [ "PUBLIC" ])

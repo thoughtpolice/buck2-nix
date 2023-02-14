@@ -2,11 +2,11 @@
 # SPDX-FileCopyrightText: © 2022 Austin Seipp
 # SPDX-License-Identifier: MIT OR Apache-2.0
 
-# @prelude//download.bzl -- download utilities
+# @prelude//basics/download.bzl -- download utilities
 #
 # HOW TO USE THIS MODULE:
 #
-#    load("@prelude//download.bzl", "download")
+#    load("@prelude//basics/download.bzl", "download")
 
 """Rules for downloading files and tarball assets."""
 

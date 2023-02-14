@@ -34,7 +34,7 @@
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-load("@prelude//config.bzl", _config = "config")
+load("@prelude//basics/config.bzl", _config = "config")
 
 load("@prelude//basics/attributes.bzl", "attributes")
 load("@prelude//basics/providers.bzl", "providers")
