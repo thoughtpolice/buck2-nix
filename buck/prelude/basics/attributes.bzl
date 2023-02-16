@@ -27,6 +27,7 @@ def _update(ps):
             fail("Provider '{}' already exists!".format(k))
         attributes[k] = v
 
+_update(files.attributes)
 _update(nix.attributes)
 _update(bash.attributes)
 _update(rust.attributes)

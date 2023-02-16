@@ -27,6 +27,7 @@ def _update(ps):
             fail("Provider '{}' already exists!".format(k))
         providers[k] = v
 
+_update(files.providers)
 _update(nix.providers)
 _update(bash.providers)
 _update(rust.providers)
