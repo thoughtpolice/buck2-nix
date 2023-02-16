@@ -74,19 +74,40 @@ __toolchain = nix.macros.toolchain_rule(
 ## ---------------------------------------------------------------------------------------------------------------------
 
 def __binary_impl(ctx: "context") -> ["provider"]:
-    out = ctx.actions.declare_output(ctx.attrs.out if ctx.attrs.out else ctx.label.name)
-
     toolchain = ctx2toolchain(ctx)
-    cmd = [ toolchain.compiler ]
-    cmd.append(["--crate-type=bin", ctx.attrs.file, "-o", out.as_output()])
-    ctx.actions.run(cmd, category = "rustc", identifier = ctx.attrs.file.basename)
+    name = ctx.attrs.out if ctx.attrs.out else ctx.label.name
+    identifier = ctx.attrs.file.basename
+
+    build_out = ctx.actions.declare_output("{}.exe".format(name))
+    build_cmd = [ toolchain.compiler ]
+    build_cmd.append(["--crate-type=bin", ctx.attrs.file, "-o", build_out.as_output()])
+    ctx.actions.run(build_cmd, category = "rustc", identifier = identifier)
+
+    test_out = ctx.actions.declare_output("{}.test.exe".format(name))
+    test_build_cmd = [ toolchain.compiler ]
+    test_build_cmd.append(["--test", ctx.attrs.file, "-o", test_out.as_output()])
+    ctx.actions.run(test_build_cmd, category = "rustc", identifier = "test-{}".format(identifier))
+
+    exe = cmd_args(build_out)
+    test_exe = cmd_args(test_out)
 
     return [
-        DefaultInfo(default_output = out),
-        RunInfo(args = cmd_args([out])),
+        DefaultInfo(
+            default_output = build_out,
+            sub_targets = {
+                "test": [ DefaultInfo(default_output = test_out) ],
+            }
+        ),
+
+        RunInfo(args = [ exe ]),
+
+        ExternalRunnerTestInfo(
+            type = "rustc-test",
+            command = [ test_exe ],
+        ),
     ]
 
-__binary = rule(
+__rust_binary = rule(
     doc = """Build a rust binary.""",
     impl = __binary_impl,
     attrs = {
@@ -100,7 +121,7 @@ __binary = rule(
 
 rust = struct(
     toolchain = __toolchain,
-    binary = __binary,
+    binary = __rust_binary,
 
     attributes = {},
     providers = {
