@@ -5,9 +5,3 @@ nix.rules.build(
     expr = "pkgs.oil",
     visibility = [ "root//..." ],
 )
-
-nix.rules.build(
-    name = "bash",
-    expr = "pkgs.bash",
-    visibility = [ "root//..." ],
-)
