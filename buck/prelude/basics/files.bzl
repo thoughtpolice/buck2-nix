@@ -58,7 +58,7 @@ __export_file = rule(
     doc = """Export a file.""",
     impl = __export_file_impl,
     attrs = {
-        "src": attrs.option(attrs.source(), default = None),
+        "src": attrs.source(),
         "out": attrs.option(attrs.string(), default = None),
         "mode": attrs.option(attrs.enum(ExportFileDescriptionMode), default = None),
     },
@@ -67,8 +67,8 @@ __export_file = rule(
 ## ---------------------------------------------------------------------------------------------------------------------
 
 files = struct(
-    filegroup = __filegroup,
-    export_file = __export_file,
+    group = __filegroup,
+    export = __export_file,
 
     attributes = {
         "ExportFileDescriptionMode": ExportFileDescriptionMode,

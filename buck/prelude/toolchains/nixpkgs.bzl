@@ -8,11 +8,15 @@
 #
 #    load("@prelude//toolchains/nixpkgs.bzl", "nix")
 
+load("@prelude//basics/files.bzl", "files")
+
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def __nix_build(ctx: "context", name: str.type, expr: str.type, binary: [str.type, None] = None) -> ["provider"]:
+def __nix_build(ctx: "context", name: str.type, expr, binary: [str.type, None] = None) -> ["provider"]:
     nixpkgs = ctx.attrs._nixpkgs[DefaultInfo].default_outputs[0]
     overlays = [o[DefaultInfo].default_outputs[0] for o in ctx.attrs._overlays]
+
+    deps = [o[DefaultInfo].default_outputs[0] for o in ctx.attrs.deps]
 
     overlay_list = []
     for o in overlays:
@@ -29,7 +33,7 @@ def __nix_build(ctx: "context", name: str.type, expr: str.type, binary: [str.typ
         allow_args = True,
     )
 
-    build_nix, _ = ctx.actions.write(
+    build_nix, build_nix_macros = ctx.actions.write(
         "build.nix",
         [
             "let",
@@ -40,7 +44,7 @@ def __nix_build(ctx: "context", name: str.type, expr: str.type, binary: [str.typ
             cmd_args(nixpkgs, format="with import (buckroot \"{}\")"),
             "{ inherit config overlays; };",
             "  (",
-            "    " + expr,
+            expr,
             "  )",
             "", # XXX: newline for readability in terminal
         ],
@@ -65,7 +69,10 @@ def __nix_build(ctx: "context", name: str.type, expr: str.type, binary: [str.typ
     )
     build_sh_cmd = cmd_args(build_sh).hidden(
         overlays + [
-            overlays_nix, build_nix, nixpkgs
+            overlays_nix,
+            build_nix, build_nix_macros,
+            nixpkgs,
+            deps,
         ],
     )
 
@@ -103,12 +110,13 @@ __nix_attrs = {
     "_overlays": __overlays_list([
         "rust",
     ]),
+    "deps": attrs.list(attrs.dep(), default = []),
 }
 
 __build = rule(
     impl = lambda ctx: __nix_build(ctx, ctx.label.name, ctx.attrs.expr, ctx.attrs.binary),
     attrs = __nix_attrs | {
-        "expr": attrs.string(),
+        "expr": attrs.arg(),
         "binary": attrs.option(attrs.string(), default = None),
     },
 )
@@ -127,11 +135,21 @@ def __toolchain_rule(impl, attrs, **kwargs):
         **kwargs,
     )
 
+def __build_file(name, src, **kwargs):
+    files.export(name = src, src = src)
+    nix.rules.build(
+        name = name,
+        expr = """pkgs.callPackage (buckroot "$(location :{})") {{ }}""".format(src),
+        deps = [ ":{}".format(src) ],
+        **kwargs,
+    )
+
 ## ---------------------------------------------------------------------------------------------------------------------
 
 nix = struct(
     rules = struct(
         build = __build,
+        build_file = __build_file
     ),
 
     macros = struct(

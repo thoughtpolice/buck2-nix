@@ -29,7 +29,7 @@ __run_rule = rule(
 )
 
 def __run(name, src):
-    files.export_file(name = src, src = src)
+    files.export(name = src, src = src)
     return __run_rule(name = name, args = [ "$(location :{})".format(src) ])
 
 ## ---------------------------------------------------------------------------------------------------------------------
