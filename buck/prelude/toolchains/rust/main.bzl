@@ -11,6 +11,7 @@
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
+load("@prelude//basics/pkg.bzl", "pkg")
 load("@prelude//toolchains/nixpkgs.bzl", "nix")
 
 ## ---------------------------------------------------------------------------------------------------------------------
@@ -30,8 +31,6 @@ def ctx2toolchain(ctx: "context") -> "RustToolchainInfo":
         v = getattr(info, k, default)
         attrs[k] = default if v == None else v
     return RustToolchainInfo(**attrs)
-
-## ---------------------------------------------------------------------------------------------------------------------
 
 def __toolchain_impl(ctx: "context") -> ["provider"]:
     name = ctx.label.name
@@ -107,7 +106,7 @@ def __binary_impl(ctx: "context") -> ["provider"]:
         ),
     ]
 
-__rust_binary = rule(
+__rust_binary = pkg.rule_with_metadata(
     doc = """Build a rust binary.""",
     impl = __binary_impl,
     attrs = {
@@ -121,11 +120,12 @@ __rust_binary = rule(
 
 rust = struct(
     toolchain = __toolchain,
-    binary = __rust_binary,
+
+    binary = pkg.rule_apply_metadata(__rust_binary),
 
     attributes = {},
     providers = {
         "RustToolchainInfo": RustToolchainInfo,
         "RustPlatformInfo": RustPlatformInfo,
-    }
+    },
 )

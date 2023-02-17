@@ -39,6 +39,13 @@ load("@prelude//basics/config.bzl", _config = "config")
 load("@prelude//basics/attributes.bzl", "attributes")
 load("@prelude//basics/providers.bzl", "providers")
 
+load("@prelude//basics/pkg.bzl",
+  _owner = "owner",
+  _license = "license",
+  _description = "description",
+  _version = "version",
+)
+
 load("@prelude//basics/alias.bzl", _alias = "alias")
 load("@prelude//basics/asserts.bzl", _asserts = "asserts")
 load("@prelude//basics/files.bzl", _files = "files")
@@ -54,18 +61,21 @@ load_symbols(providers)
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def license(expr: "string") -> "NoneType":
-    oncall(expr)
-    return None
-
-## ---------------------------------------------------------------------------------------------------------------------
-
 # Finally, export the symbols we want to be globally available, which are mostly
 # a set of very primitive and/or generic rules and macros that can be used
 # anywhere.
 
 load_symbols({
+    # Global symbols that are available
     "alias": _alias,
+
+    # Package metadata
+    "owner": _owner,
+    "license": _license,
+    "description": _description,
+    "version": _version,
+
+    # Struct-based APIs
     "asserts": _asserts,
     "config": _config,
     "files": _files,

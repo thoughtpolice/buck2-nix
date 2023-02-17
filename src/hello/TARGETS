@@ -1,7 +1,5 @@
 load("@prelude//toolchains/rust/main.bzl", "rust")
 
-license("MIT OR Apache-2.0")
-
 rust.binary(
     name = "main",
     file = "./main.rs",

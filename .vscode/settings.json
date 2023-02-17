@@ -6,6 +6,7 @@
         "*.bzl": "python",
         "*.bxl": "python",
         "TARGETS": "python",
+        "PACKAGE": "python",
         ".pro": "prolog",
     },
 }
