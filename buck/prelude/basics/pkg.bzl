@@ -48,6 +48,11 @@ def description(s: "string") -> "NoneType":
 
 def version(s: "string") -> "NoneType":
     """Set the version of the current package."""
+
+    # https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+    r = "^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$"
+    if not regex_match(r, s):
+        fail("Invalid version, must be semver-style: {}".format(s))
     return write_package_value('meta.version', s.strip())
 
 ## ---------------------------------------------------------------------------------------------------------------------
