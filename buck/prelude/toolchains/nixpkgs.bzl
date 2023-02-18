@@ -136,11 +136,12 @@ def __toolchain_rule(impl, attrs, **kwargs):
     )
 
 def __build_file(name, src, **kwargs):
-    files.export(name = src)
+    fname = "nix-build-{}.nix".format(name)
+    files.export(name = fname, src = src)
     nix.rules.build(
         name = name,
-        expr = """pkgs.callPackage (buckroot "$(location :{})") {{ }}""".format(src),
-        deps = [ ":{}".format(src) ],
+        expr = """pkgs.callPackage (buckroot "$(location :{})") {{ }}""".format(fname),
+        deps = [ ":{}".format(fname) ],
         **kwargs,
     )
 
