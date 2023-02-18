@@ -49,6 +49,7 @@ load("@prelude//basics/pkg.bzl",
 load("@prelude//basics/alias.bzl", _alias = "alias")
 load("@prelude//basics/asserts.bzl", _asserts = "asserts")
 load("@prelude//basics/files.bzl", _files = "files")
+load("@prelude//basics/download.bzl", _download = "download")
 load("@prelude//basics/paths.bzl", _paths = "paths")
 
 ## ---------------------------------------------------------------------------------------------------------------------
@@ -78,6 +79,7 @@ load_symbols({
     # Struct-based APIs
     "asserts": _asserts,
     "config": _config,
+    "download": _download,
     "files": _files,
     "paths": _paths,
 })
