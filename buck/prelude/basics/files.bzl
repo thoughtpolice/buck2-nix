@@ -64,11 +64,16 @@ __export_file = rule(
     },
 )
 
+def __export_file_m(name, **kwargs):
+    if not "src" in kwargs:
+        kwargs["src"] = name
+    __export_file(name=name, **kwargs)
+
 ## ---------------------------------------------------------------------------------------------------------------------
 
 files = struct(
     group = __filegroup,
-    export = __export_file,
+    export = __export_file_m,
 
     attributes = {
         "ExportFileDescriptionMode": ExportFileDescriptionMode,

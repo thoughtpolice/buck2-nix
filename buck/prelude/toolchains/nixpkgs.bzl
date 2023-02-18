@@ -136,7 +136,7 @@ def __toolchain_rule(impl, attrs, **kwargs):
     )
 
 def __build_file(name, src, **kwargs):
-    files.export(name = src, src = src)
+    files.export(name = src)
     nix.rules.build(
         name = name,
         expr = """pkgs.callPackage (buckroot "$(location :{})") {{ }}""".format(src),
