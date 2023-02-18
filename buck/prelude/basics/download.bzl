@@ -103,7 +103,20 @@ __file = rule(
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
+def multi_tarball(attrs):
+    for (k, (url, hash)) in attrs.items():
+        __tarball(name = k, url = url, hash = hash)
+
+def multi_file(attrs):
+    for (k, (url, hash)) in attrs.items():
+        __file(name = k, url = url, hash = hash)
+
+## ---------------------------------------------------------------------------------------------------------------------
+
 download = struct(
     tarball = __tarball,
     file = __file,
+
+    multi_tarball = multi_tarball,
+    multi_file = multi_file,
 )
