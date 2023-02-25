@@ -51,6 +51,7 @@ load("@prelude//basics/asserts.bzl", _asserts = "asserts")
 load("@prelude//basics/files.bzl", _files = "files")
 load("@prelude//basics/download.bzl", _download = "download")
 load("@prelude//basics/paths.bzl", _paths = "paths")
+load("@prelude//basics/genrule.bzl", _genrule = "genrule")
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
@@ -69,6 +70,7 @@ load_symbols(providers)
 load_symbols({
     # Global symbols that are available
     "alias": _alias,
+    "genrule": _genrule,
 
     # Package metadata
     "owner": _owner,
