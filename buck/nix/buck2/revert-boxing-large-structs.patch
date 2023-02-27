@@ -1,16 +1,34 @@
-commit 2d6e11e8c578ccf5a4a5b82aacf90d748aade411
+commit e87f0bdb990dad429bd0369b6cdd192cf641f21c
 Author: Austin Seipp <aseipp@pobox.com>
-Date:   Wed Feb 8 21:38:36 2023 -0600
+Date:   Mon Feb 27 17:04:24 2023 -0600
 
     Revert "buck2: data: box large variants"
     
     This reverts commit afb3307b6141d87b88f1de9f7f74bd9791ad2293.
+    
+    Until upstream changes to 'prost' are made to support boxing fields
+    on Protobufs, we have to back this out. The reason is stupid: because
+    the Nix buildRustPackage function fails for some reason when trying to
+    compile the prost git repository from scratch. I don't know why yet, and
+    several attempts at investigating went nowhere.
+    
+    Once the boxing changes are upstream, new Prost packages are released,
+    Tonic is updated, and the Cargo deps are updated -- then we can go
+    back to enabling this. Until then, we have to live with this, and the
+    resulting worse performance due to excessively large copies...
+    
+    So, for now, just back out the Prost changes. This requires some tiny
+    manual surgery on the 'git revert' output to fix the Cargo.toml files.
+    It also requires two minor touchups to the code to fix the resulting un-
+    Box-ing changes.
+    
+    Signed-off-by: Austin Seipp <aseipp@pobox.com>
 
 diff --git a/Cargo.toml b/Cargo.toml
-index a67b28cc9..733b0528c 100644
+index 1bd34c419..c5df354a4 100644
 --- a/Cargo.toml
 +++ b/Cargo.toml
-@@ -150,10 +150,8 @@ pin-project = "0.4.29"
+@@ -156,10 +156,8 @@ pin-project = "0.4.29"
  plist = "0.5"
  pretty_assertions = "1.2.1"
  proc-macro2 = "1.0"
@@ -23,18 +41,7 @@ index a67b28cc9..733b0528c 100644
  protoc-bin-vendored = "3.0.0"
  quote = "1.0.3"
  rand = { version = "0.8.4", features = ["small_rng"] }
-@@ -191,8 +189,8 @@ tokio = { version = "1.5", features = ["full"] }
- tokio-stream = { version = "0.1.4", features = ["fs", "io-util", "net", "sync", "time"] }
- tokio-util = { version = "0.6", features = ["full"] }
- toml = "0.5.8"
--tonic = "0.8.3"
--tonic-build = { version = "0.8.4", features = ["prost", "cleanup-markdown"] }
-+tonic = "0.8.2"
-+tonic-build = { version = "0.8.2", features = ["prost", "cleanup-markdown"] }
- tower = "0.4"
- tower-layer = "0.3.1"
- tower-service = "0.3.2"
-@@ -291,13 +289,3 @@ incremental = true
+@@ -302,13 +300,3 @@ incremental = true
  
  [profile.bench]
  incremental = true
@@ -49,10 +56,10 @@ index a67b28cc9..733b0528c 100644
 -tonic = { git = "https://github.com/krallin/tonic.git", rev = "c67fc25b636b48b90c83dfc8dd1f89c00b84846d", version = "0.8.3" }
 -tonic-build = { git = "https://github.com/krallin/tonic.git", rev = "c67fc25b636b48b90c83dfc8dd1f89c00b84846d", version = "0.8.4" }
 diff --git a/app/buck2_build_api/src/actions/calculation.rs b/app/buck2_build_api/src/actions/calculation.rs
-index b8fb37870..8890e1a5f 100644
+index a89069a50..e084359c7 100644
 --- a/app/buck2_build_api/src/actions/calculation.rs
 +++ b/app/buck2_build_api/src/actions/calculation.rs
-@@ -209,7 +209,7 @@ async fn build_action_no_redirect(
+@@ -205,7 +205,7 @@ async fn build_action_no_redirect(
  
          (
              action_result,
@@ -62,10 +69,10 @@ index b8fb37870..8890e1a5f 100644
                  kind: action.kind().into(),
                  name: Some(buck2_data::ActionName {
 diff --git a/app/buck2_client/src/commands/log/what_ran.rs b/app/buck2_client/src/commands/log/what_ran.rs
-index 58747f250..c154bcd4e 100644
+index 4cd959a13..47d75315f 100644
 --- a/app/buck2_client/src/commands/log/what_ran.rs
 +++ b/app/buck2_client/src/commands/log/what_ran.rs
-@@ -137,7 +137,7 @@ impl WhatRanCommand {
+@@ -134,7 +134,7 @@ impl WhatRanCommand {
  trait WhatRanComandImplementation: Default {
      fn event(
          &mut self,
@@ -74,7 +81,7 @@ index 58747f250..c154bcd4e 100644
          output: &mut impl WhatRanOutputWriter,
          options: &WhatRanOptions,
      ) -> anyhow::Result<()>;
-@@ -165,7 +165,7 @@ trait WhatRanComandImplementation: Default {
+@@ -162,7 +162,7 @@ trait WhatRanComandImplementation: Default {
  #[derive(Default)]
  pub struct WhatRanImpl {
      /// Maps action spans to their details.
@@ -83,7 +90,7 @@ index 58747f250..c154bcd4e 100644
  }
  
  impl WhatRanState<u64> for WhatRanImpl {
-@@ -184,7 +184,7 @@ impl WhatRanComandImplementation for WhatRanImpl {
+@@ -181,7 +181,7 @@ impl WhatRanComandImplementation for WhatRanImpl {
      /// WhatRanRelevantAction, but it doesn't hurt to always check both.
      fn event(
          &mut self,
@@ -92,7 +99,7 @@ index 58747f250..c154bcd4e 100644
          output: &mut impl WhatRanOutputWriter,
          options: &WhatRanOptions,
      ) -> anyhow::Result<()> {
-@@ -208,13 +208,12 @@ pub struct WhatFailedImpl {
+@@ -205,13 +205,12 @@ pub struct WhatFailedImpl {
      known_actions: HashMap<u64, WhatFailedEntry>,
  }
  
@@ -108,7 +115,7 @@ index 58747f250..c154bcd4e 100644
  }
  
  impl WhatRanState<u64> for WhatFailedImpl {
-@@ -233,7 +232,7 @@ impl WhatRanComandImplementation for WhatFailedImpl {
+@@ -230,7 +229,7 @@ impl WhatRanComandImplementation for WhatFailedImpl {
      /// WhatRanRelevantAction, but it doesn't hurt to always check both.
      fn event(
          &mut self,
@@ -117,6 +124,19 @@ index 58747f250..c154bcd4e 100644
          output: &mut impl WhatRanOutputWriter,
          options: &WhatRanOptions,
      ) -> anyhow::Result<()> {
+diff --git a/app/buck2_client/src/commands/rage/build_info.rs b/app/buck2_client/src/commands/rage/build_info.rs
+index b28c79854..6f9811d05 100644
+--- a/app/buck2_client/src/commands/rage/build_info.rs
++++ b/app/buck2_client/src/commands/rage/build_info.rs
+@@ -96,7 +96,7 @@ daemon uptime: {}
+     Ok(output)
+ }
+ 
+-fn extract_info(info: &mut LogInfo, event: Box<buck2_data::BuckEvent>) -> anyhow::Result<()> {
++fn extract_info(info: &mut LogInfo, event: buck2_data::BuckEvent) -> anyhow::Result<()> {
+     match event.data {
+         Some(buck2_data::buck_event::Data::SpanStart(span)) => match &span.data {
+             Some(buck2_data::span_start_event::Data::Command(action)) => {
 diff --git a/app/buck2_client_ctx/src/events_ctx.rs b/app/buck2_client_ctx/src/events_ctx.rs
 index 451e00753..ea850a3dd 100644
 --- a/app/buck2_client_ctx/src/events_ctx.rs
@@ -168,10 +188,10 @@ index a6135517f..34487e5f8 100644
  
  impl StreamValue {
 diff --git a/app/buck2_client_ctx/src/subscribers/event_log/mod.rs b/app/buck2_client_ctx/src/subscribers/event_log/mod.rs
-index 8f1ce94f0..de5acee85 100644
+index 3d57745a5..a5356783d 100644
 --- a/app/buck2_client_ctx/src/subscribers/event_log/mod.rs
 +++ b/app/buck2_client_ctx/src/subscribers/event_log/mod.rs
-@@ -1061,7 +1061,9 @@ mod tests {
+@@ -1075,7 +1075,9 @@ mod tests {
              .serialize_to_protobuf_length_delimited(&mut actual)
              .unwrap();
          let expected = buck2_cli_proto::CommandProgress {
@@ -183,10 +203,10 @@ index 8f1ce94f0..de5acee85 100644
          .encode_length_delimited_to_vec();
          assert_eq!(expected, actual);
 diff --git a/app/buck2_client_ctx/src/subscribers/recorder.rs b/app/buck2_client_ctx/src/subscribers/recorder.rs
-index 3233301a8..2d58e45f6 100644
+index be3041a07..1f5071ec9 100644
 --- a/app/buck2_client_ctx/src/subscribers/recorder.rs
 +++ b/app/buck2_client_ctx/src/subscribers/recorder.rs
-@@ -240,7 +240,7 @@ mod imp {
+@@ -252,7 +252,7 @@ mod imp {
                      None,
                      None,
                      buck2_data::RecordEvent {
@@ -196,7 +216,7 @@ index 3233301a8..2d58e45f6 100644
                      .into(),
                  );
 diff --git a/app/buck2_events/src/lib.rs b/app/buck2_events/src/lib.rs
-index 5215748c7..a28f4f960 100644
+index ec68c2021..559b99616 100644
 --- a/app/buck2_events/src/lib.rs
 +++ b/app/buck2_events/src/lib.rs
 @@ -60,7 +60,7 @@ use crate::trace::TraceId;
@@ -237,7 +257,7 @@ index 5215748c7..a28f4f960 100644
          event.data.as_ref().ok_or(BuckEventError::MissingData)?;
          fn new_span_id(num: u64) -> Option<SpanId> {
              NonZeroU64::new(num).map(SpanId)
-@@ -348,7 +348,7 @@ mod tests {
+@@ -350,7 +350,7 @@ mod tests {
          );
          assert_eq!(
              test,
@@ -247,7 +267,7 @@ index 5215748c7..a28f4f960 100644
      }
  
 diff --git a/app/buck2_events/src/sink/scribe.rs b/app/buck2_events/src/sink/scribe.rs
-index 209e236b0..45a60db7e 100644
+index 0d1737312..705c677d6 100644
 --- a/app/buck2_events/src/sink/scribe.rs
 +++ b/app/buck2_events/src/sink/scribe.rs
 @@ -95,7 +95,7 @@ mod fbcode {
@@ -260,10 +280,10 @@ index 209e236b0..45a60db7e 100644
              // Add a header byte to indicate this is _not_ base64 encoding.
              let mut buf = Vec::with_capacity(proto.encoded_len() + 1);
 diff --git a/app/buck2_execute_impl/src/executors/caching.rs b/app/buck2_execute_impl/src/executors/caching.rs
-index 268d67b2f..f4377bf35 100644
+index 232879524..c29f74c51 100644
 --- a/app/buck2_execute_impl/src/executors/caching.rs
 +++ b/app/buck2_execute_impl/src/executors/caching.rs
-@@ -244,7 +244,7 @@ impl CachingExecutor {
+@@ -231,7 +231,7 @@ impl CachingExecutor {
  
                  (
                      res,
@@ -289,11 +309,24 @@ index 628311a47..880724c0b 100644
      pub fn setup_protoc(self) -> Self {
          // It would be great if there were on the config rather than an env variables...
          maybe_set_protoc();
+diff --git a/app/buck2_server/src/daemon/multi_event_stream.rs b/app/buck2_server/src/daemon/multi_event_stream.rs
+index d32a46e3b..586926b0c 100644
+--- a/app/buck2_server/src/daemon/multi_event_stream.rs
++++ b/app/buck2_server/src/daemon/multi_event_stream.rs
+@@ -112,7 +112,7 @@ mod tests {
+     fn event(span_id: u64) -> CommandProgress {
+         CommandProgress {
+             progress: Some(buck2_cli_proto::command_progress::Progress::Event(
+-                box BuckEvent {
++                BuckEvent {
+                     span_id,
+                     ..Default::default()
+                 },
 diff --git a/app/buck2_server/src/daemon/server.rs b/app/buck2_server/src/daemon/server.rs
-index 5d19119aa..00912a98b 100644
+index 1119d6517..3bcec00d7 100644
 --- a/app/buck2_server/src/daemon/server.rs
 +++ b/app/buck2_server/src/daemon/server.rs
-@@ -406,9 +406,9 @@ impl BuckdServer {
+@@ -397,9 +397,9 @@ impl BuckdServer {
          } = ActiveCommand::new(&dispatch);
          let data = daemon_state.data()?;
  
@@ -306,7 +339,7 @@ index 5d19119aa..00912a98b 100644
  
          let configure_bxl_file_globals = self.0.callbacks.configure_bxl_file_globals();
  
-@@ -531,9 +531,9 @@ fn result_to_command_result<R: Into<command_result::Result>>(
+@@ -522,9 +522,9 @@ fn result_to_command_result<R: Into<command_result::Result>>(
  
  fn error_to_command_progress(e: anyhow::Error) -> CommandProgress {
      CommandProgress {
@@ -319,7 +352,7 @@ index 5d19119aa..00912a98b 100644
      }
  }
  
-@@ -591,7 +591,7 @@ fn pump_events<E: EventSource>(
+@@ -582,7 +582,7 @@ fn pump_events<E: EventSource>(
                  match control_event {
                      ControlEvent::CommandResult(result) => {
                          let _ignore = output_send.send(Ok(CommandProgress {
@@ -328,7 +361,7 @@ index 5d19119aa..00912a98b 100644
                          }));
                      }
                  }
-@@ -680,20 +680,18 @@ where
+@@ -671,20 +671,18 @@ where
  
      let daemon_shutdown_stream = daemon_shutdown_channel
          .map_ok(move |shutdown| CommandProgress {
@@ -411,10 +444,10 @@ index 467c11005..0409b736b 100644
          .compile(proto_files, &["."])
  }
 diff --git a/shim/third-party/rust/Cargo.toml b/shim/third-party/rust/Cargo.toml
-index 4c51c1b6e..ff5a5df5e 100644
+index e00e8773c..baf27b058 100644
 --- a/shim/third-party/rust/Cargo.toml
 +++ b/shim/third-party/rust/Cargo.toml
-@@ -116,10 +116,8 @@ pin-project = "0.4.29"
+@@ -118,10 +118,8 @@ pin-project = "0.4.29"
  plist = "0.5"
  pretty_assertions = "1.2.1"
  proc-macro2 = "1.0"
@@ -427,18 +460,7 @@ index 4c51c1b6e..ff5a5df5e 100644
  quote = "1.0.3"
  rand = { version = "0.8.4", features = ["small_rng"] }
  ref-cast = "1.0.0"
-@@ -158,8 +156,8 @@ tokio = { version = "1.5", features = ["full"] }
- tokio-stream = { version = "0.1.4", features = ["fs", "io-util", "net", "sync", "time"] }
- tokio-util = { version = "0.6", features = ["full"] }
- toml = "0.5.8"
--tonic = "0.8.3"
--tonic-build = { version = "0.8.4", features = ["prost", "cleanup-markdown"] }
-+tonic = "0.8.2"
-+tonic-build = { version = "0.8.2", features = ["prost", "cleanup-markdown"] }
- tower = "0.4"
- tower-layer = "0.3.1"
- tower-service = "0.3.2"
-@@ -174,13 +172,3 @@ winapi = { version = "0.3", features = ["everything"] }
+@@ -176,13 +174,3 @@ winapi = { version = "0.3", features = ["everything"] }
  xattr = "0.2.2"
  zip = "0.5"
  zstd = "=0.11.1"

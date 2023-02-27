@@ -23,13 +23,13 @@ let
 
 in rustPlatform.buildRustPackage rec {
   pname = "buck2";
-  version = "unstable-2023-02-16";
+  version = "unstable-2023-02-27";
 
   src = fetchFromGitHub {
     owner = "facebookincubator";
     repo = "buck2";
-    rev = "5f717b85ee4e6ec72f0afb2151586257d79490dc";
-    hash = "sha256-Fw028MiEfUdTPfxTKbu51/PjjVzY4emWJTowqYg02Zk=";
+    rev = "964133d69829bc7164b0f4ce658cbc40ea3c3bdc";
+    hash = "sha256-XyCz5nRFExZmwPAtxtjla9rn7Hfnibn1N+OsdwIxX14=";
   };
 
   cargoLock = {
@@ -51,9 +51,10 @@ in rustPlatform.buildRustPackage rec {
     # both aarch64-linux and x86_64-linux
     ./aarch64-linux-notify-hack.patch
 
-    # XXX FIXME (aseipp): Disable the 'large boxes' patch for prost/tonic, which
-    # can't be compiled with nix right now?
-    ./revert-large-boxes.patch
+    # XXX FIXME (aseipp): Disable the 'prost boxing' patches, which
+    # unfortunately cause a build failure for now. See commit message in the
+    # patch file.
+    ./revert-boxing-large-structs.patch
   ];
 
   # Put in the Cargo.lock file.
@@ -61,11 +62,7 @@ in rustPlatform.buildRustPackage rec {
   # XXX NOTE (aseipp): Also, for now, suppress a really annoying 'tracing'
   # warning that makes the default build output uglier; once we self-bootstrap
   # buck2 with buck2 under Nix (ugh...) then we can get rid of this.
-  postPatch = ''
-    cp ${./Cargo.lock} Cargo.lock
-    substituteInPlace app/buck2_server/src/daemon/common.rs \
-      --replace 'tracing::warn!("Cargo build detected:' '//tracing::warn!("Cargo build detected:'
-  '';
+  postPatch = "cp ${./Cargo.lock} Cargo.lock";
 
   postInstall = ''
     mv $out/bin/buck2     $out/bin/buck
