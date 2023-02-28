@@ -111,7 +111,6 @@
             inherit (pkgs)
               coreutils curl # downloading and fundamental scripts
               tagref sapling jq getopt jujutsu # utilities
-              cargo nix-prefetch-git # XXX FIXME (aseipp): needed by update.sh for buck2; get rid of somehow...
               ;
 
             # Finally, any globally useful tools we package here go next. This is primarily
