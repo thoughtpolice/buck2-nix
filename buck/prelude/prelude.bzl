@@ -36,9 +36,6 @@
 
 load("@prelude//basics/config.bzl", _config = "config")
 
-load("@prelude//basics/attributes.bzl", "attributes")
-load("@prelude//basics/providers.bzl", "providers")
-
 load("@prelude//basics/pkg.bzl",
   _owner = "owner",
   _license = "license",
@@ -52,6 +49,11 @@ load("@prelude//basics/files.bzl", _files = "files")
 load("@prelude//basics/download.bzl", _download = "download")
 load("@prelude//basics/paths.bzl", _paths = "paths")
 load("@prelude//basics/genrule.bzl", _genrule = "genrule")
+
+load("@prelude//basics/types.bzl",
+  "attributes",
+  "providers",
+)
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
