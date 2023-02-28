@@ -1,0 +1,15 @@
+using sysbus
+mach create
+machine LoadPlatformDescription @platforms/cpus/sifive-fu540.repl
+
+macro reset
+"""
+    sysbus LoadELF $bbl
+    sysbus LoadFdt $fdt 0x81000000 "earlyconsole mem=256M@0x80000000"
+
+    # Load the Linux kernel symbols, as they are not included in the BBL
+    sysbus LoadSymbolsFrom $kernel
+
+    # Device tree address is passed as an argument to the BBL
+    e51 SetRegisterUnsafe 11 0x81000000
+"""
