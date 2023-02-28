@@ -32,19 +32,19 @@ _ALL_MODULES = [
     bash,
     rust,
     prolog,
-    zipfile
+    zipfile,
 ]
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-for _m in _ALL_MODULES:
-    provs = getattr(_m, "providers")
+for mod in _ALL_MODULES:
+    provs = getattr(mod, "providers")
     for (k, v) in provs.items():
         if k in providers:
             fail("Provider '{}' already exists!".format(k))
         providers[k] = v
 
-    attrs = getattr(_m, "attributes")
+    attrs = getattr(mod, "attributes")
     for (k, v) in attrs.items():
         if k in attributes:
             fail("Attribute '{}' already exists!".format(k))
