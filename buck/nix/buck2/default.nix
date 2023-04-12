@@ -48,6 +48,7 @@ in rustPlatform.buildRustPackage rec {
   buildInputs = [ openssl sqlite ];
 
   doCheck = false;
+  dontStrip = true; # XXX (aseipp): cargo will delete dwarf info but leave symbols for backtraces
 
   patches = [
     # XXX FIXME (aseipp): Disable watchman support entirely and always short-
@@ -58,6 +59,9 @@ in rustPlatform.buildRustPackage rec {
     # XXX FIXME (aseipp): Use a version of 'prost' with a new API for boxing
     # large structs that buck2 needs
     ./update-prost-fork.patch
+
+    # Apply LTO and custom optimization settings to get a smaller binary.
+    ./custom-opt-settings.patch
   ];
 
   # Put in the Cargo.lock file.
