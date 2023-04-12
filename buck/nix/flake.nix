@@ -32,7 +32,13 @@
   # Moral of the story: DO NOT EXPAND THIS INPUT LIST WITHOUT GOOD REASON.
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
+    systems.url = "github:nix-systems/default";
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs = {
+        systems.follows = "systems";
+      };
+    };
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs = {
