@@ -117,16 +117,12 @@
             inherit (pkgs)
               coreutils curl # downloading and fundamental scripts
               tagref sapling jq getopt jujutsu # utilities
+              watchman # fs integration
               ;
 
             # Finally, any globally useful tools we package here go next. This is primarily
             # buck, in our case...
             buck2 = pkgs.callPackage ./buck2 { };
-          }) // (pkgs.lib.optionalAttrs (system == flake-utils.lib.system.x86_64-linux) {
-            # watchman is only supported on x86_64-linux for now; in theory it
-            # should be possible to port to aarch64-linux through the github
-            # release...
-            watchman = pkgs.callPackage ./buck2/watchman.nix { };
           });
 
           # The default Nix shell. This is populated by direnv and used for the

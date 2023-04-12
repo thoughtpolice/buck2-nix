@@ -51,11 +51,6 @@ in rustPlatform.buildRustPackage rec {
   dontStrip = true; # XXX (aseipp): cargo will delete dwarf info but leave symbols for backtraces
 
   patches = [
-    # XXX FIXME (aseipp): Disable watchman support entirely and always short-
-    # circuit to 'notify' on aarch64; this lets us keep things compatible on
-    # both aarch64-linux and x86_64-linux
-    ./aarch64-linux-notify-hack.patch
-
     # XXX FIXME (aseipp): Use a version of 'prost' with a new API for boxing
     # large structs that buck2 needs
     ./update-prost-fork.patch
