@@ -18,9 +18,9 @@ Nothing is stable and everything is permitted. Do not taunt happy fun ball.
 
 ## requirements
 
-1) `direnv` installed into your shell
-2) nix 2.12.0
-3) `trusted-users` includes your `$USER`
+1. `direnv` installed into your shell
+2. nix 2.12.0
+3. `trusted-users` includes your `$USER`
 
 `direnv` will warn you if either 2 or 3 are not satisfied when you move into
 this directory. See **[.envrc](/.envrc)** for details. The automated setup tool
@@ -28,8 +28,8 @@ also warns you about these facts.
 
 ## fully automated setup
 
-**Experiment**: what if we used `nix run` as an "setup tool" to setup `direnv` and
-`nix`'s configuration? In other words, use it to bootstrap the development
+**Experiment**: what if we used `nix run` as an "setup tool" to setup `direnv`
+and `nix`'s configuration? In other words, use it to bootstrap the development
 environment? And what if I wrote it in **[Rust]** to learn more of it?
 
 ```bash
@@ -41,8 +41,8 @@ nix run \
 
 This tool will set up everything to build this repository correctly. I hope. The
 goal is that Nix along with the above command should be able to completely
-bootstrap your working environment. If it doesn't work, please [let me
-know](/issues). Check out the source code under
+bootstrap your working environment. If it doesn't work, please
+[let me know](/issues). Check out the source code under
 **[./buck/nix/setup/](/buck/nix/setup)**
 
 ## treading water
@@ -94,7 +94,7 @@ cd $HOME
 
 <!-- refs -->
 
-[Buck]: https://github.com/facebookincubator/buck2
+[Buck]: https://github.com/facebook/buck2
 [Sapling]: https://sapling-scm.com
 [Nix]: https://nixos.org
 [direnv]: https//direnv.net

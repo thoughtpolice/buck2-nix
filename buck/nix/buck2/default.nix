@@ -26,7 +26,7 @@ in rustPlatform.buildRustPackage rec {
   version = "unstable-2023-02-27";
 
   src = fetchFromGitHub {
-    owner = "facebookincubator";
+    owner = "facebook";
     repo = "buck2";
     rev = "964133d69829bc7164b0f4ce658cbc40ea3c3bdc";
     hash = "sha256-XyCz5nRFExZmwPAtxtjla9rn7Hfnibn1N+OsdwIxX14=";
