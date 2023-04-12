@@ -10,7 +10,7 @@
 
 let
   rustChannel = "nightly";
-  rustVersion = "2022-12-27";
+  rustVersion = "2023-01-24";
 
   my-rust-bin = rust-bin."${rustChannel}"."${rustVersion}".default.override {
     extensions = [ "rust-analyzer" ];
@@ -23,18 +23,22 @@ let
 
 in rustPlatform.buildRustPackage rec {
   pname = "buck2";
-  version = "unstable-2023-02-27";
+  version = "unstable-2023-04-12";
 
   src = fetchFromGitHub {
     owner = "facebook";
     repo = "buck2";
-    rev = "964133d69829bc7164b0f4ce658cbc40ea3c3bdc";
-    hash = "sha256-XyCz5nRFExZmwPAtxtjla9rn7Hfnibn1N+OsdwIxX14=";
+    rev = "630d31195394c207bab608adbaf47e5c392dfc29";
+    hash = "sha256-KV1jn4V+3315OHERfm5ksVhcCAsxtjJTBrJvm0f7+Us=";
   };
 
   cargoLock = {
     lockFile = ./Cargo.lock;
-    outputHashes = {};
+    outputHashes = {
+      "perf-event-0.4.8" = "sha256-4OSGmbrL5y1g+wdA+W9DrhWlHQGeVCsMLz87pJNckvw=";
+      "prost-0.11.8" = "sha256-YtQN5usDuE/yCutm6FsUKV+3ZmtYQHTlpeW1x+tnmSI=";
+      "tonic-0.8.3" = "sha256-xuQVixIxTDS4IZIN46aMAer3v4/81IQEG975vuNNerU=";
+    };
   };
 
   BUCK2_BUILD_PROTOC = "${protobuf}/bin/protoc";
@@ -51,10 +55,9 @@ in rustPlatform.buildRustPackage rec {
     # both aarch64-linux and x86_64-linux
     ./aarch64-linux-notify-hack.patch
 
-    # XXX FIXME (aseipp): Disable the 'prost boxing' patches, which
-    # unfortunately cause a build failure for now. See commit message in the
-    # patch file.
-    ./revert-boxing-large-structs.patch
+    # XXX FIXME (aseipp): Use a version of 'prost' with a new API for boxing
+    # large structs that buck2 needs
+    ./update-prost-fork.patch
   ];
 
   # Put in the Cargo.lock file.
