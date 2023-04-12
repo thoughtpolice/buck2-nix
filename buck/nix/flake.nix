@@ -123,11 +123,6 @@
             watchman = pkgs.callPackage ./buck2/watchman.nix { };
           });
 
-          # Automatically incorporate all toolchains. It is currently expected
-          # that this is a raw attrset of unique names as keys and derivations
-          # as values (i.e. no nested derivations or anything like that for now)
-          toolchains = import ./toolchains { inherit pkgs; };
-
           # The default Nix shell. This is populated by direnv and used for the
           # interactive console that a developer uses when they use buck2, sl,
           # et cetera.
@@ -153,7 +148,6 @@
         # Flatten the hierarchy; mostly used to ensure we build everything...
         flatJobs = flake-utils.lib.flattenTree rec {
           packages = jobs.packages // { recurseForDerivations = true; };
-          toolchains = jobs.toolchains // { recurseForDerivations = true; };
         };
 
       in rec {
@@ -172,7 +166,6 @@
           # XXX FIXME (aseipp): unify this with 'attrs' someday...
           world = pkgs.writeText "world.json" (builtins.toJSON {
             shellPackages = jobs.packages;
-            toolchainPackages = jobs.toolchains;
           });
 
           # Merge in flatJobs, so that when we do things like 'nix flake show'
