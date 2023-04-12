@@ -19,7 +19,7 @@ Nothing is stable and everything is permitted. Do not taunt happy fun ball.
 ## requirements
 
 1. `direnv` installed into your shell
-2. nix 2.12.0
+2. nix 2.12.0 or newer
 3. `trusted-users` includes your `$USER`
 
 `direnv` will warn you if either 2 or 3 are not satisfied when you move into
@@ -32,6 +32,9 @@ also warns you about these facts.
 and `nix`'s configuration? In other words, use it to bootstrap the development
 environment? And what if I wrote it in **[Rust]** to learn more of it?
 
+Run this command from your `$HOME` (or any directory, but it won't touch the
+current working dir):
+
 ```bash
 nix run \
     --tarball-ttl 0 \
@@ -39,7 +42,8 @@ nix run \
     'github:thoughtpolice/buck2-nix?dir=buck/nix#setup'
 ```
 
-This tool will set up everything to build this repository correctly. I hope. The
+This tool will set up everything to build this repository correctly, and (by
+default) clone a copy of the source code for you, under `$HOME`. I hope. The
 goal is that Nix along with the above command should be able to completely
 bootstrap your working environment. If it doesn't work, please
 [let me know](/issues). Check out the source code under
