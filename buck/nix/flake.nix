@@ -75,7 +75,6 @@
 
             rustPlatform.buildRustPackage rec {
               name = "setup";
-              src = self;
               cargoLock.lockFile = ./setup/Cargo.lock;
               src = ./setup;
             }) { };
