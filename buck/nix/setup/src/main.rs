@@ -399,20 +399,17 @@ fn choose_scm() -> Result<Scm, Report> {
 
     let choices = vec![
         format!(
-            "{}{}Sapling ({})",
-            Emoji("1️⃣  ", "1) "),
+            "1) {}Sapling ({})",
             Emoji("🍃 ", ""),
             style("Recommended").bold()
         ),
         format!(
-            "{}{}Jujutsu ({})",
-            Emoji("2️⃣  ", "2) "),
+            "2) {}Jujutsu ({})",
             Emoji("🥋 ", ""),
             style("Experimental").bold()
         ),
         format!(
-            "{}{}Git     ({})",
-            Emoji("3️⃣  ", "3) "),
+            "3) {}Git     ({})",
             Emoji("👴 ", ""),
             style("Classic").bold()
         ),
