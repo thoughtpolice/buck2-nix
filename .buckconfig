@@ -17,3 +17,4 @@ ignore=.git,.sl,.jj
 
 [buck2]
 file_watcher=watchman
+digest_algorithms = SHA1
