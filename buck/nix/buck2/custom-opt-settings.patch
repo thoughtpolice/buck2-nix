@@ -6,7 +6,7 @@ index a48b97b60b..c8cb6abdf4 100644
  [profile.release]
  incremental = true
  panic = "abort"
-+lto = "fat"
++lto = "thin"
 +codegen-units = 1
 +opt-level = 3
 +strip = "debuginfo"
