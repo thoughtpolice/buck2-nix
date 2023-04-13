@@ -77,6 +77,7 @@
               name = "setup";
               src = self;
               cargoLock.lockFile = ./setup/Cargo.lock;
+              sourceRoot = "setup";
             }) { };
         });
 
