@@ -104,9 +104,7 @@ if [ "$BUCK2" = "1" ]; then
 
   echo "BUCK2: generating new Cargo.lock file"
   cp -r "$p" "$d" && chmod -R +w "$d"
-  (cd "$d" \
-    && patch -p1 < "$root/buck/nix/buck2/update-prost-fork.patch" \
-    && nix run nixpkgs#cargo -- --quiet generate-lockfile)
+  (cd "$d" && nix run nixpkgs#cargo -- --quiet generate-lockfile)
   cp "$d/Cargo.lock" "$root/buck/nix/buck2/Cargo.lock"
 
   # update the toolchain based on the rust-toolchain file
