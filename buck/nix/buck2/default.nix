@@ -52,6 +52,9 @@ in rustPlatform.buildRustPackage rec {
   patches = [
     # Apply LTO and custom optimization settings to get a smaller binary.
     ./custom-opt-settings.patch
+
+    # Remove the use of TLS in the remote execution client; see buck2 issue #156
+    ./remove-reapi-tls.patch
   ];
 
   # Put in the Cargo.lock file.
