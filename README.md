@@ -19,7 +19,7 @@ Nothing is stable and everything is permitted. Do not taunt happy fun ball.
 ## requirements
 
 1. `direnv` installed into your shell
-2. nix 2.12.0 or newer
+2. nix 2.14.0 or newer
 3. `trusted-users` includes your `$USER`
 
 `direnv` will warn you if either 2 or 3 are not satisfied when you move into

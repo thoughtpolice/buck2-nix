@@ -180,7 +180,7 @@ fn main() -> Result<(), Report> {
 // -----------------------------------------------------------------------------
 // -- Setup checks, direnv
 
-const MSNV: &str = "2.12.0";
+const MSNV: &str = "2.14.0";
 
 #[instrument]
 fn check_os() -> Result<(), Report> {
