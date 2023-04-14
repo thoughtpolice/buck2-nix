@@ -103,6 +103,7 @@
         jobs = rec {
           packages = flake-utils.lib.flattenTree (rec {
             buildbarn-vm = import ./bb/vm.nix { inherit pkgs; };
+            build-container = import ./bb/container.nix { inherit pkgs; };
             buck2 = pkgs.callPackage ./buck2 { };
           });
 
