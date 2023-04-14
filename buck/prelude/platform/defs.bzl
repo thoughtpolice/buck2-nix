@@ -19,21 +19,38 @@ def _execution_platform_impl(ctx: "context") -> ["provider"]:
     cfg = ConfigurationInfo(constraints = constraints, values = {})
 
     name = ctx.label.raw_target()
-    platform = ExecutionPlatformInfo(
-        label = name,
-        configuration = cfg,
-        executor_config = CommandExecutorConfig(
+
+    if ctx.attrs.remote_enabled:
+        exe_cfg = CommandExecutorConfig(
+            local_enabled = True,
+            remote_enabled = True,
+            use_limited_hybrid = True,
+            use_windows_path_separators = False,
+            remote_execution_properties = {
+                "OSFamily": "Linux",
+                "container-image": "nixos/nix:2.15.0@sha256:251a921be086aa489705e31fa5bd59f2dadfa0824aa7f362728dfe264eb6a3d2",
+            },
+            remote_execution_use_case = "buck2-default",
+            remote_output_paths = "strict",
+        )
+    else:
+        exe_cfg = CommandExecutorConfig(
             local_enabled = True,
             remote_enabled = False,
             use_windows_path_separators = False,
-        ),
+        )
+
+    exe_platform = ExecutionPlatformInfo(
+        label = name,
+        configuration = cfg,
+        executor_config = exe_cfg,
     )
 
     return [
         DefaultInfo(),
-        platform,
+        exe_platform,
         PlatformInfo(label = str(name), configuration = cfg),
-        ExecutionPlatformRegistrationInfo(platforms = [platform]),
+        ExecutionPlatformRegistrationInfo(platforms = [exe_platform]),
     ]
 
 __execution_platform = rule(
@@ -41,6 +58,7 @@ __execution_platform = rule(
     attrs = {
         "cpu_configuration": attrs.dep(providers = [ConfigurationInfo]),
         "os_configuration": attrs.dep(providers = [ConfigurationInfo]),
+        "remote_enabled": attrs.bool(default = False),
     },
 )
 
@@ -68,16 +86,33 @@ def generate_platforms(variants):
     execution platform matching the host platform."""
 
     for (cpu, os) in variants:
+        cpu_configuration = "prelude//platform/cpu:{}".format(cpu)
+        os_configuration = "prelude//platform/os:{}".format(os)
+        visibility = [ "prelude//..." ]
+
         __execution_platform(
             name = "{}-{}".format(cpu, os),
-            cpu_configuration = "prelude//platform/cpu:{}".format(cpu),
-            os_configuration = "prelude//platform/os:{}".format(os),
-            visibility = [ "prelude//..." ],
+            cpu_configuration = cpu_configuration,
+            os_configuration = os_configuration,
+            visibility = visibility,
         )
+
+        __execution_platform(
+            name = "{}-{}-remote".format(cpu, os),
+            cpu_configuration = cpu_configuration,
+            os_configuration = os_configuration,
+            remote_enabled = True,
+            visibility = visibility,
+        )
+
+    use_remote_by_default = False
+    if host_info().os.is_linux and not host_info().arch.is_aarch64:
+        use_remote_by_default = False # XXX FIXME (aseipp): True, when buildbarn is ready
 
     __execution_platform(
         name = "default",
         cpu_configuration = _host_cpu_configuration(),
         os_configuration = _host_os_configuration(),
+        remote_enabled = use_remote_by_default,
         visibility = [ "prelude//..." ],
     )
