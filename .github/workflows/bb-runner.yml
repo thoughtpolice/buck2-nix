@@ -27,10 +27,12 @@ jobs:
       - name: Build bb-runner image
         run: nix build ./buck/nix#packages/build-container
 
-      - run: |
+      - name: Save and tag image
+        run: |
           set -x
           docker load -i ./result
-          docker tag nix-builder:latest ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA::6}
+          docker tag nix-builder:latest ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA}
+          docker tag nix-builder:latest ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
       - name: Log in to the Container registry
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a # v2.1.0
@@ -39,9 +41,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Push image to the Container registry
-      #   uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc # v2.4.0
-      #   with:
-      #     context: .
-      #     push: true
-      #     tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+      - name: Push image to the Container registry
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA}
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
