@@ -20,25 +20,18 @@ def _execution_platform_impl(ctx: "context") -> ["provider"]:
 
     name = ctx.label.raw_target()
 
-    if ctx.attrs.remote_enabled:
-        exe_cfg = CommandExecutorConfig(
-            local_enabled = True,
-            remote_enabled = True,
-            use_limited_hybrid = True,
-            use_windows_path_separators = False,
-            remote_execution_properties = {
-                "OSFamily": "Linux",
-                "container-image": "ghcr.io/thoughtpolice/buck2-nix:68fc999911158d30a160304866fcf88a523a744f",
-            },
-            remote_execution_use_case = "buck2-default",
-            remote_output_paths = "strict",
-        )
-    else:
-        exe_cfg = CommandExecutorConfig(
-            local_enabled = True,
-            remote_enabled = False,
-            use_windows_path_separators = False,
-        )
+    exe_cfg = CommandExecutorConfig(
+        local_enabled = True,
+        remote_enabled = ctx.attrs.remote_enabled,
+        use_limited_hybrid = ctx.attrs.remote_enabled,
+        use_windows_path_separators = False,
+        remote_execution_properties = {
+            "OSFamily": "Linux",
+            "container-image": "ghcr.io/thoughtpolice/buck2-nix:68fc999911158d30a160304866fcf88a523a744f",
+        },
+        remote_execution_use_case = "buck2-default",
+        remote_output_paths = "strict",
+    )
 
     exe_platform = ExecutionPlatformInfo(
         label = name,
