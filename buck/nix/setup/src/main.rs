@@ -160,21 +160,31 @@ fn main() -> Result<(), Report> {
         }
     }?;
 
-    println!(
+    match full_checkout_path {
+        Some(path) => {
+            println!(
         r#"{}{} {}
 
   You can now 'cd' into '{}' and begin developing!
 
   Upon doing so, {} will activate, populating your shell with the needed environment.
 "#,
-        Emoji("✔ ", "").green(),
-        style("Finished!").bold(),
-        Emoji("🎉 🎉 🎉", ""),
-        style(full_checkout_path.display()).bold(),
-        style("direnv").bold()
-    );
+                Emoji("✔ ", "").green(),
+                style("Finished!").bold(),
+                Emoji("🎉 🎉 🎉", ""),
+                style(path.display()).bold(),
+                style("direnv").bold()
+            );
 
-    Ok(())
+            Ok(())
+        },
+        None => {
+            println!("{}Aborted! No repository was cloned.", Emoji("✖ ", "").red());
+            Ok(())
+        }
+    }
+
+
 }
 
 // -----------------------------------------------------------------------------
@@ -438,7 +448,7 @@ fn choose_scm() -> Result<Scm, Report> {
 }
 
 #[instrument]
-fn clone_src(args: &Args, scm: &Scm) -> Result<PathBuf, Report> {
+fn clone_src(args: &Args, scm: &Scm) -> Result<Option<PathBuf>, Report> {
     let theme = ColorfulTheme::default(); // XXX FIXME (aseipp): propagate
 
     // [tag:installer-setup-hashes] These hashes were taken from:
@@ -501,10 +511,11 @@ fn clone_src(args: &Args, scm: &Scm) -> Result<PathBuf, Report> {
     let full_checkout_path = PathBuf::from(&full_checkout);
     if full_checkout_path.exists() {
         println!(
-            "The path {} already exists! Skipping",
+            "{}The path `{}` already exists!",
+            Emoji("⚠️ ", "ERROR: "),
             full_checkout_path.display(),
         );
-        return Ok(full_checkout_path);
+        return Ok(None);
     }
 
     let upstream = &args.upstream;
@@ -527,7 +538,7 @@ fn clone_src(args: &Args, scm: &Scm) -> Result<PathBuf, Report> {
             .with_prompt(format!("{}\n  Do you wish to continue?", msg))
             .interact()?
     {
-        return Ok(full_checkout_path);
+        return Ok(None);
     }
 
     if args.skip_confirm {
@@ -601,7 +612,7 @@ fn clone_src(args: &Args, scm: &Scm) -> Result<PathBuf, Report> {
         println!("  {}Watchman not enabled\n", watchman);
     }
 
-    Ok(full_checkout_path)
+    Ok(Some(full_checkout_path))
 }
 
 // -----------------------------------------------------------------------------
