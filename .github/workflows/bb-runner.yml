@@ -27,8 +27,10 @@ jobs:
       - name: Build bb-runner image
         run: nix build ./buck/nix#packages/build-container
 
-      - run: docker load -i ./result
-      - run: docker tag nix-builder:latest ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA::6}
+      - run: |
+          set -x
+          docker load -i ./result
+          docker tag nix-builder:latest ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA::6}
 
       - name: Log in to the Container registry
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a # v2.1.0
