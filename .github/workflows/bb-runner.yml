@@ -1,0 +1,51 @@
+name: Create and publish a Docker image
+
+on:
+  push:
+    branches: [ 'main' ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: install nix
+        uses: cachix/install-nix-action@v18
+        with:
+          install_url: https://releases.nixos.org/nix/nix-2.14.0/install
+          nix_path: nixpkgs=https://github.com/NixOS/nixpkgs/archive/8ba90bbc63e58c8c436f16500c526e9afcb6b00a.tar.gz
+          # see [ref:cache-url-warning]
+          extra_nix_config: |
+            substituters = file://${{ github.workspace }}/nix-store-cache-copy?priority=10&trusted=true https://cache.nixos.org https://buck2-nix-cache.aseipp.dev
+            experimental-features = nix-command flakes recursive-nix ca-derivations
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= buck2-nix-preview.aseipp.dev-1:sLpXPuuXpJdk7io25Dr5LrE9CIY1TgGQTPC79gkFj+o=
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build bb-runner image
+        run: nix build ./buck/nix#packages/build-container
+
+      - run: docker load -i ./result
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+#      - name: Build and push Docker image
+#        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+#        with:
+#          context: .
+#          push: true
+#          tags: ${{ steps.meta.outputs.tags }}
+#          labels: ${{ steps.meta.outputs.labels }}
