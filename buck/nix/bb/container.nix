@@ -1,6 +1,6 @@
 { pkgs ? import <nixpkgs> { }
 , lib ? pkgs.lib
-, name ? "nix"
+, name ? "nix-builder"
 , tag ? "latest"
 , bundleNixpkgs ? true
 , channelName ? "nixpkgs"
