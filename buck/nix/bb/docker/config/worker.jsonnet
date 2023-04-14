@@ -70,7 +70,7 @@ local common = import 'common.libsonnet';
       platform: {
         properties: [
           { name: 'OSFamily', value: 'Linux' },
-          { name: 'container-image', value: 'nixos/nix:2.15.0@sha256:251a921be086aa489705e31fa5bd59f2dadfa0824aa7f362728dfe264eb6a3d2' },
+          { name: 'container-image', value: 'ghcr.io/thoughtpolice/buck2-nix:68fc999911158d30a160304866fcf88a523a744f' },
         ],
       },
       maximumFilePoolFileCount: 10000,
