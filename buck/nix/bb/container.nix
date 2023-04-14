@@ -144,6 +144,20 @@ let
     trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
   };
 
+  defaultEnvironment = [
+    "PATH=${lib.concatStringsSep ":" [
+        "/root/.nix-profile/bin"
+        "/nix/var/nix/profiles/default/bin"
+        "/nix/var/nix/profiles/default/sbin"
+    ]}"
+    "SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt"
+    "GIT_SSL_CAINFO=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt"
+    "NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt"
+    "NIX_PATH=/nix/var/nix/profiles/per-user/root/channels:/root/.nix-defexpr/channels"
+  ];
+
+  defaultProfileContents = lib.concatStringsSep "\n" (map (v: "export ${v}") defaultEnvironment);
+
   nixConfContents = (lib.concatStringsSep "\n" (lib.mapAttrsFlatten (n: v:
     let
       vStr = if builtins.isList v then lib.concatStringsSep " " v else v;
@@ -193,12 +207,13 @@ let
     in
     pkgs.runCommand "base-system"
       {
-        inherit passwdContents groupContents shadowContents nixConfContents;
+        inherit passwdContents groupContents shadowContents nixConfContents defaultProfileContents;
         passAsFile = [
           "passwdContents"
           "groupContents"
           "shadowContents"
           "nixConfContents"
+          "defaultProfileContents"
         ];
         allowSubstitutes = false;
         preferLocalBuild = true;
@@ -218,6 +233,9 @@ let
 
       cat $shadowContentsPath > $out/etc/shadow
       echo "" >> $out/etc/shadow
+
+      cat $defaultProfileContentsPath > $out/etc/profile
+      echo "" >> $out/etc/profile
 
       mkdir -p $out/usr
       ln -s /nix/var/nix/profiles/share $out/usr/
@@ -278,22 +296,6 @@ pkgs.dockerTools.buildLayeredImageWithNixDb {
 
   config = {
     Cmd = [ "/root/.nix-profile/bin/bash" ];
-    Env = [
-      "USER=root"
-      "PATH=${lib.concatStringsSep ":" [
-        "/root/.nix-profile/bin"
-        "/nix/var/nix/profiles/default/bin"
-        "/nix/var/nix/profiles/default/sbin"
-      ]}"
-      "MANPATH=${lib.concatStringsSep ":" [
-        "/root/.nix-profile/share/man"
-        "/nix/var/nix/profiles/default/share/man"
-      ]}"
-      "SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt"
-      "GIT_SSL_CAINFO=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt"
-      "NIX_SSL_CERT_FILE=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt"
-      "NIX_PATH=/nix/var/nix/profiles/per-user/root/channels:/root/.nix-defexpr/channels"
-    ];
+    Env = defaultEnvironment;
   };
-
 }
