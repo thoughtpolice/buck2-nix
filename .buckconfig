@@ -4,7 +4,7 @@ prelude = buck/prelude
 bxl = buck/prelude/bxl
 
 [buildfile]
-name=TARGETS
+name = TARGETS
 
 [build]
 execution_platforms = prelude//platform:default
@@ -16,7 +16,7 @@ target_platform_detector_spec = target:root//...->prelude//platform:default
 ignore=.git,.sl,.jj
 
 [buck2]
-file_watcher=watchman
+file_watcher = watchman
 digest_algorithms = SHA1
 
 [buck2_re_client]
