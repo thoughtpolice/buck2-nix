@@ -133,6 +133,19 @@
               (pkgs.writeShellScriptBin "bxl" ''
                 exec ${jobs.packages.buck2}/bin/buck bxl "bxl//top.bxl:$1" -- "''${@:2}"
               '')
+
+              # a script for starting a virtual machine, where we can then start
+              # buildbarn. this is a bit of a hack, but it's the best we can do
+              # for now to make sure hermetic builds work
+              (pkgs.writeShellScriptBin "start-buildbarn-vm" ''
+                export NIX_DISK_IMAGE=$(buck root -k project)/buck/nix/bb/nixos.qcow2
+                if ! [ -f "$NIX_DISK_IMAGE" ]; then
+                    ${pkgs.qemu-utils}/bin/qemu-img -- create -f qcow2 $NIX_DISK_IMAGE 20G
+                fi
+
+                VM_BIN=${(import ./bb/buildbarn-vm.nix) { inherit pkgs; }}
+                exec $VM_BIN/bin/run-nixos-vm "$@"
+              '')
             ];
           };
         };

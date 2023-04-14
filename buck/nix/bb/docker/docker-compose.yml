@@ -1,0 +1,99 @@
+version: '3'
+services:
+  frontend:
+    image: buildbarn/bb-storage:20230208T220714Z-fd356c8
+    command:
+    - /config/frontend.jsonnet
+    expose:
+    - 9980
+    ports:
+    - 8980:8980
+    volumes:
+    - ./config:/config
+
+  storage-0:
+    image: buildbarn/bb-storage:20230208T220714Z-fd356c8
+    command:
+    - /config/storage.jsonnet
+    expose:
+    - 8981
+    - 9980
+    volumes:
+    - ./config:/config
+    - /root/volumes/storage-ac-0:/storage-ac
+    - /root/volumes/storage-cas-0:/storage-cas
+
+  storage-1:
+    image: buildbarn/bb-storage:20230208T220714Z-fd356c8
+    command:
+    - /config/storage.jsonnet
+    expose:
+    - 8981
+    - 9980
+    volumes:
+    - ./config:/config
+    - /root/volumes/storage-ac-1:/storage-ac
+    - /root/volumes/storage-cas-1:/storage-cas
+
+  scheduler:
+    image: buildbarn/bb-scheduler:20230213T172655Z-e0ae60c
+    command:
+    - /config/scheduler.jsonnet
+    expose:
+    - 8982
+    - 8983
+    - 9980
+    ports:
+    - 7982:7982
+    volumes:
+    - ./config:/config
+
+  browser:
+    image: buildbarn/bb-browser:20230208T101541Z-73a5362
+    command:
+    - /config/browser.jsonnet
+    expose:
+    - 9980
+    ports:
+    - 7984:7984
+    volumes:
+    - ./config:/config
+
+  runner-installer:
+    image: buildbarn/bb-runner-installer:20230213T172655Z-e0ae60c
+    volumes:
+    - /root/volumes/bb:/bb
+
+  worker:
+    image: buildbarn/bb-worker:20230213T172655Z-e0ae60c
+    command:
+    - /config/worker.jsonnet
+    # Need to be privileged for the FUSE mounting to work.
+    privileged: true
+    volumes:
+    - ./config:/config
+    - type: bind
+      source: /root/volumes/worker
+      target: /worker
+      bind:
+        # Bidirectional mount to expose the FUSE mount.
+        propagation: shared
+
+  runner:
+    image: nixos/nix:2.15.0@sha256:251a921be086aa489705e31fa5bd59f2dadfa0824aa7f362728dfe264eb6a3d2
+    command:
+    - sh
+    - -c
+    - while ! test -f /bb/installed; do sleep 1; done; exec /bb/tini -v -g -- /bb/bb_runner /config/runner.jsonnet
+    network_mode: none
+    volumes:
+    - ./config:/config
+    - /root/volumes/bb:/bb
+    - type: bind
+      source: /root/volumes/worker
+      target: /worker
+      bind:
+        # HostToContainer mount to use the FUSE mount.
+        propagation: slave
+    depends_on:
+    - runner-installer
