@@ -102,6 +102,11 @@
 
         jobs = rec {
           packages = flake-utils.lib.flattenTree (rec {
+            buildbarn-vm = import ./bb/vm.nix { inherit pkgs; };
+            buck2 = pkgs.callPackage ./buck2 { };
+          });
+
+          shell = flake-utils.lib.flattenTree (rec {
             # These are all tools from upstream
             inherit (pkgs.gitAndTools) gh git;
             inherit (pkgs)
@@ -110,49 +115,48 @@
               watchman # fs integration
               ;
 
-            # Finally, any globally useful tools we package here go next. This is primarily
-            # buck, in our case...
-            buck2 = pkgs.callPackage ./buck2 { };
+            # Include buck2, of course
+            inherit (packages) buck2;
+
+            # add a convenient alias for 'buck bxl' on some scripts. note that
+            # the 'bxl' cell location can be changed in .buckconfig without
+            # changing the script
+            bxl = pkgs.writeShellScriptBin "bxl" ''
+              exec ${jobs.packages.buck2}/bin/buck bxl "bxl//top.bxl:$1" -- "''${@:2}"
+            '';
+
+            # add a convenient alias for Super Smartlog. We can't put this in
+            # direnv so easily because it evaluates .envrc in a subshell.
+            # Slightly worse overhead, but oh well...
+            sl-ssl = pkgs.writeShellScriptBin "ssl" ''
+              exec ${pkgs.sapling}/bin/sl ssl "$@"
+            '';
+
+            # a convenient script for starting a vm, that can then run buildbarn
+            # in an isolated environment
+            start-buildbarn-vm = pkgs.writeShellScriptBin "start-buildbarn-vm" ''
+              export NIX_DISK_IMAGE=$(buck root -k project)/buck/nix/bb/nixos.qcow2
+              if ! [ -f "$NIX_DISK_IMAGE" ]; then
+                  ${pkgs.qemu-utils}/bin/qemu-img -- create -f qcow2 $NIX_DISK_IMAGE 20G
+              fi
+
+              VM_BIN=${packages.buildbarn-vm}
+              exec $VM_BIN/bin/run-nixos-vm "$@"
+            '';
           });
 
           # The default Nix shell. This is populated by direnv and used for the
           # interactive console that a developer uses when they use buck2, sl,
           # et cetera.
           devShells.default = pkgs.mkShell {
-            nativeBuildInputs = builtins.attrValues packages ++ [
-              # add a convenient alias for Super Smartlog. We can't put this in
-              # direnv so easily because it evaluates .envrc in a subshell.
-              # Slightly worse overhead, but oh well...
-              (pkgs.writeShellScriptBin "ssl" ''
-                exec ${pkgs.sapling}/bin/sl ssl "$@"
-              '')
-
-              # add a convenient alias for 'buck bxl' on some scripts. note that
-              # the 'bxl' cell location can be changed in .buckconfig without
-              # changing the script
-              (pkgs.writeShellScriptBin "bxl" ''
-                exec ${jobs.packages.buck2}/bin/buck bxl "bxl//top.bxl:$1" -- "''${@:2}"
-              '')
-
-              # a script for starting a virtual machine, where we can then start
-              # buildbarn. this is a bit of a hack, but it's the best we can do
-              # for now to make sure hermetic builds work
-              (pkgs.writeShellScriptBin "start-buildbarn-vm" ''
-                export NIX_DISK_IMAGE=$(buck root -k project)/buck/nix/bb/nixos.qcow2
-                if ! [ -f "$NIX_DISK_IMAGE" ]; then
-                    ${pkgs.qemu-utils}/bin/qemu-img -- create -f qcow2 $NIX_DISK_IMAGE 20G
-                fi
-
-                VM_BIN=${(import ./bb/buildbarn-vm.nix) { inherit pkgs; }}
-                exec $VM_BIN/bin/run-nixos-vm "$@"
-              '')
-            ];
+            nativeBuildInputs = builtins.attrValues shell;
           };
         };
 
         # Flatten the hierarchy; mostly used to ensure we build everything...
         flatJobs = flake-utils.lib.flattenTree rec {
           packages = jobs.packages // { recurseForDerivations = true; };
+          shell = jobs.shell // { recurseForDerivations = true; };
         };
 
       in rec {
@@ -170,7 +174,8 @@
 
           # XXX FIXME (aseipp): unify this with 'attrs' someday...
           world = pkgs.writeText "world.json" (builtins.toJSON {
-            shellPackages = jobs.packages;
+            buildPackages = jobs.packages;
+            shellPackages = jobs.shell;
           });
 
           # Merge in flatJobs, so that when we do things like 'nix flake show'
