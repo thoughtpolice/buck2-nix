@@ -27,7 +27,7 @@ def _execution_platform_impl(ctx: "context") -> ["provider"]:
         use_windows_path_separators = False,
         remote_execution_properties = {
             "OSFamily": "Linux",
-            "container-image": "ghcr.io/thoughtpolice/buck2-nix:68fc999911158d30a160304866fcf88a523a744f",
+            "container-image": "nix-bb-runner",
         },
         remote_execution_use_case = "buck2-default",
         remote_output_paths = "strict",
