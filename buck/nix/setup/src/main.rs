@@ -488,7 +488,14 @@ fn clone_src(args: &Args, scm: &Scm) -> Result<PathBuf, Report> {
             .default(repo_name)
             .interact_text()?;
 
-        format!("{}/{}", path, repo)
+        let pbuf = PathBuf::from(&path);
+        if !pbuf.exists() {
+            return Err(eyre!("The path {} does not exist!", path).into());
+        }
+
+        let pbuf: PathBuf = pbuf.canonicalize()?.into();
+
+        format!("{}/{}", pbuf.display(), repo)
     };
 
     let full_checkout_path = PathBuf::from(&full_checkout);
