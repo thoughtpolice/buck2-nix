@@ -157,8 +157,10 @@ __platform = rule(
 config = struct(
     platform = __platform,
     setting = __config_setting,
-    constraint = __constraint_setting,
-    value = __constraint_value,
+    constraint = struct(
+        declare = __constraint_setting,
+        value = __constraint_value,
+    ),
 )
 
 ## ---------------------------------------------------------------------------------------------------------------------
