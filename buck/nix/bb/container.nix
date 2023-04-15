@@ -220,7 +220,7 @@ let
       } ''
       env
       set -x
-      mkdir -p $out/etc
+      mkdir -p $out/etc $out/root
 
       mkdir -p $out/etc/ssl/certs
       ln -s /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt $out/etc/ssl/certs
