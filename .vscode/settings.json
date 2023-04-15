@@ -3,10 +3,10 @@
     "files.trimTrailingWhitespace": true,
     "files.associations": {
         // just use python for starlark, until we figure something out
-        "*.bzl": "python",
-        "*.bxl": "python",
-        "TARGETS": "python",
-        "PACKAGE": "python",
+        "*.bzl": "starlark",
+        "*.bxl": "starlark",
+        "TARGETS": "starlark",
+        "PACKAGE": "starlark",
         ".pro": "prolog",
     },
     "files.exclude": {
@@ -17,5 +17,7 @@
         "**/CVS": true,
         "**/.DS_Store": true,
         "**/Thumbs.db": true
-    }
+    },
+    "starlark.lspPath": "buck",
+    "starlark.lspArguments": ["lsp"],
 }
