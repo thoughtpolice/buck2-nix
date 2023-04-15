@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build bb-runner image
-        run: nix build ./buck/nix#packages/build-container
+        run: nix build --accept-flake-config ./buck/nix#packages/build-container
 
       - name: Save and tag image
         run: |
