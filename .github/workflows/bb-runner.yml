@@ -1,4 +1,4 @@
-name: Create BuildBarn runner image
+name: BuildBarn Runner Image
 
 on:
   push:

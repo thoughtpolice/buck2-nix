@@ -1,4 +1,4 @@
-name: PR Validation
+name: Validate Pull Request
 
 on:
   # needs read/write GH token, do *not* execute arbitrary code from PR
