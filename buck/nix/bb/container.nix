@@ -158,6 +158,10 @@ let
 
   defaultProfileContents = lib.concatStringsSep "\n" (map (v: "export ${v}") defaultEnvironment);
 
+  nssSwitchConfContents = ''
+    hosts: dns files
+  '';
+
   nixConfContents = (lib.concatStringsSep "\n" (lib.mapAttrsFlatten (n: v:
     let
       vStr = if builtins.isList v then lib.concatStringsSep " " v else v;
@@ -236,6 +240,9 @@ let
 
       cat $defaultProfileContentsPath > $out/root/.bashrc
       echo "" >> $out/root/.bashrc
+
+      cat $nssSwitchConfContentsPath > $out/etc/nsswitch.conf
+      echo "" >> $out/etc/nsswitch.conf
 
       mkdir -p $out/usr
       ln -s /nix/var/nix/profiles/share $out/usr/
