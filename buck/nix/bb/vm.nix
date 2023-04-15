@@ -3,7 +3,11 @@
 let
   # Basics: use TianoCore to boot in a VM, and use the latest state version
   basics-module = { pkgs, ... }: {
-    virtualisation.qemu.options = [ "-bios" "${pkgs.OVMF.fd}/FV/OVMF.fd" ];
+    virtualisation = {
+      qemu.options = [ "-bios" "${pkgs.OVMF.fd}/FV/OVMF.fd" ];
+      memorySize = 4096; # Use 2048MiB memory.
+      cores = 4;         # Simulate 4 cores.
+    };
     system.stateVersion = "23.05";
   };
 
