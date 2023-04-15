@@ -20,7 +20,7 @@ def _download_tarball(ctx: "context") -> ["provider"]:
             "set -xeuo pipefail",
             "curl -Lo \"$1\" {}".format(ctx.attrs.url),
             "mkdir -p \"$2\"",
-            "tar xf \"$1\" -C \"$2\" --strip-components=1",
+            "tar xf \"$1\" -C \"$2\" --no-same-owner --strip-components=1",
             "hash=$(nix hash path --type sha256 \"$2\")",
             "if ! [ \"$hash\" = \"{}\" ]; then".format(ctx.attrs.hash),
             "  echo \"hash mismatch:\"",
