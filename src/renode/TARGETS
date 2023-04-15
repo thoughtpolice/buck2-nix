@@ -21,6 +21,9 @@ genrule(
          -e \"'runMacro \$reset'\" \\
          -e start >> $OUT
     """,
+    target_compatible_with = [
+      "prelude//platform/cpu:x86_64"
+    ],
 )
 
 # XXX FIXME: renode testing is broken. it doesn't work because robot framework
@@ -82,10 +85,16 @@ nix.rules.build_file(
     name = "renode",
     src = "renode.nix",
     binary = "bin/renode",
+    target_compatible_with = [
+      "prelude//platform/cpu:x86_64"
+    ],
 )
 
 nix.rules.build_file(
     name = "renode-test",
     src = "renode.nix",
     binary = "bin/renode-test",
+    target_compatible_with = [
+      "prelude//platform/cpu:x86_64"
+    ],
 )
