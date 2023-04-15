@@ -73,7 +73,7 @@ local common = import 'common.libsonnet';
           { name: 'container-image', value: 'nix-bb-runner' },
         ],
       },
-      maximumFilePoolFileCount: 10000,
+      maximumFilePoolFileCount: 100000,
       maximumFilePoolSizeBytes: 1 * 1024 * 1024 * 1024,
       workerId: {
         datacenter: 'amsterdam',
@@ -94,7 +94,7 @@ local common = import 'common.libsonnet';
   },
   outputUploadConcurrency: 11,
   directoryCache: {
-    maximumCount: 1000,
+    maximumCount: 100000,
     maximumSizeBytes: 1000 * 1024,
     cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
   },
