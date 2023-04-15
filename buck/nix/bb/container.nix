@@ -234,8 +234,8 @@ let
       cat $shadowContentsPath > $out/etc/shadow
       echo "" >> $out/etc/shadow
 
-      cat $defaultProfileContentsPath > $out/etc/profile
-      echo "" >> $out/etc/profile
+      cat $defaultProfileContentsPath > $out/root/.bashrc
+      echo "" >> $out/root/.bashrc
 
       mkdir -p $out/usr
       ln -s /nix/var/nix/profiles/share $out/usr/
