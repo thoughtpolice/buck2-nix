@@ -211,7 +211,7 @@ let
     in
     pkgs.runCommand "base-system"
       {
-        inherit passwdContents groupContents shadowContents nixConfContents defaultProfileContents;
+        inherit passwdContents groupContents shadowContents nixConfContents defaultProfileContents nssSwitchConfContents;
         passAsFile = [
           "passwdContents"
           "groupContents"
