@@ -85,7 +85,6 @@ services:
     - sh
     - -c
     - while ! test -f /bb/installed; do sleep 1; done; exec /bb/tini -v -g -- /bb/bb_runner /config/runner.jsonnet
-    network_mode: none
     volumes:
     - ./config:/config
     - /root/volumes/bb:/bb
