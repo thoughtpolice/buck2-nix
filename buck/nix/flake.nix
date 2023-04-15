@@ -136,7 +136,7 @@
             # a convenient script for starting a vm, that can then run buildbarn
             # in an isolated environment
             start-buildbarn-vm = pkgs.writeShellScriptBin "start-buildbarn-vm" ''
-              export NIX_DISK_IMAGE=$(buck root -k project)/buck/nix/bb/nixos.qcow2
+              export NIX_DISK_IMAGE=$(buck root -k project)/buildbarn-vm.qcow2
               if ! [ -f "$NIX_DISK_IMAGE" ]; then
                   ${pkgs.qemu-utils}/bin/qemu-img -- create -f qcow2 $NIX_DISK_IMAGE 20G
               fi
