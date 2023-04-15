@@ -17,9 +17,8 @@ def _download_tarball(ctx: "context") -> ["provider"]:
         "download_{}.sh".format(ctx.label.name),
         [
             "#!/usr/bin/env bash",
-            "set -xeuo pipefail",
-            "export PATH=/nix/var/nix/profiles/default/bin",
-            "curl -Lo \"$1\" {}".format(ctx.attrs.url),
+            "set -euo pipefail",
+            "curl -sLo \"$1\" {}".format(ctx.attrs.url),
             "mkdir -p \"$2\"",
             "tar xf \"$1\" -C \"$2\" --strip-components=1",
             "hash=$(nix hash path --type sha256 \"$2\")",
@@ -71,9 +70,8 @@ def __file_impl(ctx: "context") -> ["provider"]:
         "download_{}.sh".format(ctx.label.name),
         [
             "#!/usr/bin/env bash",
-            "set -xeuo pipefail",
-            "export PATH=/nix/var/nix/profiles/default/bin",
-            "curl -Lo \"$1\" {}".format(ctx.attrs.url),
+            "set -euo pipefail",
+            "curl -sLo \"$1\" {}".format(ctx.attrs.url),
             "hash=$(nix hash path --type sha256 \"$1\")",
             "if ! [ \"$hash\" = \"{}\" ]; then".format(ctx.attrs.hash),
             "  echo \"hash mismatch:\"",

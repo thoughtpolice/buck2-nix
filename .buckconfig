@@ -20,7 +20,7 @@ file_watcher = watchman
 digest_algorithms = SHA1
 
 [buck2_re_client]
-re_enabled = true
+re_enabled = false
 engine_address = http://127.0.0.1:8980
 action_cache_address = http://127.0.0.1:8980
 cas_address = http://127.0.0.1:8980
