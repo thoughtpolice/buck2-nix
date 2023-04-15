@@ -218,6 +218,7 @@ let
           "shadowContents"
           "nixConfContents"
           "defaultProfileContents"
+          "nssSwitchConfContents"
         ];
         allowSubstitutes = false;
         preferLocalBuild = true;
