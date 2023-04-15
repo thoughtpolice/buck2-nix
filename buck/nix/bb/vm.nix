@@ -57,6 +57,9 @@ let
       git
       vim
       ripgrep
+      htop
+      btop
+      tmux
 
       run-buildbarn-cmd
     ];
