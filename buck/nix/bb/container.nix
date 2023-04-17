@@ -28,6 +28,7 @@ let
     iana-etc
     git
     openssh
+    diffutils
   ] ++ extraPkgs;
 
   users = {
