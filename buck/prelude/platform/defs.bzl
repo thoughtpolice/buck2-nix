@@ -20,37 +20,11 @@ def _execution_platform_impl(ctx: "context") -> ["provider"]:
 
     name = ctx.label.raw_target()
 
-    # Configuration of how a command should be executed.
     exe_cfg = CommandExecutorConfig(
-        # Whether to use local execution for this execution platform. If both
-        # remote_enabled and local_enabled are True, we will use the hybrid
-        # executor
         local_enabled = True,
-
-        # Whether to use remote execution for this execution platform
         remote_enabled = ctx.attrs.remote_enabled,
-
-        # Whether to use the limited hybrid executor
         use_limited_hybrid = ctx.attrs.remote_enabled,
-
-        # Use and query the RE cache
-        remote_cache_enabled = True,
-
-        # Whether to upload local actions to the RE cache
-        allow_cache_uploads = True,
-
-        # A component to inject into the action key This should typically used
-        # to inject variability into the action key so that it's different across
-        # e.g. build modes (RE uses the action key for things like expected memory
-        # utilization)
-        remote_execution_action_key = None,
-
-        # Whether to use Windows path separators in command line arguments
         use_windows_path_separators = False,
-
-        # Properties for remote execution for this platform. BuildBarn will
-        # match these properties against the properties of the remote workers it
-        # has attached; all fields must match.
         remote_execution_properties = {
             "OSFamily": "Linux",
             "container-image": "nix-bb-runner",
