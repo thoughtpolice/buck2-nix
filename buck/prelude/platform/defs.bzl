@@ -20,16 +20,38 @@ def _execution_platform_impl(ctx: "context") -> ["provider"]:
 
     name = ctx.label.raw_target()
 
+    # Configuration of how a command should be executed.
     exe_cfg = CommandExecutorConfig(
+        # Whether to use local execution for this execution platform. If both
+        # remote_enabled and local_enabled are True, we will use the hybrid
+        # executor
         local_enabled = True,
+
+        # Whether to use remote execution for this execution platform
         remote_enabled = ctx.attrs.remote_enabled,
+
+        # Whether to use the limited hybrid executor
         use_limited_hybrid = ctx.attrs.remote_enabled,
+
+        # # Whether to use Windows path separators in command line arguments
         use_windows_path_separators = False,
+
+        # Properties for remote execution for this platform. BuildBarn will
+        # match these properties against the properties of the remote workers it
+        # has attached; all fields must match.
         remote_execution_properties = {
             "OSFamily": "Linux",
             "container-image": "nix-bb-runner",
         },
+
+        # The use case to use when communicating with RE.
         remote_execution_use_case = "buck2-default",
+
+        # How to express output paths to RE. This is used internally for the
+        # FB RE implementation and the FOSS implementation; strict means that
+        # the RE implementation should expect the output paths to be specified
+        # as files or directories in all cases, and that's what the Remote
+        # Execution API expects. So this will never change.
         remote_output_paths = "strict",
     )
 
