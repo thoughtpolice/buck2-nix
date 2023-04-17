@@ -30,8 +30,20 @@ def _execution_platform_impl(ctx: "context") -> ["provider"]:
         # Whether to use remote execution for this execution platform
         remote_enabled = ctx.attrs.remote_enabled,
 
-        # Whether to use the limited hybrid executor
+        # Whether to use the "limited" hybrid executor. If the hybrid
+        # executor is active, by default, it will race the two executors
+        # to completion until one finishes. If the limited hybrid executor
+        # is enabled, then both are exposed, but only the preferred one
+        # is chosen. Finally, if allow_limited_hybrid_fallbacks is true,
+        # then if the preferred executor fails, the other executor will be
+        # tried.
         use_limited_hybrid = ctx.attrs.remote_enabled,
+
+        # Use and query the RE cache
+        remote_cache_enabled = ctx.attrs.remote_enabled,
+
+        # Whether to upload local actions to the RE cache
+        allow_cache_uploads = ctx.attrs.remote_enabled,
 
         # # Whether to use Windows path separators in command line arguments
         use_windows_path_separators = False,
