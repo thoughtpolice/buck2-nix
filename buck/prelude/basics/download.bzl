@@ -18,6 +18,7 @@ def _download_tarball(ctx: "context") -> ["provider"]:
         [
             "#!/usr/bin/env bash",
             "set -xeuo pipefail",
+            "[ -f /buildbarn/profile ] && source /buildbarn/profile",
             "curl -Lo \"$1\" {}".format(ctx.attrs.url),
             "mkdir -p \"$2\"",
             "tar xf \"$1\" -C \"$2\" --no-same-owner --strip-components=1",
@@ -71,6 +72,7 @@ def __file_impl(ctx: "context") -> ["provider"]:
         [
             "#!/usr/bin/env bash",
             "set -xeuo pipefail",
+            "[ -f /buildbarn/profile ] && source /buildbarn/profile",
             "curl -Lo \"$1\" {}".format(ctx.attrs.url),
             "hash=$(nix hash path --type sha256 \"$1\")",
             "if ! [ \"$hash\" = \"{}\" ]; then".format(ctx.attrs.hash),

@@ -158,7 +158,7 @@ let
     "NIX_PATH=/nix/var/nix/profiles/per-user/root/channels:/root/.nix-defexpr/channels"
   ];
 
-  defaultProfileContents = lib.concatStringsSep "\n" (map (v: "export ${v}") defaultEnvironment);
+  buildbarnProfileContents = lib.concatStringsSep "\n" (map (v: "export ${v}") defaultEnvironment);
 
   nssSwitchConfContents = ''
     hosts: dns files
@@ -213,13 +213,13 @@ let
     in
     pkgs.runCommand "base-system"
       {
-        inherit passwdContents groupContents shadowContents nixConfContents defaultProfileContents nssSwitchConfContents;
+        inherit passwdContents groupContents shadowContents nixConfContents buildbarnProfileContents nssSwitchConfContents;
         passAsFile = [
           "passwdContents"
           "groupContents"
           "shadowContents"
           "nixConfContents"
-          "defaultProfileContents"
+          "buildbarnProfileContents"
           "nssSwitchConfContents"
         ];
         allowSubstitutes = false;
@@ -227,7 +227,7 @@ let
       } ''
       env
       set -x
-      mkdir -p $out/etc $out/root
+      mkdir -p $out/etc $out/root $out/buildbarn/
 
       mkdir -p $out/etc/ssl/certs
       ln -s /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt $out/etc/ssl/certs
@@ -241,8 +241,8 @@ let
       cat $shadowContentsPath > $out/etc/shadow
       echo "" >> $out/etc/shadow
 
-      cat $defaultProfileContentsPath > $out/root/.bashrc
-      echo "" >> $out/root/.bashrc
+      cat $buildbarnProfileContentsPath > $out/buildbarn/profile
+      echo "" >> $out/buildbarn/profile
 
       cat $nssSwitchConfContentsPath > $out/etc/nsswitch.conf
       echo "" >> $out/etc/nsswitch.conf
