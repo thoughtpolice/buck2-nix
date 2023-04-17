@@ -3,15 +3,15 @@ load("@prelude//basics/download.bzl", "download")
 download.tarball(
     name = "nixpkgs-src",
     url = "https://github.com/nixos/nixpkgs/archive/{}.tar.gz"
-        .format("747927516efcb5e31ba03b7ff32f61f6d47e7d87"), # nixpkgs-unstable @ 2023-02-10
-    hash = "sha256-7gFSQbSVAFUHtGCNHPF7mPc5CcqDk9M2+inlVPZSneg=",
+        .format("962d920b8dff4607dd27d33c36c88e4882f62a96"), # master @ 2023-04-17
+    hash = "sha256-5gFx8BFvG/1QDoEFSn1FPmGGs2a2sgL0thSCBQKTtkY=",
     visibility = [ 'PUBLIC', 'prelude//toolchains/...'],
 )
 
 download.tarball(
     name = "nixpkgs-overlay-rust",
     url = "https://github.com/oxalica/rust-overlay/archive/{}.tar.gz"
-        .format("1373567ffd13719f6b7522737b010bfc514d49b4"), # master @ 2023-02-10
-    hash = "sha256-0eO3S+2gLODqDoloufeC99PfQ5mthuN9JADzqFXid1Y=",
+        .format("ffe47b90076067ad5dc25fe739d95a463bdf3c59"), # master @ 2023-04-16
+    hash = "sha256-47DFtN5PX05eD8ObImkSu2W0hyyZ5cK1Tl9EvmW2NnU=",
     visibility = [ 'PUBLIC', 'prelude//toolchains/...'],
 )
