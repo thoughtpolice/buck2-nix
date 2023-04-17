@@ -18,6 +18,6 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true
     },
-    "starlark.lspPath": "buck",
-    "starlark.lspArguments": ["lsp"],
+    "starlark.lspPath": "buck2",
+    "starlark.lspArguments": ["--isolation-dir=lsp", "lsp"],
 }
