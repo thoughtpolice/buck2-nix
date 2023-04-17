@@ -12,6 +12,7 @@
 load("@prelude//basics/files.bzl", "files")
 load("@prelude//toolchains/nixpkgs.bzl", "nix");
 load("@prelude//toolchains/bash/main.bzl", "bash");
+load("@prelude//toolchains/cxx/main.bzl", "cxx");
 load("@prelude//toolchains/prolog/main.bzl", "prolog");
 load("@prelude//toolchains/rust/main.bzl", "rust");
 load("@prelude//toolchains/zip/main.bzl", "zipfile");
@@ -30,8 +31,9 @@ _ALL_MODULES = [
     files,
     nix,
     bash,
-    rust,
+    cxx,
     prolog,
+    rust,
     zipfile,
 ]
 

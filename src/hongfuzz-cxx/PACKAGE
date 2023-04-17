@@ -1,0 +1,4 @@
+owner("@aseipp")
+license("MIT OR Apache-2.0")
+version("0.0.0-prerelease+dev")
+description("Simple example of fuzzing an API with Honggfuzz")
