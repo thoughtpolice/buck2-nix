@@ -10,7 +10,7 @@ name = TARGETS
 execution_platforms = prelude//platform:default
 
 [parser]
-target_platform_detector_spec = target:root//...->prelude//platform:default
+target_platform_detector_spec = target:root//...->prelude//platform:default target:prelude//...->prelude//platform:default
 
 [project]
 ignore=.git,.sl,.jj
