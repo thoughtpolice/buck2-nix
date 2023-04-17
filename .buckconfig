@@ -4,7 +4,7 @@ prelude = buck/prelude
 bxl = buck/prelude/bxl
 
 [buildfile]
-name = TARGETS
+name = BUILD
 
 [build]
 execution_platforms = prelude//platform:default

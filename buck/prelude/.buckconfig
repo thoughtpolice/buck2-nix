@@ -2,4 +2,4 @@
 prelude = .
 
 [buildfile]
-name=TARGETS
+name = BUILD
