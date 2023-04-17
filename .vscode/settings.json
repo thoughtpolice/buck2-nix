@@ -5,7 +5,7 @@
         // just use python for starlark, until we figure something out
         "*.bzl": "starlark",
         "*.bxl": "starlark",
-        "TARGETS": "starlark",
+        "BUILD": "starlark",
         "PACKAGE": "starlark",
         ".pro": "prolog",
     },
