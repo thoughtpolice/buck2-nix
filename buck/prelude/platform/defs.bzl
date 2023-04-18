@@ -133,7 +133,7 @@ def generate_platforms(variants):
         )
 
     use_remote_by_default = False
-    re_enabled = read_root_config("buck2_re_client", "re_enabled", "false")
+    re_enabled = read_root_config("buck2_re_client", "enabled", "false")
     if host_info().os.is_linux and not host_info().arch.is_aarch64:
         use_remote_by_default = "true" == re_enabled
     if re_enabled == "force-true": # escape hatch
