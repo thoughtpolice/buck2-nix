@@ -66,7 +66,7 @@ local common = import 'common.libsonnet';
     runners: [{
       endpoint: { address: 'unix:///worker/runner' },
       concurrency: 8,
-      instanceNamePrefix: '',
+      instanceNamePrefix: 'test-prefix',
       platform: {
         properties: [
           { name: 'OSFamily', value: 'Linux' },
