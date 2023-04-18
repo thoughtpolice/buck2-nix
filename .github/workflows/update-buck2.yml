@@ -3,6 +3,7 @@ name: Update Buck2
 on:
   schedule:
     - cron: '0 2 * * *' # *-*-* 02:00:00 UTC
+  workflow_dispatch: # manual trigger
 
 jobs:
   build:
