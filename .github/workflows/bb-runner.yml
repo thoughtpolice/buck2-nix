@@ -9,7 +9,8 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-and-push-image:
+  build:
+    name: "update: build and push bb-runner image"
     runs-on: ubuntu-latest
     permissions:
       contents: read

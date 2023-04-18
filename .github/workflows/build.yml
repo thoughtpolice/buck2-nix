@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: "build: Full build and integrated tests"
+    name: "check: build and run integrated tests"
     runs-on: ubuntu-latest
     steps:
       - name: install nix
