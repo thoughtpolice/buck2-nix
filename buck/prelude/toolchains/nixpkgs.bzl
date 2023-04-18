@@ -14,43 +14,33 @@ load("@prelude//basics/files.bzl", "files")
 
 def __nix_build(ctx: "context", name: str.type, expr, binary: [str.type, None] = None) -> ["provider"]:
     nixpkgs = ctx.attrs._nixpkgs[DefaultInfo].default_outputs[0]
-    overlays = [o[DefaultInfo].default_outputs[0] for o in ctx.attrs._overlays]
 
     deps = [o[DefaultInfo].default_outputs[0] for o in ctx.attrs.deps]
 
-    overlay_list = []
-    for o in overlays:
-        overlay_list.append(cmd_args(o, format="  (import (buckroot \"{}\"))"))
-
-    overlays_nix, _ = ctx.actions.write(
-        "overlays.nix",
-        [
-            "{ buckroot }:\n\n[",
-        ] + overlay_list + [
-            "]\n", # XXX: newline for readability in terminal
-        ],
-        is_executable = False,
-        allow_args = True,
-    )
+    overlays = []
+    for (name, dep) in ctx.attrs._overlays.items():
+        overlays.append((name, dep[DefaultInfo].default_outputs[0]))
 
     build_nix, build_nix_macros = ctx.actions.write(
         "build.nix",
         [
             "let",
-            "  buckroot = p: <buckroot> + (\"/\" + p);",
-            cmd_args(overlays_nix, format="  overlays = import (buckroot \"{}\") { inherit buckroot; };"),
+            "  overlays = ["
+        ] + ["    (import <{}>)".format(x[0]) for x in overlays] + [
+            "  ];",
             "  config = { };",
-            "in",
-            cmd_args(nixpkgs, format="with import (buckroot \"{}\")"),
-            "{ inherit config overlays; };",
-            "  (",
+            "in with import <buckpkgs> { inherit config overlays; }; (",
             expr,
-            "  )",
+            ") /* EOF */",
             "", # XXX: newline for readability in terminal
         ],
         is_executable = False,
         allow_args = True,
     )
+
+    overlay_args = []
+    for (name, dep) in overlays:
+        overlay_args.append(cmd_args(dep, format="  -I "+name+"=file://$PWD/{} \\"))
 
     out_link = ctx.actions.declare_output("out.link")
     build_sh, _ = ctx.actions.write(
@@ -60,7 +50,10 @@ def __nix_build(ctx: "context", name: str.type, expr, binary: [str.type, None] =
             "set -euo pipefail",
             "[ -f /buildbarn/profile ] && source /buildbarn/profile",
             "export NIX_PATH=",
-            "nix build -I buckroot=\"$PWD\" \\",
+            "nix build \\",
+            "  -I buckroot=$PWD \\",
+            cmd_args(nixpkgs, format="  -I buckpkgs=file://$PWD/{} \\"),
+        ] + overlay_args + [
             cmd_args(build_nix, format="  -f {} \\"),
             "  --out-link \"$1\"",
             "", # XXX: newline for readability in terminal
@@ -69,8 +62,7 @@ def __nix_build(ctx: "context", name: str.type, expr, binary: [str.type, None] =
         allow_args = True,
     )
     build_sh_cmd = cmd_args(build_sh).hidden(
-        overlays + [
-            overlays_nix,
+        [ o[1] for o in overlays ] + [
             build_nix, build_nix_macros,
             nixpkgs,
             deps,
@@ -95,22 +87,18 @@ def __nix_build(ctx: "context", name: str.type, expr, binary: [str.type, None] =
         DefaultInfo(
             default_output = out_link,
             sub_targets = {
-                "nix": [ DefaultInfo(default_outputs = [ overlays_nix, build_nix ]) ],
+                "nix": [ DefaultInfo(default_outputs = [ build_nix ]) ],
                 "builder": [ DefaultInfo(default_output = build_sh) ],
             },
         ),
     ] + run_info
 
-def __overlays_list(ls: ["string"]) -> "attribute":
-    return attrs.default_only(attrs.list(attrs.dep(), default = [
-        "prelude//toolchains:nixpkgs-overlay-{}".format(l) for l in ls
-    ]))
-
 __nix_attrs = {
-    "_nixpkgs": attrs.default_only(attrs.dep(default = "prelude//toolchains:nixpkgs-src")),
-    "_overlays": __overlays_list([
-        "rust",
-    ]),
+    "_nixpkgs": attrs.default_only(attrs.dep(default = "prelude//toolchains:nixpkgs.tar.gz")),
+    "_overlays": attrs.default_only(attrs.named_set(attrs.dep(), default = {
+        # XXX FIXME (aseipp): [tag:add-nixpkgs-overlay] sync with BUILD file somehow?
+        "overlay-rust": "prelude//toolchains:nixpkgs-overlay-rust.tar.gz",
+    })),
     "deps": attrs.list(attrs.dep(), default = []),
 }
 
@@ -141,7 +129,7 @@ def __build_file(name, src, **kwargs):
     files.export(name = fname, src = src)
     nix.rules.build(
         name = name,
-        expr = """pkgs.callPackage (buckroot "$(location :{})") {{ }}""".format(fname),
+        expr = """pkgs.callPackage (<buckroot> + "/$(location :{})") {{ }}""".format(fname),
         deps = [ ":{}".format(fname) ],
         **kwargs,
     )
