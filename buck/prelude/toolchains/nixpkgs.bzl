@@ -60,7 +60,7 @@ def __nix_build(ctx: "context", name: str.type, expr, binary: [str.type, None] =
             "set -euo pipefail",
             "[ -f /buildbarn/profile ] && source /buildbarn/profile",
             "export NIX_PATH=",
-            "nix build -I buckroot=\"$(buck root -k project)\" \\",
+            "nix build -I buckroot=\"$PWD\" \\",
             cmd_args(build_nix, format="  -f {} \\"),
             "  --out-link \"$1\"",
             "", # XXX: newline for readability in terminal
