@@ -17,7 +17,7 @@ ignore=.git,.sl,.jj
 
 [buck2]
 file_watcher = watchman
-digest_algorithms = SHA1
+digest_algorithms = SHA256
 
 [buck2_re_client]
 re_enabled = false
