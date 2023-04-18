@@ -15,7 +15,7 @@ jobs:
         uses: cachix/install-nix-action@v20
         with:
           install_url: https://releases.nixos.org/nix/nix-2.14.0/install
-          nix_path: nixpkgs=https://github.com/NixOS/nixpkgs/archive/8ba90bbc63e58c8c436f16500c526e9afcb6b00a.tar.gz
+          nix_path: nixpkgs=https://github.com/NixOS/nixpkgs/archive/0a4206a51b386e5cda731e8ac78d76ad924c7125.tar.gz
           # see [ref:cache-url-warning]
           extra_nix_config: |
             substituters = file://${{ github.workspace }}/nix-store-cache-copy?priority=10&trusted=true https://cache.nixos.org https://buck2-nix-cache.aseipp.dev
