@@ -1,0 +1,56 @@
+name: Update Buck2
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # *-*-* 02:00:00 UTC
+
+jobs:
+  build:
+    name: "update: update buck2 nix expr"
+    runs-on: ubuntu-latest
+    steps:
+      - name: install nix
+        uses: cachix/install-nix-action@v20
+        with:
+          install_url: https://releases.nixos.org/nix/nix-2.14.0/install
+          nix_path: nixpkgs=https://github.com/NixOS/nixpkgs/archive/0a4206a51b386e5cda731e8ac78d76ad924c7125.tar.gz
+          # see [ref:cache-url-warning]
+          extra_nix_config: |
+            substituters = file://${{ github.workspace }}/nix-store-cache-copy?priority=10&trusted=true https://cache.nixos.org https://buck2-nix-cache.aseipp.dev
+            experimental-features = nix-command flakes recursive-nix ca-derivations
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= buck2-nix-preview.aseipp.dev-1:sLpXPuuXpJdk7io25Dr5LrE9CIY1TgGQTPC79gkFj+o=
+
+      - name: clone repository
+        uses: actions/checkout@v3
+
+      - name: update nix expression
+        run: ./buck/nix/update.sh --buck2
+
+      - name: build buck2
+        run: |
+          nix build --no-link --accept-flake-config ./buck/nix#packages/buck2
+
+      - name: check and commit changes
+        id: commit
+        continue-on-error: true
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add buck/nix/buck2
+          git commit -m "chore(buck2): update"
+
+      - name: validate nix files changed
+        if: steps.commit.outcome == 'success'
+        run: |
+          files=( $(git diff --name-only HEAD HEAD^ '*.nix') )
+          echo "${#files[*]} nix files changed: ${files[*]}"
+          if [[ "${#files[*]}" -ne 0 ]]; then
+            nix-instantiate --parse "${files[@]}" >/dev/null
+          fi
+
+      - name: push changes
+        if: steps.commit.outcome == 'success'
+        uses: ad-m/github-push-action@0fafdd62b84042d49ec0cb92d9cac7f7ce4ec79e
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
