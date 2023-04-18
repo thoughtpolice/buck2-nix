@@ -106,12 +106,12 @@ __file = rule(
 ## ---------------------------------------------------------------------------------------------------------------------
 
 def multi_tarball(attrs):
-    for (k, (url, hash)) in attrs.items():
-        __tarball(name = k, url = url, hash = hash)
+    for (k, kwargs) in attrs.items():
+        __tarball(name = k, **kwargs)
 
 def multi_file(attrs):
-    for (k, (url, hash)) in attrs.items():
-        __file(name = k, url = url, hash = hash)
+    for (k, kwargs) in attrs.items():
+        __file(name = k, **kwargs)
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
