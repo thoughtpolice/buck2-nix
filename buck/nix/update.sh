@@ -15,10 +15,13 @@ FLAKE=0
 BUCK2=0
 CACHE=0
 
-root=$(sl root)
+if [ ! -z "$IS_CI" ]; then
+  root=$(git rev-parse --show-toplevel)
+else
+  root=$(sl root)
+fi
 
 usage() {
-  echo
   echo "update.sh: perform various updates to Nix and Buck related data"
   cat <<EOF
 Usage:
