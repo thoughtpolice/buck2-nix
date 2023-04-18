@@ -12,7 +12,7 @@ load("@prelude//basics/files.bzl", "files")
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def __nix_build(ctx: "context", name: str.type, expr, binary: [str.type, None] = None) -> ["provider"]:
+def __nix_build(ctx: "context", build_name: str.type, expr, binary: [str.type, None] = None) -> ["provider"]:
     nixpkgs = ctx.attrs._nixpkgs[DefaultInfo].default_outputs[0]
 
     deps = [o[DefaultInfo].default_outputs[0] for o in ctx.attrs.deps]
@@ -72,7 +72,7 @@ def __nix_build(ctx: "context", name: str.type, expr, binary: [str.type, None] =
     ctx.actions.run(
         cmd_args([build_sh_cmd, out_link.as_output()]),
         category = "nix_build",
-        identifier = "{}.nix".format(name),
+        identifier = "{}.nix".format(build_name),
     )
 
     run_info = []

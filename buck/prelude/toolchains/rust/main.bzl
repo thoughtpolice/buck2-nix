@@ -51,7 +51,7 @@ def __toolchain_impl(ctx: "context") -> ["provider"]:
             targets = [ {} ];
         }}""".format(attr, " ".join(extensions), " ".join(targets))
 
-    ps = nix.macros.build(ctx, "rust-{}-{}".format(channel, name), expr)
+    ps = nix.macros.build(ctx, name, expr)
     return (ps + [
         RustToolchainInfo(
             compiler = cmd_args(ps[0].default_outputs[0], format="{}/bin/rustc"),
