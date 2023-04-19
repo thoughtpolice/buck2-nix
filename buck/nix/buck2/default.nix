@@ -28,8 +28,8 @@ in rustPlatform.buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "facebook";
     repo = "buck2";
-    rev = "1edd2d0bc81bb3cd1ab8235ce812e5fa48e23a43";
-    hash = "sha256-GzleD+eb1kch/YRerVbGofXk/wsn67m2VkMzXm4u1ps=";
+    rev = "69cd5782cb455f4dd36471f6fb4db79e375a5507";
+    hash = "sha256-CU2/W51tGFS0lyD0fAZ1Cjv2gwIsD+oa+volGc2ti1g=";
   };
 
   cargoLock = {
