@@ -49,10 +49,7 @@ in rustPlatform.buildRustPackage rec {
   doCheck = false;
   dontStrip = true; # XXX (aseipp): cargo will delete dwarf info but leave symbols for backtraces
 
-  patches = [
-    # Apply LTO and custom optimization settings to get a smaller binary.
-    ./custom-opt-settings.patch
-  ];
+  patches = [ /* None, for now */ ];
 
   # Put in the Cargo.lock file.
   #
