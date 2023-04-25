@@ -4,6 +4,11 @@
 
 load("@prelude//basics/config.bzl", "config")
 
-config.constraint.declare(name = "os", visibility = [ "PUBLIC" ])
-config.constraint.value(name = "linux",  constraint = ":os", visibility = [ "PUBLIC" ])
-config.constraint.value(name = "darwin", constraint = ":os", visibility = [ "PUBLIC" ])
+config.constraint.declare_with_values(
+    name = "os",
+    values = [
+        "linux",
+        "darwin",
+    ],
+    visibility = [ "PUBLIC" ],
+)

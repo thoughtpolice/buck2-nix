@@ -154,12 +154,28 @@ __platform = rule(
     is_configuration_rule = True,
 )
 
+def __declare_with_values(name, values, visibility):
+    """Declare a constraint setting with a set of values."""
+
+    __constraint_setting(
+        name = name,
+        visibility = visibility,
+    )
+
+    for value in values:
+        __constraint_value(
+            name = value,
+            constraint = ":{}".format(name),
+            visibility = visibility,
+        )
+
 config = struct(
     platform = __platform,
     setting = __config_setting,
     constraint = struct(
         declare = __constraint_setting,
         value = __constraint_value,
+        declare_with_values = __declare_with_values,
     ),
 )
 

@@ -4,6 +4,11 @@
 
 load("@prelude//basics/config.bzl", "config")
 
-config.constraint.declare(name = "cpu", visibility = [ "PUBLIC" ])
-config.constraint.value(name = "x86_64", constraint = ":cpu", visibility = [ "PUBLIC" ])
-config.constraint.value(name = "aarch64", constraint = ":cpu", visibility = [ "PUBLIC" ])
+config.constraint.declare_with_values(
+    name = "cpu",
+    values = [
+        "x86_64",
+        "aarch64",
+    ],
+    visibility = [ "PUBLIC" ],
+)
