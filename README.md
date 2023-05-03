@@ -5,7 +5,7 @@
 > thoughtpolice/buck2-nix#1 for some design notes and feel free to provide
 > input.
 
-An experiment to integrate **[Buck]**, **[Sapling]**, and **[Nix]** together in
+An experiment to integrate **[Buck2]**, **[Sapling]**, and **[Nix]** together in
 a harmonious way. Because this uses a pre-release Buck as well as our own Buck
 prelude to integrate with Nix, we're on our own.
 
@@ -98,7 +98,7 @@ cd $HOME
 
 <!-- refs -->
 
-[Buck]: https://github.com/facebook/buck2
+[Buck2]: https://github.com/facebook/buck2
 [Sapling]: https://sapling-scm.com
 [Nix]: https://nixos.org
 [direnv]: https//direnv.net
