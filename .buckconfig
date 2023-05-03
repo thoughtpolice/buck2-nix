@@ -22,6 +22,4 @@ digest_algorithms = SHA256
 [buck2_re_client]
 enabled = false
 tls = false
-engine_address = grpc://127.0.0.1:8980
-action_cache_address = grpc://127.0.0.1:8980
-cas_address = grpc://127.0.0.1:8980
+address = grpc://127.0.0.1:8980
