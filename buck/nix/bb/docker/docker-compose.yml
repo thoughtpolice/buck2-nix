@@ -80,7 +80,7 @@ services:
         propagation: shared
 
   runner:
-    image: ghcr.io/thoughtpolice/buck2-nix:a15e8a8a4abbdc4145efb64f5db725a023ac0100
+    image: ghcr.io/thoughtpolice/buck2-nix:020b9cb8a5faa3cce564f68f3b3695317135cd9e
     command:
     - sh
     - -c

@@ -22,4 +22,5 @@ digest_algorithms = SHA256
 [buck2_re_client]
 enabled = false
 tls = false
+instance_name = test-prefix
 address = grpc://127.0.0.1:8980
