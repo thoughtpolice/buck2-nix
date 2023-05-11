@@ -534,6 +534,7 @@ dependencies = [
  "async-trait",
  "backtrace",
  "blake3",
+ "buck2_action_impl",
  "buck2_audit",
  "buck2_build_api",
  "buck2_bxl",
@@ -602,6 +603,7 @@ dependencies = [
  "ctor",
  "dashmap 4.0.2",
  "derive_more",
+ "dice",
  "dupe",
  "futures 0.3.28",
  "gazebo",
@@ -633,7 +635,6 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "async-trait",
- "buck2_action_impl",
  "buck2_build_api",
  "buck2_cli_proto",
  "buck2_client_ctx",
@@ -641,7 +642,6 @@ dependencies = [
  "buck2_core",
  "buck2_data",
  "buck2_events",
- "buck2_execute",
  "buck2_interpreter",
  "buck2_interpreter_for_build",
  "buck2_node",
@@ -982,6 +982,7 @@ dependencies = [
  "libc",
  "maplit",
  "more_futures",
+ "nix 0.22.3",
  "num_enum",
  "once_cell",
  "parking_lot 0.11.2",
@@ -1489,6 +1490,18 @@ dependencies = [
  "strsim 0.10.0",
  "thiserror",
  "tokio",
+]
+
+[[package]]
+name = "buck2_node_tests"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "buck2_core",
+ "buck2_interpreter_for_build",
+ "buck2_node",
+ "dupe",
+ "starlark",
 ]
 
 [[package]]
@@ -6098,9 +6111,9 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
 name = "tokio"
-version = "1.28.0"
+version = "1.28.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c3c786bf8134e5a3a166db9b29ab8f48134739014a3eca7bc6bfa95d673b136f"
+checksum = "0aa32867d44e6f2ce3385e89dceb990188b8bb0fb25b0cf576647a6f98ac5105"
 dependencies = [
  "autocfg",
  "bytes 1.4.0",
