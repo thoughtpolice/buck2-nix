@@ -23,13 +23,13 @@ let
 
 in rustPlatform.buildRustPackage rec {
   pname = "buck2";
-  version = "unstable-2023-05-11";
+  version = "unstable-2023-05-12";
 
   src = fetchFromGitHub {
     owner = "facebook";
     repo = "buck2";
-    rev = "857c309161edf26f07e4d850d441cd17597c1948";
-    hash = "sha256-KnRxOxvlP8PB/kASNwMgU7rhSAjInFIvW1NpozHMNsY=";
+    rev = "185915a9f3506580aca8ec42d9872921471f9c2a";
+    hash = "sha256-BSBGrfvZZ6lRJKDn1sNoVILbMQ/wTyBNNvY/z0kNuBI=";
   };
 
   cargoLock = {
@@ -37,6 +37,7 @@ in rustPlatform.buildRustPackage rec {
     outputHashes = {
       "perf-event-0.4.8" = "sha256-4OSGmbrL5y1g+wdA+W9DrhWlHQGeVCsMLz87pJNckvw=";
       "tonic-0.8.3" = "sha256-xuQVixIxTDS4IZIN46aMAer3v4/81IQEG975vuNNerU=";
+      "hyper-proxy-0.10.0" = "sha256-MeEWEP9xcQlVO8EA0U1/0uRJrdJMqlthIZx4qdus8Mg=";
     };
   };
 
