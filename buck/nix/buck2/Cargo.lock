@@ -536,7 +536,7 @@ dependencies = [
  "blake3",
  "buck2_action_impl",
  "buck2_audit",
- "buck2_build_api",
+ "buck2_audit_server",
  "buck2_bxl",
  "buck2_cli_proto",
  "buck2_client",
@@ -548,6 +548,7 @@ dependencies = [
  "buck2_events",
  "buck2_forkserver",
  "buck2_query",
+ "buck2_query_impls",
  "buck2_server",
  "buck2_server_commands",
  "buck2_server_ctx",
@@ -633,8 +634,22 @@ dependencies = [
 name = "buck2_audit"
 version = "0.1.0"
 dependencies = [
+ "async-trait",
+ "buck2_cli_proto",
+ "buck2_client_ctx",
+ "clap 3.2.25",
+ "dupe",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "buck2_audit_server"
+version = "0.1.0"
+dependencies = [
  "anyhow",
  "async-trait",
+ "buck2_audit",
  "buck2_build_api",
  "buck2_cli_proto",
  "buck2_client_ctx",
@@ -646,10 +661,10 @@ dependencies = [
  "buck2_interpreter_for_build",
  "buck2_node",
  "buck2_query",
+ "buck2_query_impls",
  "buck2_server_commands",
  "buck2_server_ctx",
  "buck2_util",
- "clap 3.2.25",
  "ctor",
  "derive_more",
  "dice",
@@ -802,6 +817,7 @@ dependencies = [
  "buck2_node",
  "buck2_profile",
  "buck2_query",
+ "buck2_query_impls",
  "buck2_query_parser",
  "buck2_server_ctx",
  "buck2_util",
@@ -1429,6 +1445,7 @@ dependencies = [
  "buck2_query_parser",
  "buck2_util",
  "bumpalo",
+ "ctor",
  "derivative",
  "derive_more",
  "dice",
@@ -1515,6 +1532,7 @@ dependencies = [
  "buck2_query_parser",
  "buck2_util",
  "derive_more",
+ "dice",
  "dupe",
  "either",
  "gazebo",
@@ -1613,6 +1631,39 @@ dependencies = [
  "quote",
  "syn 2.0.15",
  "textwrap 0.11.0",
+]
+
+[[package]]
+name = "buck2_query_impls"
+version = "0.0.0"
+dependencies = [
+ "allocative",
+ "anyhow",
+ "async-trait",
+ "buck2_build_api",
+ "buck2_common",
+ "buck2_core",
+ "buck2_events",
+ "buck2_interpreter_for_build",
+ "buck2_node",
+ "buck2_query",
+ "buck2_query_parser",
+ "ctor",
+ "dashmap 4.0.2",
+ "derive_more",
+ "dice",
+ "dupe",
+ "either",
+ "futures 0.3.28",
+ "gazebo",
+ "indexmap",
+ "itertools",
+ "more_futures",
+ "ref-cast",
+ "starlark",
+ "thiserror",
+ "tokio",
+ "tracing",
 ]
 
 [[package]]
@@ -1851,7 +1902,6 @@ dependencies = [
  "buck2_execute",
  "buck2_execute_impl",
  "buck2_grpc",
- "buck2_interpreter_for_build",
  "buck2_node",
  "buck2_query",
  "buck2_server_ctx",
@@ -5354,9 +5404,9 @@ dependencies = [
 
 [[package]]
 name = "security-framework"
-version = "2.8.2"
+version = "2.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a332be01508d814fed64bf28f798a146d73792121129962fdf335bb3c49a4254"
+checksum = "ca2855b3715770894e67cbfa3df957790aa0c9edc3bf06efa1a84d77fa0839d1"
 dependencies = [
  "bitflags",
  "core-foundation",
@@ -5367,9 +5417,9 @@ dependencies = [
 
 [[package]]
 name = "security-framework-sys"
-version = "2.8.0"
+version = "2.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "31c9bb296072e961fcbd8853511dd39c2d8be2deb1e17c6860b1d30732b323b4"
+checksum = "f51d0c0d83bec45f16480d0ce0058397a69e48fcdc52d1dc8855fb68acbd31a7"
 dependencies = [
  "core-foundation-sys",
  "libc",
