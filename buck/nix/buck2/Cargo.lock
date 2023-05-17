@@ -658,7 +658,6 @@ dependencies = [
  "buck2_interpreter_for_build",
  "buck2_node",
  "buck2_query",
- "buck2_query_impls",
  "buck2_server_commands",
  "buck2_server_ctx",
  "buck2_util",
@@ -674,7 +673,6 @@ dependencies = [
  "serde",
  "serde_json",
  "thiserror",
- "tracing",
 ]
 
 [[package]]
@@ -1457,6 +1455,7 @@ dependencies = [
  "maplit",
  "more_futures",
  "once_cell",
+ "smallvec",
  "starlark",
  "starlark_map",
  "thiserror",
@@ -4175,9 +4174,9 @@ dependencies = [
 
 [[package]]
 name = "notify"
-version = "5.1.0"
+version = "5.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "58ea850aa68a06e48fdb069c0ec44d0d64c8dbffa49bf3b6f7f0a901fdea1ba9"
+checksum = "729f63e1ca555a43fe3efa4f3efdf4801c479da85b432242a7b726f353c88486"
 dependencies = [
  "bitflags",
  "crossbeam-channel",
@@ -4188,7 +4187,7 @@ dependencies = [
  "libc",
  "mio",
  "walkdir",
- "windows-sys 0.42.0",
+ "windows-sys 0.45.0",
 ]
 
 [[package]]
