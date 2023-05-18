@@ -52,11 +52,7 @@ in rustPlatform.buildRustPackage rec {
 
   patches = [ /* None, for now */ ];
 
-  # Put in the Cargo.lock file.
-  #
-  # XXX NOTE (aseipp): Also, for now, suppress a really annoying 'tracing'
-  # warning that makes the default build output uglier; once we self-bootstrap
-  # buck2 with buck2 under Nix (ugh...) then we can get rid of this.
+  # Put the Cargo.lock file in the build.
   postPatch = "cp ${./Cargo.lock} Cargo.lock";
 
   postInstall = ''
