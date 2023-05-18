@@ -658,7 +658,6 @@ dependencies = [
  "buck2_interpreter_for_build",
  "buck2_node",
  "buck2_query",
- "buck2_server_commands",
  "buck2_server_ctx",
  "buck2_util",
  "derive_more",
@@ -4721,9 +4720,9 @@ dependencies = [
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.57"
+version = "1.0.58"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c4ec6d5fe0b140acb27c9a0444118cf55bfbb4e0b259739429abb4521dd67c16"
+checksum = "fa1fb82fc0c281dd9671101b66b771ebbe1eaf967b96ac8740dcba4b70005ca8"
 dependencies = [
  "unicode-ident",
 ]
