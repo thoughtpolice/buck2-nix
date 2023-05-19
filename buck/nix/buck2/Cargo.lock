@@ -589,6 +589,7 @@ dependencies = [
  "allocative",
  "anyhow",
  "async-trait",
+ "buck2_artifact",
  "buck2_build_api",
  "buck2_common",
  "buck2_core",
@@ -625,6 +626,27 @@ dependencies = [
  "starlark_map",
  "thiserror",
  "tracing",
+]
+
+[[package]]
+name = "buck2_artifact"
+version = "0.1.0"
+dependencies = [
+ "allocative",
+ "anyhow",
+ "assert_matches",
+ "buck2_core",
+ "buck2_data",
+ "buck2_execute",
+ "derivative",
+ "derive_more",
+ "dupe",
+ "either",
+ "gazebo",
+ "itertools",
+ "starlark_map",
+ "take_mut",
+ "thiserror",
 ]
 
 [[package]]
@@ -680,10 +702,10 @@ version = "0.1.0"
 dependencies = [
  "allocative",
  "anyhow",
- "assert_matches",
  "async-recursion",
  "async-trait",
  "blake3",
+ "buck2_artifact",
  "buck2_build_api_derive",
  "buck2_build_info",
  "buck2_cli_proto",
@@ -735,7 +757,6 @@ dependencies = [
  "starlark_map",
  "static_assertions",
  "structopt",
- "take_mut",
  "thiserror",
  "tokio",
  "tokio-stream",
@@ -762,6 +783,7 @@ dependencies = [
  "anyhow",
  "assert_matches",
  "async-trait",
+ "buck2_artifact",
  "buck2_build_api",
  "buck2_common",
  "buck2_core",
@@ -799,6 +821,7 @@ dependencies = [
  "allocative",
  "anyhow",
  "async-trait",
+ "buck2_artifact",
  "buck2_build_api",
  "buck2_cli_proto",
  "buck2_common",
@@ -1336,6 +1359,7 @@ dependencies = [
  "buck2_grpc",
  "buck2_miniperf_proto",
  "buck2_util",
+ "buck2_wrapper_common",
  "bytes 1.4.0",
  "dupe",
  "futures 0.3.28",
@@ -1638,6 +1662,7 @@ dependencies = [
  "allocative",
  "anyhow",
  "async-trait",
+ "buck2_artifact",
  "buck2_build_api",
  "buck2_common",
  "buck2_core",
@@ -1770,6 +1795,7 @@ dependencies = [
  "async-recursion",
  "async-trait",
  "blake3",
+ "buck2_artifact",
  "buck2_build_api",
  "buck2_cli_proto",
  "buck2_common",
@@ -2006,12 +2032,15 @@ version = "0.1.0"
 dependencies = [
  "allocative",
  "anyhow",
+ "buck2_util",
  "dupe",
+ "nix 0.22.3",
  "serde",
  "serde_json",
  "sysinfo",
  "thiserror",
  "uuid",
+ "winapi",
 ]
 
 [[package]]
@@ -5377,9 +5406,9 @@ dependencies = [
 
 [[package]]
 name = "security-framework"
-version = "2.9.0"
+version = "2.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ca2855b3715770894e67cbfa3df957790aa0c9edc3bf06efa1a84d77fa0839d1"
+checksum = "1fc758eb7bffce5b308734e9b0c1468893cae9ff70ebf13e7090be8dcbcc83a8"
 dependencies = [
  "bitflags",
  "core-foundation",
@@ -6251,15 +6280,15 @@ dependencies = [
 
 [[package]]
 name = "toml_datetime"
-version = "0.6.1"
+version = "0.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3ab8ed2edee10b50132aed5f331333428b011c99402b5a534154ed15746f9622"
+checksum = "5a76a9312f5ba4c2dec6b9161fdf25d87ad8a09256ccea5a556fef03c706a10f"
 
 [[package]]
 name = "toml_edit"
-version = "0.19.8"
+version = "0.19.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "239410c8609e8125456927e6707163a3b1fdb40561e4b803bc041f466ccfdc13"
+checksum = "92d964908cec0d030b812013af25a0e57fddfadb1e066ecc6681d86253129d4f"
 dependencies = [
  "indexmap",
  "toml_datetime",
