@@ -23,21 +23,20 @@ let
 
 in rustPlatform.buildRustPackage rec {
   pname = "buck2";
-  version = "unstable-2023-05-19";
+  version = "unstable-2023-05-26";
 
   src = fetchFromGitHub {
     owner = "facebook";
     repo = "buck2";
-    rev = "ce861bf16cbd1ee39102ab39eabc56bed0aad66e";
-    hash = "sha256-RLd1SYLstCViX58hisuxXNGKnWgvNCU2db9NrzhfUrY=";
+    rev = "cfc0723e0053b25a1ddf5de8e44ccaf5b04bad21";
+    hash = "sha256-ttKIhH/J9A+oWRsLytD2eStJTJdl4KKDBebosOMlii0=";
   };
 
   cargoLock = {
     lockFile = ./Cargo.lock;
     outputHashes = {
       "perf-event-0.4.8" = "sha256-4OSGmbrL5y1g+wdA+W9DrhWlHQGeVCsMLz87pJNckvw=";
-      "tonic-0.8.3" = "sha256-xuQVixIxTDS4IZIN46aMAer3v4/81IQEG975vuNNerU=";
-      "hyper-proxy-0.10.0" = "sha256-MeEWEP9xcQlVO8EA0U1/0uRJrdJMqlthIZx4qdus8Mg=";
+      "hyper-proxy-0.10.1" = "sha256-qxOJntADYGuBr9jnzWJjiC7ApnkmF2R+OdXBGL3jIw8=";
     };
   };
 
