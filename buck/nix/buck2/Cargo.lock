@@ -536,6 +536,7 @@ dependencies = [
  "backtrace",
  "blake3",
  "buck2_action_impl",
+ "buck2_analysis",
  "buck2_anon_target",
  "buck2_audit",
  "buck2_audit_server",
@@ -559,6 +560,7 @@ dependencies = [
  "buck2_starlark",
  "buck2_test",
  "buck2_test_runner",
+ "buck2_transition",
  "buck2_util",
  "buck2_wrapper_common",
  "clap 3.2.25",
@@ -652,12 +654,42 @@ dependencies = [
 ]
 
 [[package]]
+name = "buck2_analysis"
+version = "0.1.0"
+dependencies = [
+ "allocative",
+ "anyhow",
+ "async-trait",
+ "buck2_artifact",
+ "buck2_build_api",
+ "buck2_common",
+ "buck2_core",
+ "buck2_data",
+ "buck2_events",
+ "buck2_execute",
+ "buck2_interpreter",
+ "buck2_node",
+ "buck2_query",
+ "derive_more",
+ "dice",
+ "dupe",
+ "either",
+ "futures 0.3.28",
+ "gazebo",
+ "smallvec",
+ "starlark",
+ "starlark_map",
+ "thiserror",
+]
+
+[[package]]
 name = "buck2_anon_target"
 version = "0.1.0"
 dependencies = [
  "allocative",
  "anyhow",
  "async-trait",
+ "buck2_analysis",
  "buck2_artifact",
  "buck2_build_api",
  "buck2_common",
@@ -725,6 +757,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "async-trait",
+ "buck2_analysis",
  "buck2_audit",
  "buck2_build_api",
  "buck2_cli_proto",
@@ -790,7 +823,6 @@ dependencies = [
  "gazebo",
  "gazebo_lint",
  "glob",
- "hashbrown 0.12.3",
  "indexmap",
  "internment",
  "inventory",
@@ -834,6 +866,7 @@ dependencies = [
  "anyhow",
  "assert_matches",
  "async-trait",
+ "buck2_analysis",
  "buck2_anon_target",
  "buck2_artifact",
  "buck2_build_api",
@@ -871,6 +904,7 @@ name = "buck2_build_signals_impl"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "buck2_analysis",
  "buck2_artifact",
  "buck2_build_api",
  "buck2_core",
@@ -897,6 +931,7 @@ dependencies = [
  "allocative",
  "anyhow",
  "async-trait",
+ "buck2_analysis",
  "buck2_artifact",
  "buck2_build_api",
  "buck2_cli_proto",
@@ -1370,7 +1405,6 @@ dependencies = [
  "slog",
  "smallvec",
  "sorted_vector_map",
- "starlark",
  "starlark_map",
  "thiserror",
  "tokio",
@@ -1808,6 +1842,7 @@ dependencies = [
  "async-recursion",
  "async-trait",
  "bincode",
+ "buck2_analysis",
  "buck2_build_api",
  "buck2_cli_proto",
  "buck2_common",
@@ -2117,6 +2152,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "buck2_transition"
+version = "0.1.0"
+dependencies = [
+ "allocative",
+ "anyhow",
+ "async-trait",
+ "buck2_build_api",
+ "buck2_common",
+ "buck2_core",
+ "buck2_events",
+ "buck2_interpreter",
+ "buck2_node",
+ "derive_more",
+ "dice",
+ "dupe",
+ "gazebo",
+ "itertools",
+ "more_futures",
+ "starlark",
+ "starlark_map",
+ "thiserror",
+]
+
+[[package]]
 name = "buck2_util"
 version = "0.1.0"
 dependencies = [
@@ -2241,9 +2300,9 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
 name = "chrono"
-version = "0.4.25"
+version = "0.4.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fdbc37d37da9e5bce8173f3a41b71d9bf3c674deebbaceacd0ebdabde76efb03"
+checksum = "ec837a71355b28f6556dbd569b37b3f363091c0bd4b2e735674521b4c5fd9bc5"
 dependencies = [
  "android-tzdata",
  "iana-time-zone",
@@ -4188,9 +4247,9 @@ dependencies = [
 
 [[package]]
 name = "mio"
-version = "0.8.7"
+version = "0.8.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "eebffdb73fe72e917997fad08bdbf31ac50b0fa91cec93e69a0662e4264d454c"
+checksum = "927a765cd3fc26206e66b296465fa9d3e5ab003e651c1b3c060e7956d96b19d2"
 dependencies = [
  "libc",
  "log",
@@ -6899,9 +6958,9 @@ dependencies = [
 
 [[package]]
 name = "webpki-roots"
-version = "0.23.0"
+version = "0.23.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aa54963694b65584e170cf5dc46aeb4dcaa5584e652ff5f3952e56d66aff0125"
+checksum = "b03058f88386e5ff5310d9111d53f48b17d732b401aeb83a8d5190f2ac459338"
 dependencies = [
  "rustls-webpki",
 ]
