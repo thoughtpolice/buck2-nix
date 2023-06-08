@@ -101,7 +101,7 @@ version = "0.3.0"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -287,7 +287,7 @@ checksum = "0e97ce7de6cf12de5d7226c73f5ba9811622f4db3a5b91b55c53e987e5f91cba"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -309,7 +309,7 @@ checksum = "16e62a023e7c117e27523144c5d2459f4397fcc3cab0085af8e2224f643a0193"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -320,7 +320,7 @@ checksum = "b9ccdd8f2a161be9bd5c023df56f1b2a0bd1d83872ae53b71a84a12c9bf6e842"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -859,7 +859,7 @@ dependencies = [
  "gazebo_lint",
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -1171,6 +1171,7 @@ dependencies = [
  "num_enum",
  "once_cell",
  "parking_lot 0.11.2",
+ "pin-project 0.4.30",
  "prost-types",
  "rand 0.8.5",
  "ref-cast",
@@ -1493,6 +1494,7 @@ version = "0.1.0"
 dependencies = [
  "allocative",
  "anyhow",
+ "arc-swap",
  "assert_matches",
  "async-trait",
  "bincode",
@@ -1515,6 +1517,7 @@ dependencies = [
  "rand 0.8.5",
  "take_mut",
  "tempfile",
+ "thiserror",
  "tokio",
  "tokio-stream",
  "tokio-util 0.6.10",
@@ -1788,7 +1791,7 @@ dependencies = [
  "itertools",
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
  "textwrap 0.11.0",
 ]
 
@@ -2416,7 +2419,7 @@ dependencies = [
  "heck 0.4.1",
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -2942,7 +2945,7 @@ version = "0.9.0"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -3289,7 +3292,7 @@ checksum = "89ca545a94061b6365f2c7355b4b32bd20df3ff95f02da9329b34ccc3bd6ee72"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -3337,7 +3340,7 @@ version = "0.8.0"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -3389,7 +3392,7 @@ checksum = "e77ac7b51b8e6313251737fcef4b1c01a2ea102bde68415b62c0ee9268fec357"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -3700,9 +3703,9 @@ dependencies = [
 
 [[package]]
 name = "iana-time-zone"
-version = "0.1.56"
+version = "0.1.57"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0722cd7114b7de04316e7ea5456a0bbb20e4adb46fd27a3697adb812cff0f37c"
+checksum = "2fad5b825842d2b38bd206f3e81d6957625fd7f0a361e345c30e01a0ae2dd613"
 dependencies = [
  "android_system_properties",
  "core-foundation-sys",
@@ -4705,7 +4708,7 @@ dependencies = [
  "pest_meta",
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -4836,7 +4839,7 @@ checksum = "39407670928234ebc5e6e580247dd567ad73a3578460c5990f9503df207e8f07"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -4874,7 +4877,7 @@ dependencies = [
  "line-wrap",
  "quick-xml 0.28.2",
  "serde",
- "time 0.3.21",
+ "time 0.3.22",
 ]
 
 [[package]]
@@ -5313,7 +5316,7 @@ checksum = "8d2275aab483050ab2a7364c1a46604865ee7d6906684e08db0f090acf74f9e7"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -5704,7 +5707,7 @@ checksum = "8c805777e3930c8883389c602315a24224bcc738b63905ef87cd1420353ea93e"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -5726,7 +5729,7 @@ checksum = "bcec881020c684085e55a25f7fd888954d56609ef363479dc5a1305eb0d40cab"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -5946,7 +5949,7 @@ dependencies = [
  "dupe",
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -6063,9 +6066,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "2.0.18"
+version = "2.0.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "32d41677bcbe24c20c52e7c70b0d8db04134c5d1066bf98662e2871ad200ea3e"
+checksum = "a10b47e4921acc65b7d824cd92bc7b67a26382d8f4eadf3da65cb50aee6e6f3f"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -6326,7 +6329,7 @@ checksum = "f9456a42c5b0d803c8cd86e73dd7cc9edd429499f37a3550d286d5e86720569f"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -6365,9 +6368,9 @@ dependencies = [
 
 [[package]]
 name = "time"
-version = "0.3.21"
+version = "0.3.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8f3403384eaacbca9923fa06940178ac13e4edb725486d70e8e15881d0c836cc"
+checksum = "ea9e1b3cf1243ae005d9e74085d4d542f3125458f3a81af210d901dcd7411efd"
 dependencies = [
  "itoa",
  "libc",
@@ -6454,7 +6457,7 @@ checksum = "630bdcf245f78637c13ec01ffae6187cca34625e8c63150d424b59e55af2675e"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -6633,7 +6636,7 @@ checksum = "0f57e3ca2a01450b1a921183a9c9cbfda207fd822cef4ccb00a65402cbba7a74"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
 ]
 
 [[package]]
@@ -6683,7 +6686,7 @@ dependencies = [
  "sharded-slab",
  "smallvec",
  "thread_local",
- "time 0.3.21",
+ "time 0.3.22",
  "tracing",
  "tracing-core",
  "tracing-log",
@@ -6908,7 +6911,7 @@ dependencies = [
  "once_cell",
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
  "wasm-bindgen-shared",
 ]
 
@@ -6930,7 +6933,7 @@ checksum = "e128beba882dd1eb6200e1dc92ae6c5dbaa4311aa7bb211ca035779e5efc39f8"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.18",
+ "syn 2.0.19",
  "wasm-bindgen-backend",
  "wasm-bindgen-shared",
 ]
