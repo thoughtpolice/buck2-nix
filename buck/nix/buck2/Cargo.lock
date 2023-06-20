@@ -577,14 +577,12 @@ dependencies = [
  "gazebo_lint",
  "hex",
  "host_sharing",
- "itertools",
  "jemallocator",
  "libc",
  "nix 0.22.3",
  "rand 0.8.5",
  "serde",
  "serde_json",
- "starlark",
  "termimad",
  "thiserror",
  "tokio",
@@ -709,6 +707,7 @@ dependencies = [
  "buck2_query",
  "buck2_query_parser",
  "buck2_util",
+ "cmp_any",
  "derive_more",
  "dice",
  "dupe",
@@ -979,6 +978,7 @@ dependencies = [
  "buck2_server_ctx",
  "buck2_util",
  "clap 3.2.25",
+ "cmp_any",
  "ctor",
  "dashmap 4.0.2",
  "derivative",
@@ -1162,6 +1162,7 @@ dependencies = [
  "buck2_util",
  "bytes 1.4.0",
  "chrono",
+ "cmp_any",
  "compact_str",
  "dashmap 4.0.2",
  "derivative",
@@ -1258,6 +1259,7 @@ dependencies = [
  "blake3",
  "buck2_data",
  "buck2_util",
+ "cmp_any",
  "common-path",
  "compact_str",
  "dashmap 4.0.2",
@@ -1738,6 +1740,7 @@ dependencies = [
  "buck2_query",
  "buck2_query_parser",
  "buck2_util",
+ "cmp_any",
  "derive_more",
  "dice",
  "display_container",
@@ -2499,6 +2502,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "cmp_any"
+version = "0.8.1"
+
+[[package]]
 name = "colorchoice"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2821,6 +2828,7 @@ dependencies = [
  "bincode",
  "cast",
  "clap 3.2.25",
+ "cmp_any",
  "dashmap 4.0.2",
  "derivative",
  "derive_more",
@@ -6641,9 +6649,9 @@ dependencies = [
 
 [[package]]
 name = "tracing-attributes"
-version = "0.1.24"
+version = "0.1.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0f57e3ca2a01450b1a921183a9c9cbfda207fd822cef4ccb00a65402cbba7a74"
+checksum = "8803eee176538f94ae9a14b55b2804eb7e1441f8210b1c31290b3bccdccff73b"
 dependencies = [
  "proc-macro2",
  "quote",
