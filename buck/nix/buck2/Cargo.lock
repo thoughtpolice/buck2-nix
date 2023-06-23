@@ -1078,6 +1078,7 @@ dependencies = [
  "tokio",
  "tokio-stream",
  "tokio-util 0.6.10",
+ "tonic",
  "tracing",
  "walkdir",
 ]
@@ -1172,7 +1173,6 @@ dependencies = [
  "dirs 3.0.2",
  "dupe",
  "faccess",
- "fbinit",
  "futures 0.3.28",
  "gazebo",
  "gazebo_lint",
@@ -1189,7 +1189,6 @@ dependencies = [
  "internment_tweaks",
  "ipnetwork",
  "itertools",
- "libc",
  "maplit",
  "more_futures",
  "nix 0.22.3",
@@ -1209,14 +1208,12 @@ dependencies = [
  "serde_json",
  "sha1",
  "sha2 0.10.7",
- "sorted_vector_map",
  "tempfile",
  "test-case",
  "thiserror",
  "tokio",
  "tokio-rustls",
  "tokio-util 0.6.10",
- "toml",
  "tonic",
  "tower",
  "tracing",
@@ -1354,6 +1351,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "buck2_eden"
+version = "0.1.0"
+dependencies = [
+ "allocative",
+ "anyhow",
+ "async-trait",
+ "buck2_common",
+ "buck2_core",
+ "compact_str",
+ "dupe",
+ "fbinit",
+ "futures 0.3.28",
+ "libc",
+ "parking_lot 0.11.2",
+ "serde",
+ "sorted_vector_map",
+ "thiserror",
+ "tokio",
+ "toml",
+ "tracing",
+]
+
+[[package]]
 name = "buck2_event_observer"
 version = "0.1.0"
 dependencies = [
@@ -1427,6 +1447,7 @@ dependencies = [
  "buck2_common",
  "buck2_core",
  "buck2_data",
+ "buck2_eden",
  "buck2_events",
  "buck2_miniperf_proto",
  "buck2_re_configuration",
@@ -1923,6 +1944,7 @@ dependencies = [
  "buck2_configured",
  "buck2_core",
  "buck2_data",
+ "buck2_eden",
  "buck2_event_observer",
  "buck2_events",
  "buck2_execute",
