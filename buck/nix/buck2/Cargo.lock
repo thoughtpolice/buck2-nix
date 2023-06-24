@@ -81,7 +81,7 @@ dependencies = [
  "either",
  "futures 0.3.28",
  "hashbrown 0.12.3",
- "indexmap",
+ "indexmap 1.9.3",
  "inferno",
  "num-bigint",
  "once_cell",
@@ -619,7 +619,7 @@ dependencies = [
  "hex",
  "host_sharing",
  "http",
- "indexmap",
+ "indexmap 1.9.3",
  "itertools",
  "maplit",
  "once_cell",
@@ -782,7 +782,7 @@ dependencies = [
  "futures 0.3.28",
  "gazebo",
  "indent_write",
- "indexmap",
+ "indexmap 1.9.3",
  "itertools",
  "ref-cast",
  "regex",
@@ -831,7 +831,7 @@ dependencies = [
  "gazebo",
  "gazebo_lint",
  "glob",
- "indexmap",
+ "indexmap 1.9.3",
  "internment",
  "inventory",
  "itertools",
@@ -894,7 +894,7 @@ dependencies = [
  "dice",
  "dupe",
  "gazebo",
- "indexmap",
+ "indexmap 1.9.3",
  "indoc",
  "itertools",
  "maplit",
@@ -990,7 +990,7 @@ dependencies = [
  "fbinit",
  "futures 0.3.28",
  "gazebo",
- "indexmap",
+ "indexmap 1.9.3",
  "itertools",
  "maplit",
  "more_futures",
@@ -1057,7 +1057,7 @@ dependencies = [
  "futures 0.3.28",
  "gazebo",
  "humantime",
- "indexmap",
+ "indexmap 1.9.3",
  "libc",
  "lsp-server",
  "maplit",
@@ -1184,7 +1184,7 @@ dependencies = [
  "hyper-proxy",
  "hyper-rustls",
  "hyper-unix-connector",
- "indexmap",
+ "indexmap 1.9.3",
  "indoc",
  "internment_tweaks",
  "ipnetwork",
@@ -1238,7 +1238,7 @@ dependencies = [
  "dupe",
  "futures 0.3.28",
  "gazebo",
- "indexmap",
+ "indexmap 1.9.3",
  "more_futures",
  "starlark_map",
  "thiserror",
@@ -1469,7 +1469,7 @@ dependencies = [
  "hex",
  "host_sharing",
  "hyper",
- "indexmap",
+ "indexmap 1.9.3",
  "itertools",
  "more_futures",
  "num_cpus",
@@ -1519,7 +1519,7 @@ dependencies = [
  "gazebo",
  "host_sharing",
  "hostname",
- "indexmap",
+ "indexmap 1.9.3",
  "itertools",
  "more_futures",
  "once_cell",
@@ -1846,7 +1846,7 @@ dependencies = [
  "futures 0.3.28",
  "gazebo",
  "gazebo_lint",
- "indexmap",
+ "indexmap 1.9.3",
  "indoc",
  "itertools",
  "ref-cast",
@@ -1891,7 +1891,7 @@ dependencies = [
  "either",
  "futures 0.3.28",
  "gazebo",
- "indexmap",
+ "indexmap 1.9.3",
  "itertools",
  "more_futures",
  "ref-cast",
@@ -2182,7 +2182,7 @@ dependencies = [
  "futures 0.3.28",
  "gazebo",
  "host_sharing",
- "indexmap",
+ "indexmap 1.9.3",
  "libc",
  "maplit",
  "more_futures",
@@ -2440,7 +2440,7 @@ dependencies = [
  "bitflags 1.3.2",
  "clap_derive 3.2.25",
  "clap_lex 0.2.4",
- "indexmap",
+ "indexmap 1.9.3",
  "once_cell",
  "strsim 0.10.0",
  "termcolor",
@@ -2449,9 +2449,9 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.3.5"
+version = "4.3.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2686c4115cb0810d9a984776e197823d08ec94f176549a89a9efded477c456dc"
+checksum = "d9394150f5b4273a1763355bd1c2ec54cc5a2593f790587bcd6b2c947cfa9211"
 dependencies = [
  "clap_builder",
  "clap_derive 4.3.2",
@@ -2460,9 +2460,9 @@ dependencies = [
 
 [[package]]
 name = "clap_builder"
-version = "4.3.5"
+version = "4.3.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2e53afce1efce6ed1f633cf0e57612fe51db54a1ee4fd8f8503d078fe02d69ae"
+checksum = "9a78fbdd3cc2914ddf37ba444114bc7765bbdcb55ec9cbe6fa054f0137400717"
 dependencies = [
  "anstream",
  "anstyle",
@@ -2859,7 +2859,7 @@ dependencies = [
  "futures 0.3.28",
  "gazebo",
  "gazebo_lint",
- "indexmap",
+ "indexmap 1.9.3",
  "itertools",
  "lock_free_hashtable",
  "lock_free_vec",
@@ -3099,6 +3099,12 @@ dependencies = [
  "log",
  "regex",
 ]
+
+[[package]]
+name = "equivalent"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "88bffebc5d80432c9b140ee17875ff173a8ab62faad5b257da912bd2f6c1c0a1"
 
 [[package]]
 name = "erased-serde"
@@ -3506,7 +3512,7 @@ dependencies = [
  "futures-sink",
  "futures-util",
  "http",
- "indexmap",
+ "indexmap 1.9.3",
  "slab",
  "tokio",
  "tokio-util 0.7.8",
@@ -3830,6 +3836,16 @@ dependencies = [
  "autocfg",
  "hashbrown 0.12.3",
  "serde",
+]
+
+[[package]]
+name = "indexmap"
+version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d5477fe2230a79769d8dc68e0eabf5437907c0457a5614a9e8dddb67f65eb65d"
+dependencies = [
+ "equivalent",
+ "hashbrown 0.14.0",
 ]
 
 [[package]]
@@ -4785,7 +4801,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4dd7d28ee937e54fe3080c91faa1c3a46c06de6252988a7f4592ba2310ef22a4"
 dependencies = [
  "fixedbitset",
- "indexmap",
+ "indexmap 1.9.3",
 ]
 
 [[package]]
@@ -4929,7 +4945,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9bd9647b268a3d3e14ff09c23201133a62589c658db02bb7388c7246aafe0590"
 dependencies = [
  "base64 0.21.2",
- "indexmap",
+ "indexmap 1.9.3",
  "line-wrap",
  "quick-xml 0.28.2",
  "serde",
@@ -5953,7 +5969,7 @@ dependencies = [
  "anyhow",
  "argfile",
  "bumpalo",
- "clap 4.3.5",
+ "clap 4.3.8",
  "cmp_any",
  "debugserver-types",
  "derivative",
@@ -6565,17 +6581,17 @@ dependencies = [
 
 [[package]]
 name = "toml_datetime"
-version = "0.6.2"
+version = "0.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5a76a9312f5ba4c2dec6b9161fdf25d87ad8a09256ccea5a556fef03c706a10f"
+checksum = "7cda73e2f1397b1262d6dfdcef8aafae14d1de7748d66822d3bfeeb6d03e5e4b"
 
 [[package]]
 name = "toml_edit"
-version = "0.19.10"
+version = "0.19.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2380d56e8670370eee6566b0bfd4265f65b3f432e8c6d85623f728d4fa31f739"
+checksum = "266f016b7f039eec8a1a80dfe6156b633d208b9fccca5e4db1d6775b0c4e34a7"
 dependencies = [
- "indexmap",
+ "indexmap 2.0.0",
  "toml_datetime",
  "winnow",
 ]
@@ -6633,7 +6649,7 @@ checksum = "b8fa9be0de6cf49e536ce1851f987bd21a43b771b09473c3549a6c853db37c1c"
 dependencies = [
  "futures-core",
  "futures-util",
- "indexmap",
+ "indexmap 1.9.3",
  "pin-project 1.1.0",
  "pin-project-lite",
  "rand 0.8.5",
