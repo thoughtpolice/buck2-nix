@@ -10,19 +10,16 @@ jobs:
     name: "update: update buck2 nix expr"
     runs-on: ubuntu-latest
     steps:
-      - name: install nix
-        uses: cachix/install-nix-action@v20
-        with:
-          install_url: https://releases.nixos.org/nix/nix-2.14.0/install
-          nix_path: nixpkgs=https://github.com/NixOS/nixpkgs/archive/0a4206a51b386e5cda731e8ac78d76ad924c7125.tar.gz
-          # see [ref:cache-url-warning]
-          extra_nix_config: |
-            substituters = file://${{ github.workspace }}/nix-store-cache-copy?priority=10&trusted=true https://cache.nixos.org https://buck2-nix-cache.aseipp.dev
-            experimental-features = nix-command flakes recursive-nix ca-derivations
-            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= buck2-nix-preview.aseipp.dev-1:sLpXPuuXpJdk7io25Dr5LrE9CIY1TgGQTPC79gkFj+o=
+      - uses: actions/checkout@v3
 
-      - name: clone repository
-        uses: actions/checkout@v3
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v4
+        with:
+          extra-conf: |
+            experimental-features = nix-command flakes recursive-nix ca-derivations
+
+      - name: Run the Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v1
 
       - name: update nix expression
         run: IS_CI=1 ./buck/nix/update.sh --buck2
