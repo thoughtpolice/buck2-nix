@@ -10,7 +10,7 @@
 
 let
   rustChannel = "nightly";
-  rustVersion = "2023-04-23";
+  rustVersion = "2023-05-28";
 
   my-rust-bin = rust-bin."${rustChannel}"."${rustVersion}".default.override {
     extensions = [ "rust-analyzer" ];
@@ -23,13 +23,13 @@ let
 
 in rustPlatform.buildRustPackage rec {
   pname = "buck2";
-  version = "unstable-2023-06-28";
+  version = "unstable-2023-06-29";
 
   src = fetchFromGitHub {
     owner = "facebook";
     repo = "buck2";
-    rev = "3af389c13dce1b36c09e245c907636074d0fe73b";
-    hash = "sha256-03NtkCUOl+l2Zznw2tAun5hCAPWp553NkiTSHbiafQY=";
+    rev = "2096214b387acadd0c8bedb09e84fae7464766f4";
+    hash = "sha256-4+NEKKwsFDowQopYg4z/vHTHLatyEoVQJMwK1oRmtSM=";
   };
 
   cargoLock = {
