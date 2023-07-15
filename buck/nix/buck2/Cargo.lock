@@ -98,9 +98,9 @@ dependencies = [
 
 [[package]]
 name = "allocator-api2"
-version = "0.2.15"
+version = "0.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "56fc6cf8dc8c4158eed8649f9b8b0ea1518eb62b544fe9490d66fa0b349eafe9"
+checksum = "0942ffc6dcaadf03badf6e6a2d0228460359d5e34b57ccdc720b7382dfbd5ec5"
 
 [[package]]
 name = "android-tzdata"
@@ -791,6 +791,7 @@ dependencies = [
  "regex",
  "serde",
  "serde_json",
+ "starlark_map",
  "thiserror",
 ]
 
@@ -1446,6 +1447,7 @@ dependencies = [
  "anyhow",
  "assert_matches",
  "async-trait",
+ "buck2_action_metadata_proto",
  "buck2_cli_proto",
  "buck2_common",
  "buck2_core",
@@ -1660,6 +1662,7 @@ dependencies = [
  "plist",
  "regex",
  "serde",
+ "serde_json",
  "starlark",
  "tempfile",
  "thiserror",
@@ -1698,6 +1701,7 @@ dependencies = [
  "maplit",
  "more_futures",
  "once_cell",
+ "serde_json",
  "sha2 0.10.7",
  "smallvec",
  "starlark",
@@ -2181,6 +2185,7 @@ dependencies = [
  "derive_more",
  "dice",
  "dupe",
+ "either",
  "futures 0.3.28",
  "gazebo",
  "host_sharing",
@@ -2452,20 +2457,20 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.3.11"
+version = "4.3.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1640e5cc7fb47dbb8338fd471b105e7ed6c3cb2aeb00c2e067127ffd3764a05d"
+checksum = "3eab9e8ceb9afdade1ab3f0fd8dbce5b1b2f468ad653baf10e771781b2b67b73"
 dependencies = [
  "clap_builder",
- "clap_derive 4.3.2",
+ "clap_derive 4.3.12",
  "once_cell",
 ]
 
 [[package]]
 name = "clap_builder"
-version = "4.3.11"
+version = "4.3.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "98c59138d527eeaf9b53f35a77fcc1fad9d883116070c63d5de1c7dc7b00c72b"
+checksum = "9f2763db829349bf00cfc06251268865ed4363b93a943174f638daf3ecdba2cd"
 dependencies = [
  "anstream",
  "anstyle",
@@ -2489,9 +2494,9 @@ dependencies = [
 
 [[package]]
 name = "clap_derive"
-version = "4.3.2"
+version = "4.3.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b8cd2b2a819ad6eec39e8f1d6b53001af1e5469f8c177579cdaeb313115b825f"
+checksum = "54a9bb5758fc5dfe728d1019941681eccaf0cf8a4189b692a0ee2f2ecf90a050"
 dependencies = [
  "heck 0.4.1",
  "proc-macro2",
@@ -5963,7 +5968,7 @@ dependencies = [
  "anyhow",
  "argfile",
  "bumpalo",
- "clap 4.3.11",
+ "clap 4.3.12",
  "cmp_any",
  "debugserver-types",
  "derivative",
@@ -6582,9 +6587,9 @@ checksum = "7cda73e2f1397b1262d6dfdcef8aafae14d1de7748d66822d3bfeeb6d03e5e4b"
 
 [[package]]
 name = "toml_edit"
-version = "0.19.13"
+version = "0.19.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5f8751d9c1b03c6500c387e96f81f815a4f8e72d142d2d4a9ffa6fedd51ddee7"
+checksum = "f8123f27e969974a3dfba720fdb560be359f57b44302d280ba72e76a74480e8a"
 dependencies = [
  "indexmap 2.0.0",
  "toml_datetime",
