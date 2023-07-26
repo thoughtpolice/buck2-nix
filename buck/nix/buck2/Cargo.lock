@@ -2825,9 +2825,9 @@ dependencies = [
 
 [[package]]
 name = "deltae"
-version = "0.3.1"
+version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3ef311e2c0a388b9ba56c839ac68d33b92d18ce7104d0acc4375cb479e2b9a53"
+checksum = "5729f5117e208430e437df2f4843f5e5952997175992d1414f94c57d61e270b4"
 
 [[package]]
 name = "derivative"
