@@ -23,13 +23,13 @@ let
 
 in rustPlatform.buildRustPackage rec {
   pname = "buck2";
-  version = "unstable-2023-08-04";
+  version = "unstable-2023-08-05";
 
   src = fetchFromGitHub {
     owner = "facebook";
     repo = "buck2";
-    rev = "3c3843a4445072ae09b24f38c418ec868f6765f2";
-    hash = "sha256-EpyF7x9zR21VXdMSj1ikUb09OO7ndibiHUIUZdwcv5M=";
+    rev = "9858374613f9890a393d38d365d43206645d9981";
+    hash = "sha256-28TevPHPnB4L3ad9OQXO4DT/rDJLjvEBr0Eq8l8WsY0=";
   };
 
   cargoLock = {
