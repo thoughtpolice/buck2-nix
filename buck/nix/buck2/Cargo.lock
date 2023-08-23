@@ -14,9 +14,9 @@ dependencies = [
 
 [[package]]
 name = "addr2line"
-version = "0.20.0"
+version = "0.21.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f4fa78e18c64fce05e902adecd7a5eed15a5e0a3439f7b0e169f0252214865e3"
+checksum = "8a30b2e23b9e17a9f90641c7ab1549cd9b44f296d3ccbf309d2863cfe398a0cb"
 dependencies = [
  "gimli",
 ]
@@ -398,16 +398,16 @@ dependencies = [
 
 [[package]]
 name = "backtrace"
-version = "0.3.68"
+version = "0.3.69"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4319208da049c43661739c5fade2ba182f09d1dc2299b32298d3a31692b17e12"
+checksum = "2089b7e3f35b9dd2d0ed921ead4f6d318c27680d4a5bd167b3ee120edb105837"
 dependencies = [
  "addr2line",
  "cc",
  "cfg-if",
  "libc",
  "miniz_oxide",
- "object 0.31.1",
+ "object 0.32.0",
  "rustc-demangle",
 ]
 
@@ -602,7 +602,6 @@ dependencies = [
  "buck2_execute",
  "buck2_file_watcher",
  "buck2_interpreter",
- "buck2_util",
  "chrono",
  "dashmap 4.0.2",
  "derive_more",
@@ -1005,6 +1004,7 @@ dependencies = [
  "itertools",
  "maplit",
  "more_futures",
+ "num-bigint",
  "once_cell",
  "serde",
  "serde_json",
@@ -1221,6 +1221,7 @@ dependencies = [
  "serde_json",
  "sha1",
  "sha2 0.10.7",
+ "starlark_map",
  "tempfile",
  "test-case",
  "thiserror",
@@ -1408,6 +1409,7 @@ dependencies = [
  "itertools",
  "linked-hash-map",
  "shlex",
+ "starlark_map",
  "superconsole",
  "thiserror",
  "tracing",
@@ -1573,6 +1575,7 @@ dependencies = [
  "gazebo",
  "notify",
  "serde",
+ "starlark_map",
  "tempfile",
  "tokio",
  "tracing",
@@ -1679,6 +1682,7 @@ dependencies = [
  "serde",
  "serde_json",
  "starlark",
+ "starlark_map",
  "tempfile",
  "thiserror",
  "tokio",
@@ -2286,7 +2290,6 @@ dependencies = [
  "buck2_events",
  "buck2_interpreter",
  "buck2_node",
- "buck2_util",
  "derive_more",
  "dice",
  "dupe",
@@ -2306,7 +2309,6 @@ dependencies = [
  "anyhow",
  "dupe",
  "futures 0.3.28",
- "itertools",
  "libc",
  "once_cell",
  "serde",
@@ -3516,9 +3518,9 @@ dependencies = [
 
 [[package]]
 name = "gimli"
-version = "0.27.3"
+version = "0.28.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b6c80984affa11d98d1b88b66ac8853f143217b399d3c74116778ff8fdb4ed2e"
+checksum = "6fb8d784f27acf97159b40fc4db5ecd8aa23b9ad5ef69cdd136d3bc80665f0c0"
 
 [[package]]
 name = "glob"
@@ -4243,9 +4245,9 @@ dependencies = [
 
 [[package]]
 name = "lsp-server"
-version = "0.7.3"
+version = "0.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "72417faa455bfb4e5bf14b157d8e2ca2ed74b4e89b8cf42ea2d864825ae5c8a2"
+checksum = "b52dccdf3302eefab8c8a1273047f0a3c3dca4b527c8458d00c09484c8371928"
 dependencies = [
  "crossbeam-channel",
  "log",
@@ -4539,9 +4541,9 @@ dependencies = [
 
 [[package]]
 name = "num-bigint"
-version = "0.4.3"
+version = "0.4.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f93ab6289c7b344a8a9f60f88d80aa20032336fe78da341afc91c8a2341fc75f"
+checksum = "608e7659b5c3d7cba262d894801b9ec9d00de989e8a82bd4bef91d08da45cdc0"
 dependencies = [
  "autocfg",
  "num-integer",
@@ -4632,9 +4634,9 @@ dependencies = [
 
 [[package]]
 name = "object"
-version = "0.31.1"
+version = "0.32.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8bda667d9f2b5051b8833f59f3bf748b28ef54f850f4fcb389a252aa383866d1"
+checksum = "77ac5bbd07aea88c60a577a1ce218075ffd59208b2d7ca97adf9bfc5aeb21ebe"
 dependencies = [
  "memchr",
 ]
@@ -4659,9 +4661,9 @@ checksum = "ff011a302c396a5197692431fc1948019154afc178baf7d8e37367442a4601cf"
 
 [[package]]
 name = "ordered-float"
-version = "3.9.0"
+version = "3.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "126d3e6f3926bfb0fb24495b4f4da50626f547e54956594748e3d8882a0320b4"
+checksum = "2a54938017eacd63036332b4ae5c8a49fc8c0c1d6d629893057e4f13609edd06"
 dependencies = [
  "num-traits",
 ]
@@ -4958,7 +4960,7 @@ dependencies = [
  "line-wrap",
  "quick-xml 0.29.0",
  "serde",
- "time 0.3.26",
+ "time 0.3.27",
 ]
 
 [[package]]
@@ -5569,7 +5571,7 @@ checksum = "1d1feddffcfcc0b33f5c6ce9a29e341e4cd59c3f78e7ee45f4a40c038b1d6cbb"
 dependencies = [
  "log",
  "ring",
- "rustls-webpki 0.101.3",
+ "rustls-webpki 0.101.4",
  "sct",
 ]
 
@@ -5596,9 +5598,9 @@ dependencies = [
 
 [[package]]
 name = "rustls-webpki"
-version = "0.100.1"
+version = "0.100.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d6207cd5ed3d8dca7816f8f3725513a34609c0c765bf652b8c3cb4cfd87db46b"
+checksum = "e98ff011474fa39949b7e5c0428f9b4937eda7da7848bbb947786b7be0b27dab"
 dependencies = [
  "ring",
  "untrusted",
@@ -5606,9 +5608,9 @@ dependencies = [
 
 [[package]]
 name = "rustls-webpki"
-version = "0.101.3"
+version = "0.101.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "261e9e0888cba427c3316e6322805653c9425240b6fd96cee7cb671ab70ab8d0"
+checksum = "7d93931baf2d282fff8d3a532bbfd7653f734643161b87e3e01e59a04439bf0d"
 dependencies = [
  "ring",
  "untrusted",
@@ -5786,9 +5788,9 @@ checksum = "1ee22067b7ccd072eeb64454b9c6e1b33b61cd0d49e895fd48676a184580e0c3"
 
 [[package]]
 name = "serde"
-version = "1.0.171"
+version = "1.0.185"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "30e27d1e4fd7659406c492fd6cfaf2066ba8773de45ca75e855590f856dc34a9"
+checksum = "be9b6f69f1dfd54c3b568ffa45c310d6973a5e5148fd40cf515acaf38cf5bc31"
 dependencies = [
  "serde_derive",
 ]
@@ -5808,9 +5810,9 @@ dependencies = [
 
 [[package]]
 name = "serde_derive"
-version = "1.0.171"
+version = "1.0.185"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "389894603bd18c46fa56231694f8d827779c0951a667087194cf9de94ed24682"
+checksum = "dc59dfdcbad1437773485e0367fea4b090a2e0a16d9ffc46af47764536a298ec"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -5949,9 +5951,9 @@ checksum = "7bd3e3206899af3f8b12af284fafc038cc1dc2b41d1b89dd17297221c5d225de"
 
 [[package]]
 name = "slab"
-version = "0.4.8"
+version = "0.4.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6528351c9bc8ab22353f9d776db39a20288e8d6c37ef8cfe3317cf875eecfc2d"
+checksum = "8f92a496fb766b417c996b9c5e57daf2f7ad3b0bebe1ccfca4856390e3d3bb67"
 dependencies = [
  "autocfg",
 ]
@@ -6479,9 +6481,9 @@ dependencies = [
 
 [[package]]
 name = "time"
-version = "0.3.26"
+version = "0.3.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a79d09ac6b08c1ab3906a2f7cc2e81a0e27c7ae89c63812df75e52bef0751e07"
+checksum = "0bb39ee79a6d8de55f48f2293a830e040392f1c5f16e336bdd1788cd0aadce07"
 dependencies = [
  "deranged",
  "itoa",
@@ -6498,9 +6500,9 @@ checksum = "7300fbefb4dadc1af235a9cef3737cea692a9d97e1b9cbcd4ebdae6f8868e6fb"
 
 [[package]]
 name = "time-macros"
-version = "0.2.12"
+version = "0.2.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "75c65469ed6b3a4809d987a41eb1dc918e9bc1d92211cbad7ae82931846f7451"
+checksum = "733d258752e9303d392b94b75230d07b0b9c489350c69b851fc6c065fde3e8f9"
 dependencies = [
  "time-core",
 ]
@@ -7082,7 +7084,7 @@ version = "0.23.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b03058f88386e5ff5310d9111d53f48b17d732b401aeb83a8d5190f2ac459338"
 dependencies = [
- "rustls-webpki 0.100.1",
+ "rustls-webpki 0.100.2",
 ]
 
 [[package]]
