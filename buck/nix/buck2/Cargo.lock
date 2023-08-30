@@ -52,9 +52,9 @@ dependencies = [
 
 [[package]]
 name = "aho-corasick"
-version = "1.0.4"
+version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6748e8def348ed4d14996fa801f4122cd763fff530258cdc03f64b25f89d3a5a"
+checksum = "0c378d78423fdad8089616f827526ee33c19f2fddbd5de1629152c9593ba4783"
 dependencies = [
  "memchr",
 ]
@@ -245,9 +245,9 @@ checksum = "9b34d609dfbaf33d6889b2b7106d3ca345eacad44200913df5ba02bfd31d2ba9"
 
 [[package]]
 name = "async-compression"
-version = "0.4.1"
+version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "62b74f44609f0f91493e3082d3734d98497e094777144380ea4db9f9905dd5b6"
+checksum = "d495b6dc0184693324491a5ac05f559acc97bf937ab31d7a1c33dd0016be6d2b"
 dependencies = [
  "flate2",
  "futures-core",
@@ -510,9 +510,9 @@ dependencies = [
 
 [[package]]
 name = "bstr"
-version = "1.6.0"
+version = "1.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6798148dccfbff0fae41c7574d2fa8f1ef3492fba0face179de5d8d447d67b05"
+checksum = "8042c26c77e5bd6897a7358e0abb3ec412ed126d826988135653fc669263899d"
 dependencies = [
  "memchr",
  "serde",
@@ -537,6 +537,7 @@ dependencies = [
  "buck2_build_signals",
  "buck2_build_signals_impl",
  "buck2_bxl",
+ "buck2_cfg_constructor",
  "buck2_cli_proto",
  "buck2_client",
  "buck2_client_ctx",
@@ -1012,6 +1013,25 @@ dependencies = [
  "structopt",
  "thiserror",
  "tokio",
+]
+
+[[package]]
+name = "buck2_cfg_constructor"
+version = "0.1.0"
+dependencies = [
+ "allocative",
+ "anyhow",
+ "async-trait",
+ "buck2_common",
+ "buck2_configured",
+ "buck2_core",
+ "buck2_interpreter",
+ "derive_more",
+ "dice",
+ "dupe",
+ "futures 0.3.28",
+ "starlark",
+ "thiserror",
 ]
 
 [[package]]
@@ -2428,9 +2448,9 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
 name = "chrono"
-version = "0.4.26"
+version = "0.4.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ec837a71355b28f6556dbd569b37b3f363091c0bd4b2e735674521b4c5fd9bc5"
+checksum = "f56b4c72906975ca04becb8a30e102dfecddd0c06181e3e95ddc444be28881f8"
 dependencies = [
  "android-tzdata",
  "iana-time-zone",
@@ -2438,7 +2458,7 @@ dependencies = [
  "num-traits",
  "time 0.1.45",
  "wasm-bindgen",
- "winapi",
+ "windows-targets 0.48.5",
 ]
 
 [[package]]
@@ -2833,9 +2853,9 @@ dependencies = [
 
 [[package]]
 name = "dashmap"
-version = "5.5.1"
+version = "5.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "edd72493923899c6f10c641bdbdeddc7183d6396641d99c1a0d1597f37f92e28"
+checksum = "978747c1d849a7d2ee5e8adc0159961c48fb7e5db2f06af6723b80123bb53856"
 dependencies = [
  "cfg-if",
  "hashbrown 0.14.0",
@@ -3534,7 +3554,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "759c97c1e17c55525b57192c06a267cda0ac5210b222d6b82189a2338fa1c13d"
 dependencies = [
  "aho-corasick",
- "bstr 1.6.0",
+ "bstr 1.6.1",
  "fnv",
  "log",
  "regex",
@@ -3945,7 +3965,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "161079c3ad892faa215fcfcf3fd7a6a3c9288df2b06a2c2bad7fbfad4f01d69d"
 dependencies = [
  "ahash 0.7.6",
- "dashmap 5.5.1",
+ "dashmap 5.5.3",
  "hashbrown 0.12.3",
  "once_cell",
  "parking_lot 0.12.1",
@@ -4306,9 +4326,9 @@ checksum = "ed1202b2a6f884ae56f04cff409ab315c5ce26b5e58d7412e484f01fd52f52ef"
 
 [[package]]
 name = "memchr"
-version = "2.6.0"
+version = "2.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "76fc44e2588d5b436dbc3c6cf62aef290f90dab6235744a93dfe1cc18f451e2c"
+checksum = "f478948fd84d9f8e86967bf432640e46adfb5a4bd4f14ef7e864ab38220534ae"
 
 [[package]]
 name = "memmap2"
@@ -6018,7 +6038,6 @@ name = "starlark"
 version = "0.9.0"
 dependencies = [
  "allocative",
- "annotate-snippets",
  "anyhow",
  "argfile",
  "bumpalo",
@@ -6041,7 +6060,6 @@ dependencies = [
  "lsp-server",
  "lsp-types",
  "maplit",
- "memchr",
  "memoffset 0.6.5",
  "num-bigint",
  "num-traits",
@@ -6090,8 +6108,12 @@ name = "starlark_syntax"
 version = "0.9.0"
 dependencies = [
  "allocative",
+ "annotate-snippets",
+ "anyhow",
+ "derive_more",
  "dupe",
  "lsp-types",
+ "memchr",
  "once_cell",
 ]
 
