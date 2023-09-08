@@ -359,7 +359,7 @@ dependencies = [
  "async-trait",
  "axum-core",
  "bitflags 1.3.2",
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "futures-util",
  "http",
  "http-body",
@@ -385,7 +385,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "759fa577a247914fd3f7f76d62972792636412fbfd634cd452f6a385a74d2d2c"
 dependencies = [
  "async-trait",
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "futures-util",
  "http",
  "http-body",
@@ -1043,7 +1043,7 @@ dependencies = [
  "buck2_data",
  "buck2_protoc_dev",
  "buck2_subscription_proto",
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "futures 0.3.28",
  "prost",
  "prost-types",
@@ -1134,7 +1134,7 @@ dependencies = [
  "buck2_test_api",
  "buck2_util",
  "buck2_wrapper_common",
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "chrono",
  "clap 3.2.25",
  "crossterm 0.27.0",
@@ -1193,7 +1193,7 @@ dependencies = [
  "buck2_data",
  "buck2_events",
  "buck2_util",
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "chrono",
  "cmp_any",
  "compact_str",
@@ -1492,7 +1492,7 @@ dependencies = [
  "buck2_re_configuration",
  "buck2_util",
  "buck2_wrapper_common",
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "chrono",
  "crossbeam-channel",
  "derivative",
@@ -1619,7 +1619,7 @@ dependencies = [
  "buck2_grpc",
  "buck2_miniperf_proto",
  "buck2_util",
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "dupe",
  "futures 0.3.28",
  "gazebo",
@@ -2378,9 +2378,9 @@ checksum = "a3e2c3daef883ecc1b5d58c15adae93470a91d425f3532ba1695849656af3fc1"
 
 [[package]]
 name = "bytemuck"
-version = "1.13.1"
+version = "1.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "17febce684fd15d89027105661fec94afb475cb995fbc59d2865198446ba2eea"
+checksum = "374d28ec25809ee0e23827c2ab573d729e293f281dfe393500e7ad618baa61c6"
 
 [[package]]
 name = "byteorder"
@@ -2400,9 +2400,9 @@ dependencies = [
 
 [[package]]
 name = "bytes"
-version = "1.4.0"
+version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "89b2fd2a0dcf38d7971e2194b6b6eebab45ae01067456a7fd93d5547a61b70be"
+checksum = "a2bd12c1caf447e69cd4528f47f94d203fd2582878ecb9e9465484c4148a8223"
 dependencies = [
  "serde",
 ]
@@ -2449,15 +2449,14 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
 name = "chrono"
-version = "0.4.28"
+version = "0.4.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "95ed24df0632f708f5f6d8082675bef2596f7084dee3dd55f632290bf35bfe0f"
+checksum = "defd4e7873dbddba6c7c91e199c7fcb946abc4a6a4ac3195400bcfb01b5de877"
 dependencies = [
  "android-tzdata",
  "iana-time-zone",
  "js-sys",
  "num-traits",
- "time 0.1.45",
  "wasm-bindgen",
  "windows-targets 0.48.5",
 ]
@@ -3566,7 +3565,7 @@ version = "0.3.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "91fc23aa11be92976ef4729127f1a74adf36d8436f7816b185d18df956790833"
 dependencies = [
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "fnv",
  "futures-core",
  "futures-sink",
@@ -3614,7 +3613,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "06683b93020a07e3dbcf5f8c0f6d40080d725bea7936fc01ad345c01b97dc270"
 dependencies = [
  "base64 0.21.3",
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "headers-core",
  "http",
  "httpdate",
@@ -3709,7 +3708,7 @@ version = "0.2.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bd6effc99afb63425aff9b05836f029929e345a6148a14b7ecd5ab67af944482"
 dependencies = [
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "fnv",
  "itoa",
 ]
@@ -3720,7 +3719,7 @@ version = "0.4.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d5f38f16d184e36f2408a55281cd658ecbd3ca05cce6d6510a176eca393e26d1"
 dependencies = [
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "http",
  "pin-project-lite",
 ]
@@ -3744,7 +3743,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f6f25cfb6def593d43fae1ead24861f217e93bc70768a45cc149a69b5f049df4"
 dependencies = [
  "bstr 0.2.17",
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "crossbeam-channel",
  "form_urlencoded",
  "futures 0.3.28",
@@ -3771,7 +3770,7 @@ version = "0.14.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ffb1cfd654a8219eaef89881fdb3bb3b1cdc5fa75ded05d6933b2b382e395468"
 dependencies = [
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "futures-channel",
  "futures-core",
  "futures-util",
@@ -3794,7 +3793,7 @@ name = "hyper-proxy"
 version = "0.10.1"
 source = "git+https://github.com/get9/hyper-proxy?rev=205e9fee42d469444d654d9fa207897f4a77d5b6#205e9fee42d469444d654d9fa207897f4a77d5b6"
 dependencies = [
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "futures-util",
  "headers",
  "http",
@@ -4988,7 +4987,7 @@ dependencies = [
  "line-wrap",
  "quick-xml 0.29.0",
  "serde",
- "time 0.3.28",
+ "time",
 ]
 
 [[package]]
@@ -5072,7 +5071,7 @@ version = "0.11.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0b82eaa1d779e9a4bc1c3217db8ffbeabaae1dca241bf70183242128d48681cd"
 dependencies = [
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "prost-derive",
 ]
 
@@ -5082,7 +5081,7 @@ version = "0.11.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "119533552c9a7ffacc21e099c24a0ac8bb19c2a2a3f363de84cd9b844feab270"
 dependencies = [
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "heck 0.4.1",
  "itertools",
  "lazy_static",
@@ -6558,17 +6557,6 @@ version = "0.1.0"
 
 [[package]]
 name = "time"
-version = "0.1.45"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1b797afad3f312d1c66a56d11d0316f916356d11bd158fbc6ca6389ff6bf805a"
-dependencies = [
- "libc",
- "wasi 0.10.0+wasi-snapshot-preview1",
- "winapi",
-]
-
-[[package]]
-name = "time"
 version = "0.3.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "17f6bb557fd245c28e6411aa56b6403c689ad95061f50e4be16c274e70a17e48"
@@ -6626,7 +6614,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "17ed6077ed6cd6c74735e21f37eb16dc3935f96878b1fe961074089cc80893f9"
 dependencies = [
  "backtrace",
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "libc",
  "mio",
  "num_cpus",
@@ -6688,7 +6676,7 @@ version = "0.6.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "36943ee01a6d67977dd3f84a5a1d2efeb4ada3a1ae771cadfaa535d9d9fc6507"
 dependencies = [
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "futures-core",
  "futures-io",
  "futures-sink",
@@ -6704,7 +6692,7 @@ version = "0.7.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "806fe8c2c87eccc8b3267cbae29ed3ab2d0bd37fca70ab622e46aaa9375ddb7d"
 dependencies = [
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "futures-core",
  "futures-sink",
  "pin-project-lite",
@@ -6748,7 +6736,7 @@ dependencies = [
  "async-trait",
  "axum",
  "base64 0.21.3",
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "futures-core",
  "futures-util",
  "h2",
@@ -7039,9 +7027,9 @@ dependencies = [
 
 [[package]]
 name = "walkdir"
-version = "2.3.3"
+version = "2.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "36df944cda56c7d8d8b7496af378e6b16de9284591917d307c9b4d313c44e698"
+checksum = "d71d857dc86794ca4c280d616f7da00d2dbfd8cd788846559a6813e6aa4b54ee"
 dependencies = [
  "same-file",
  "winapi-util",
@@ -7061,12 +7049,6 @@ name = "wasi"
 version = "0.9.0+wasi-snapshot-preview1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cccddf32554fecc6acb585f82a32a72e28b48f8c4c1883ddfeeeaa96f7d8e519"
-
-[[package]]
-name = "wasi"
-version = "0.10.0+wasi-snapshot-preview1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1a143597ca7c7793eff794def352d41792a93c481eb1042423ff7ff72ba2c31f"
 
 [[package]]
 name = "wasi"
@@ -7135,7 +7117,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "839fea2d85719bb69089290d7970bba2131f544448db8f990ea75813c30775ca"
 dependencies = [
  "anyhow",
- "bytes 1.4.0",
+ "bytes 1.5.0",
  "futures 0.3.28",
  "maplit",
  "serde",
