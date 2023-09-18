@@ -1029,11 +1029,11 @@ dependencies = [
  "buck2_core",
  "buck2_events",
  "buck2_interpreter",
+ "buck2_interpreter_for_build",
  "buck2_node",
  "derive_more",
  "dice",
  "dupe",
- "futures 0.3.28",
  "starlark",
  "thiserror",
 ]
@@ -6473,36 +6473,36 @@ dependencies = [
 
 [[package]]
 name = "test-case"
-version = "3.2.0"
+version = "3.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a407f424c64ea4bd974a62ba87cbbfb7a3bef51e08715925a693995bb8951819"
+checksum = "c8f1e820b7f1d95a0cdbf97a5df9de10e1be731983ab943e56703ac1b8e9d425"
 dependencies = [
  "test-case-macros",
 ]
 
 [[package]]
 name = "test-case-core"
-version = "3.2.0"
+version = "3.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0bd044842f6c9c8b916abf4229ebb85f93f86b0707ac8ad0f559764731af8a5e"
+checksum = "54c25e2cb8f5fcd7318157634e8838aa6f7e4715c96637f969fabaccd1ef5462"
 dependencies = [
  "cfg-if",
  "proc-macro-error",
  "proc-macro2",
  "quote",
- "syn 1.0.109",
+ "syn 2.0.36",
 ]
 
 [[package]]
 name = "test-case-macros"
-version = "3.2.0"
+version = "3.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d0638e622301276994078e07d03a850070146a504580e5ab3402da9c60e38017"
+checksum = "37cfd7bbc88a0104e304229fba519bdc45501a30b760fb72240342f1289ad257"
 dependencies = [
  "proc-macro-error",
  "proc-macro2",
  "quote",
- "syn 1.0.109",
+ "syn 2.0.36",
  "test-case-core",
 ]
 
