@@ -23,7 +23,7 @@ let
 
 in rustPlatform.buildRustPackage rec {
   pname = "buck2";
-  version = "unstable-2023-09-19";
+  version = "unstable-2023-09-20";
 
   src = fetchFromGitHub {
     owner = "facebook";
