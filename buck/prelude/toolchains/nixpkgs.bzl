@@ -12,7 +12,7 @@ load("@prelude//basics/files.bzl", "files")
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def __nix_build(ctx: "context", build_name: str.type, expr, binary: [str.type, None] = None) -> ["provider"]:
+def __nix_build(ctx: AnalysisContext, build_name: str, expr, binary: str | None = None) -> list[Provider]:
     nixpkgs = ctx.attrs._nixpkgs[DefaultInfo].default_outputs[0]
 
     deps = [o[DefaultInfo].default_outputs[0] for o in ctx.attrs.deps]
@@ -112,8 +112,8 @@ __build = rule(
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def __get_toolchain(key: str.type, name: str.type, ps: ["_a"]) -> "attribute":
-    name: str.type = "@prelude//toolchains/{}:{}".format(key, name)
+def __get_toolchain(key: str, name: str, ps: list[typing.Any]) -> Attr:
+    name: str = "@prelude//toolchains/{}:{}".format(key, name)
     return attrs.toolchain_dep(default = name, providers = ps)
 
 def __toolchain_rule(impl, attrs, **kwargs):

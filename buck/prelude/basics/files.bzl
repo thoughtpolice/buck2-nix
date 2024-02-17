@@ -16,7 +16,7 @@ ExportFileDescriptionMode = [ "reference", "copy" ]
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def __filegroup_impl(ctx: "context") -> ["provider"]:
+def __filegroup_impl(ctx: AnalysisContext) -> list[Provider]:
     if type(ctx.attrs.srcs) == type({}):
         srcs = ctx.attrs.srcs
     else:
@@ -39,7 +39,7 @@ __filegroup = rule(
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def __export_file_impl(ctx: "context") -> ["provider"]:
+def __export_file_impl(ctx: AnalysisContext) -> list[Provider]:
     copy = ctx.attrs.mode != "reference"
 
     if copy:

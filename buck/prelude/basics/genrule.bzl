@@ -12,7 +12,7 @@
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def _declare_output(ctx: "context", path: str.type) -> "artifact":
+def _declare_output(ctx: AnalysisContext, path: str) -> Artifact:
     if path == ".":
         return ctx.actions.declare_output("out", dir = True)
     elif path.endswith("/"):
@@ -20,7 +20,7 @@ def _declare_output(ctx: "context", path: str.type) -> "artifact":
     else:
         return ctx.actions.declare_output("out", path)
 
-def _project_output(out: "artifact", path: str.type) -> "artifact":
+def _project_output(out: Artifact, path: str) -> Artifact:
     if path == ".":
         return out
     elif path.endswith("/"):
@@ -28,9 +28,9 @@ def _project_output(out: "artifact", path: str.type) -> "artifact":
     else:
         return out.project(path, hide_prefix = True)
 
-## ---------------------------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------------
 
-def __genrule_impl(ctx: "context") -> ["provider"]:
+def __genrule_impl(ctx: AnalysisContext) -> list[Provider]:
     out_attr = ctx.attrs.out
     outs_attr = ctx.attrs.outs
 

@@ -25,7 +25,7 @@ __VALID_OWNERS = [
     "@aseipp"
 ]
 
-def owner(name: "string") -> "NoneType":
+def owner(name: str) -> None:
     """Set the owner of the current package."""
 
     if name not in __VALID_OWNERS:
@@ -38,15 +38,15 @@ def owner(name: "string") -> "NoneType":
 
     return write_package_value('meta.owner', name)
 
-def license(s: "string") -> "NoneType":
+def license(s: str) -> None:
     """Set the license of the current package."""
     return write_package_value('meta.license', s.strip())
 
-def description(s: "string") -> "NoneType":
+def description(s: str) -> None:
     """Set the description of the current package."""
     return write_package_value('meta.description', s.strip())
 
-def version(s: "string") -> "NoneType":
+def version(s: str) -> None:
     """Set the version of the current package."""
 
     # https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string

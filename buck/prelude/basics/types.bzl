@@ -23,7 +23,7 @@ load("@prelude//toolchains/zip/main.bzl", "zipfile");
 attributes = { }
 
 # Global providers. Key->value pairs of provider names and their types.
-providers: {str.type: "provider"} = { }
+providers: dict[str, Provider] = { }
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
