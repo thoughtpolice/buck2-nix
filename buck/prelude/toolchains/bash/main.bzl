@@ -13,7 +13,7 @@ load("@prelude//basics/files.bzl", "files")
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def __run_impl(ctx: "context") -> ["provider"]:
+def __run_impl(ctx: AnalysisContext) -> list[Provider]:
     cmd = [ cmd_args(ctx.attrs._sh[DefaultInfo].default_outputs[0], format="{}/bin/osh") ]
     cmd.append(ctx.attrs.args)
 

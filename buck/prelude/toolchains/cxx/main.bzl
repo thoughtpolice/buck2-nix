@@ -23,7 +23,7 @@ __toolchain_attrs = {
 CxxToolchainInfo = provider(fields = __toolchain_attrs.keys())
 CxxPlatformInfo = provider(fields = [ "name" ])
 
-def ctx2toolchain(ctx: "context") -> "CxxToolchainInfo":
+def ctx2toolchain(ctx: AnalysisContext) -> CxxToolchainInfo:
     info = ctx.attrs.toolchain[CxxToolchainInfo]
     attrs = dict()
     for k, default in __toolchain_attrs.items():
@@ -31,7 +31,7 @@ def ctx2toolchain(ctx: "context") -> "CxxToolchainInfo":
         attrs[k] = default if v == None else v
     return CxxToolchainInfo(**attrs)
 
-def __clang_toolchain_impl(ctx: "context") -> ["provider"]:
+def __clang_toolchain_impl(ctx: AnalysisContext) -> list[Provider]:
     name = ctx.label.name
     version = ctx.attrs.version
     pkg = ctx.attrs.pkg
@@ -60,7 +60,7 @@ __clang_toolchain = nix.macros.toolchain_rule(
     },
 )
 
-def __binary_impl(ctx: "context") -> ["provider"]:
+def __binary_impl(ctx: AnalysisContext) -> list[Provider]:
     toolchain = ctx2toolchain(ctx)
     name = ctx.attrs.out if ctx.attrs.out else ctx.label.name
     identifier = name

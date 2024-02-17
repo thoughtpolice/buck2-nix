@@ -11,7 +11,7 @@
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def __scryer_program_impl(ctx: "context") -> ["provider"]:
+def __scryer_program_impl(ctx: AnalysisContext) -> list[Provider]:
     default_start_name = "{}.pro".format(ctx.label.name)
     entrypoint = ctx.attrs.start
     if entrypoint == None:

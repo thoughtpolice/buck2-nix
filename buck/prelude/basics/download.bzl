@@ -12,7 +12,7 @@
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def _download_tarball(ctx: "context") -> ["provider"]:
+def _download_tarball(ctx: AnalysisContext) -> list[Provider]:
     dl_script, _ = ctx.actions.write(
         "download_{}.sh".format(ctx.label.name),
         [
@@ -66,7 +66,7 @@ __tarball = rule(
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def __file_impl(ctx: "context") -> ["provider"]:
+def __file_impl(ctx: AnalysisContext) -> list[Provider]:
     dl_script, _ = ctx.actions.write(
         "download_{}.sh".format(ctx.label.name),
         [

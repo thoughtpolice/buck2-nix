@@ -17,7 +17,7 @@ dependencies or outputs based on the platform.
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def __alias_impl(ctx: "context") -> ["provider"]:
+def __alias_impl(ctx: AnalysisContext) -> list[Provider]:
     return ctx.attrs.actual.providers
 
 alias = rule(

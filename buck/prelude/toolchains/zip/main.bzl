@@ -10,7 +10,7 @@
 
 ## ---------------------------------------------------------------------------------------------------------------------
 
-def __create_impl(ctx: "context") -> ["provider"]:
+def __create_impl(ctx: AnalysisContext) -> list[Provider]:
     out_name = ctx.attrs.out if ctx.attrs.out else "{}.zip".format(ctx.label.name)
     out = ctx.actions.declare_output(out_name)
 
